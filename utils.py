@@ -4,6 +4,7 @@ import os
 from src.datasets.paths import *
 from src.datasets.load_ascadr import *
 from src.datasets.load_eshard import *
+from src.datasets.load_chesctf import *
 from os.path import exists
 
 from sklearn.preprocessing import MinMaxScaler
@@ -32,6 +33,11 @@ def load_dataset(identifier: str, path: str, target_byte: int, traces_dim: int, 
         dataset = ReadASCADr(200000 if n_prof is None else n_prof, 0, 10000, target_byte, leakage_model,
                                                 dataset_file,
                                                 number_of_samples=traces_dim)
+    if identifier == "ches_ctf":
+        dataset = ReadCHESCTF(30000 if n_prof is None else n_prof, 0, 10000, target_byte, leakage_model,
+                                                         dataset_file,
+                                                         number_of_samples=traces_dim)
+        
     return dataset
 
 

@@ -7,6 +7,7 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras import regularizers
 from scipy.stats import entropy
 from tensorflow.keras.regularizers import *
+import tensorflow as tf
 from scipy.stats import multivariate_normal
 from utils import *
 
@@ -114,6 +115,19 @@ def mlp_eshard(classes, number_of_samples, learning_rate=0.0025):
     m_model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
     m_model.summary()
     return m_model
+
+@tf.function
+def cross_entropy_ratio(y_true, y_pred):
+    correct_key_val = tf.keras.losses.categorical_crossentropy(y_true, y_pred)
+    temp = 0
+    N = 3
+    for i in range(N):
+        # TODO 'proper regulation term'
+        temp += tf.keras.losses.categorical_crossentropy(tf.random.shuffle(y_true), y_pred)
+    result = correct_key_val / (temp / N)
+    # print(correct_key_val/(temp/N))
+
+    return result
 
 def cnn_eshard(classes, number_of_samples, learning_rate=0.0025):
     input_shape = (number_of_samples,1)

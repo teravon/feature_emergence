@@ -11,6 +11,9 @@ def get_dataset_filepath(dataset_root_folder, dataset_name, npoi, leakage_model)
             "eshard": {
                 1400: f"{dataset_root_folder}/eshard.h5",
             },
+            "ches_ctf": {
+                15000: f"{dataset_root_folder}/ches_ctf/ches_ctf_nopoi_window_20.h5"
+            },
         }
     else:
         dataset_dict = {
@@ -24,6 +27,9 @@ def get_dataset_filepath(dataset_root_folder, dataset_name, npoi, leakage_model)
             },
             "eshard": {
                 1400: f"{dataset_root_folder}/eshard.h5",
+            },
+            "ches_ctf": {
+                15000: f"{dataset_root_folder}/ches_ctf/ches_ctf_nopoi_window_20.h5"
             },
         
         }
