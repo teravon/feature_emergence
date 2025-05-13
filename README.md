@@ -11,17 +11,20 @@ Note that the python/package versions in the requirements file are probably not 
 
 Some functions in the repo assume the existence of several folders: figures, model_checkpoints, data
 
-Besides this, the paths in src/datasets/paths.py might need updating to accurately point to datasets
+Besides this, the paths in src/datasets/paths.py will need updating to accurately point to datasets
 
-## Creating 2000 sample ASCADr
+# Download Model Checkpoints:
+Model checkpoints are available at anonymized link at https://zenodo.org/records/15395878 These should be extracted to a folder called model_checkpoints in the root of this directory.
+
+# Create Datasets:
+Note that generating the datasets from raw traces to work with will take some time and storage space (ASCADr raw trace file is ~80GB, CHES_CTF is 24 GB in total). The raw traces can be deleted after running the scripts to generate h5 files. ESHARD is < 1GB.
+## ASCADr
 After downloading the raw traces file as descirbed in https://github.com/ANSSI-FR/ASCAD/tree/master/ATMEGA_AES_v1/ATM_AES_v1_variable_key run the generate_new_ascadr.py file on this (again update paths in script)
 
+## Creating eshard.h5
+Download eshard non-shuffled  ets file from https://gitlab.com/eshard/nucleo_sw_aes_masked_shuffled/-/blob/main/Nucleo_AES_masked_non_shuffled.ets?ref_type=heads and use generate_eshard.py with updated locations to point to appropriate file locations.
 
-## Training Models to Analyze
-In "train_model.py" a script to train a model to analyze is provided. The models used in the paper are defined in the "profiling_and_attack.py" script, and checkpoints are saved in the model_checkpoints folder
+## Create CHES_CTF.h5
+Follow instructions in generate_ches_ctf.py (this file is adapted from https://github.com/AISyLab/feature_selection_dlsca/blob/master/experiments/CHESCTF/generate_dataset.py)
 
-## Generating Ex-DLSCA probing results
-The file pi_plots_eshard_mlp.py contains a script to generate npz files containing PI results. These files get stored in /data folder by default
 
-## Patching
-In activation_patching_eshard_mlp.py there is an annotated file for patching. The other patching results are in corresponding files
