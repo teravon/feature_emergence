@@ -124,6 +124,6 @@ def generate_nopoi(window):
 
 
 if __name__ == "__main__":
-    #Update Path here
+    #UPDATE THIS PATH
     ascadr_raw_traces = "/path/to/ascadr_raw_trace/folder"
     generate_nopoi(window=20)

@@ -30,14 +30,14 @@ Each raw trace contains 650,000 sample points.
 """
 
 
-@njit
+# Optimized version to resample using a moving window
 def winres(trace, window=20, overlap=0.5):
-    trace_winres = []
     step = int(window * overlap)
-    max = len(trace)
-    for i in range(0, max, step):
-        trace_winres.append(np.mean(trace[i:i + window]))
-    return np.array(trace_winres)
+    kernel = np.ones(window) / window  # Create a moving average kernel
+    convolved = np.convolve(trace, kernel, mode='same')  # Apply the kernel
+    # Downsample the convolved result to match the step size
+    trace_winres = convolved[::step]
+    return trace_winres
 
 
 def load_trs_trace(filename, number_of_traces, number_of_samples, data_length, number_of_samples_resampled=None, window=20, desync=False):
@@ -153,4 +153,7 @@ def generate_nopoi(window):
 
 
 if __name__ == "__main__":
+    # UPDATE THESE PATHS
+    raw_trace_folder_chesctf = "/project_root_folder/ches_ctf"
+    dataset_folder_chesctf_nopoi = "/project_root_folder/ches_ctf/ches_ctf_nopoi"
     generate_nopoi(20)
