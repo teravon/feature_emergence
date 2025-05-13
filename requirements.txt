@@ -1,8 +1,10 @@
+experiments==0.1.0
 h5py==3.10.0
 matplotlib==3.8.2
 numba==0.59.0
-numpy
+numpy==2.2.5
 scikit_learn==1.4.0
 scipy==1.7.3
 tensorflow==2.15.0.post1
 tqdm==4.63.0
+trsfile==0.3.2
