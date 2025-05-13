@@ -1,6 +1,5 @@
 import numpy as np
 import h5py
-from src.datasets.paths import *
 from tqdm import tqdm
 from numba import njit
 import sys
@@ -125,5 +124,5 @@ def generate_nopoi(window):
 
 if __name__ == "__main__":
     #UPDATE THIS PATH
-    ascadr_raw_traces = "/path/to/ascadr_raw_trace/folder"
+    ascadr_raw_traces = "."
     generate_nopoi(window=20)

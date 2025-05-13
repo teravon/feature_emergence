@@ -4,11 +4,11 @@ import estraces
 
 
 # This script generates the eshard dataset from the ETS file
-ths = estraces.read_ths_from_ets_file("Path/To/Nucleo_AES_masked_non_shuffled.ets")
+ths = estraces.read_ths_from_ets_file("./Nucleo_AES_masked_non_shuffled.ets")
 n_profiling = 90000
 n_attack = 10000
 
-dataset_folder_eshard = "Datasets"
+dataset_folder_eshard = "."
 raw_plaintexts=ths.metadatas["plaintext"]
 raw_keys = ths.metadatas["key"]
 raw_masks = ths.metadatas["mask"]

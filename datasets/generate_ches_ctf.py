@@ -4,9 +4,6 @@ import trsfile
 from numba import njit
 import random
 import sys
-from experiments.paths import *
-
-sys.path.append('/project_root_folder')
 
 """ 
 This file generates CHES CTF dataset for the experiments in the paper 
@@ -153,7 +150,7 @@ def generate_nopoi(window):
 
 
 if __name__ == "__main__":
-    # UPDATE THESE PATHS
-    raw_trace_folder_chesctf = "/project_root_folder/ches_ctf"
-    dataset_folder_chesctf_nopoi = "/project_root_folder/ches_ctf/ches_ctf_nopoi"
+    # UPDATE THESE PATHS IF NEEDED
+    raw_trace_folder_chesctf = "."
+    dataset_folder_chesctf_nopoi = "."
     generate_nopoi(20)
