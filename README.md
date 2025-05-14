@@ -13,10 +13,10 @@ Some functions in the repo assume the existence of several folders: figures, mod
 
 
 # Download Model Checkpoints:
-Model checkpoints are available at anonymized link at https://zenodo.org/records/15395878 These should be extracted to a folder called model_checkpoints in the root of this directory. Model retraining is also possible, but can impact the resulting structures in PCs and patching experiments will likely need manual adaption (e.g., different rotation)
+Model checkpoints are available at anonymized link at https://zenodo.org/records/15410792 . These should be extracted to a folder called model_checkpoints in the root of this directory. Model retraining is also possible, but can impact the resulting structures in PCs and patching experiments will likely need manual adaption (e.g., different rotation)
 
 # Create Datasets:
-Note that generating the datasets from raw traces to work with will take some time and storage space (ASCADr raw trace file is ~80GB, CHES_CTF is 24 GB in total). The final used datasets are significantly smaller (ches 1.1 GB ASCADr 500MB, ESHARD 550MB) The raw traces can be deleted after running the scripts to generate h5 files.
+Note that generating the datasets from raw traces to work with will take some time and storage space (ASCADr raw trace file is ~80GB, CHES_CTF is 24 GB in total). The final used datasets are significantly smaller (ches 1.1 GB ASCADr 500MB, ESHARD 550MB) We also provide pre-extracted datasets at https://zenodo.org/records/15410792. These should be extracted in the datasets folder. If paths do not match please check the src/datasets/paths.py file and update accordingly. 
 
 For each of the datasets a shell script is provided that makes downloads raw traces and extracts new trace sets to appropriate locations. 
 
