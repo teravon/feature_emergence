@@ -1,7 +1,6 @@
 import numpy as np
 import h5py
 import trsfile
-from numba import njit
 import random
 import sys
 
