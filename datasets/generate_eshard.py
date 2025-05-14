@@ -30,8 +30,8 @@ attack_index = [n for n in range(n_attack)]
 profiling_traces_group = out_file.create_group("Profiling_traces")
 attack_traces_group = out_file.create_group("Attack_traces")
 
-profiling_traces_group.create_dataset(name="traces", data=profiling_samples, dtype=profiling_samples.dtype)
-attack_traces_group.create_dataset(name="traces", data=attack_samples, dtype=attack_samples.dtype)
+profiling_traces_group.create_dataset(name="traces", data=profiling_samples, dtype=np.int16)
+attack_traces_group.create_dataset(name="traces", data=attack_samples, dtype=np.int16)
 
 metadata_type_profiling = np.dtype([("plaintext", profiling_plaintext.dtype, (len(profiling_plaintext[0]),)),
                                     ("key", profiling_key.dtype, (len(profiling_key[0]),)),
