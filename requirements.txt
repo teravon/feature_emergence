@@ -1,8 +1,7 @@
-h5py
-matplotlib
-numpy
-scikit_learn
-scipy
+h5py==3.10.0
+matplotlib==3.8.2
+numpy==2.2.5
+scikit_learn==1.4.0
+scipy==1.7.3
 tensorflow==2.15.0.post1
 tqdm==4.63.0
-
