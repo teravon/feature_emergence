@@ -6,7 +6,7 @@ After setting up and downloading datasets to the datasets/ folder and checkpoint
 
 It is also possible to retrain models, the code for this is also in the notebooks. In this case we advise changing the model name to not overwrite the original checkpoints. 
 
-Results for each of the considered models are produced in the appropriate notebooks. ASCADr results from the main paper are in ascadr_clean_mlp.ipynb. The CNN results from the appendix are in ascadr_clean_cnn.ipynb. ESHARD and CHES_CTF results are in eshard_clean.ipynb and ches_ctf_clean.ipynb respectively.
+Results for each of the considered models are produced in the appropriate notebooks. ASCADr results from the main paper are in ascadr_clean_mlp.ipynb. The CNN results from the appendix are in ascadr_clean_cnn.ipynb. ESHARD and CHES_CTF results are in eshard_clean.ipynb and ches_ctf_clean.ipynb respectively.ts.
 
 
 # Setup
@@ -14,7 +14,7 @@ We advise creating a virtualenvironment and installing the dependencies in the r
 
 Our python version is 3.9.12, requirements file was generated using pipreqs
 
-Note that the python/package versions in the requirements file are probably not tight, but these are the ones we used.
+Note that the python/package versions in the requirements file are not tight. A preexisting tensorflow installation (with missing packages installed) **should** work
 
 Some functions in the repo assume the existence of several folders: model_checkpoints, datasets which can be downloaded from https://zenodo.org/records/15410792 as described below.
 
