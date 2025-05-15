@@ -75,7 +75,7 @@ fi
 
 echo "Extracting '$CHECKPOINTS_ARCHIVE_NAME'..."
 # Assuming the tar contains the contents that should go into the 'model_checkpoints' folder
-tar -xf "$CHECKPOINTS_ARCHIVE_NAME" -C model_checkpoints/ # Extract into the model_checkpoints directory
+tar -xf "$CHECKPOINTS_ARCHIVE_NAME" -C . # Extract into the model_checkpoints directory
 
 if [ $? -ne 0 ]; then
   echo "Error extracting the model checkpoints archive. Please check the archive format and the extraction command."
