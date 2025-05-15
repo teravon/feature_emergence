@@ -2,7 +2,7 @@
 
 In this jupyter notebooks for the experiments and results for the paper "You Have To be Realistic: On Investigating Feature Emergence in Deep Learning-based Side-channel Analysis" are provided. 
 
-After setting up and downloading datasets to the datasets/ folder and checkpoints to model_checkpoints/ folder the *.ipynb should run and reproduce results for the models in the paper. We advise downloading the extracted datasets directly from https://zenodo.org/records/15410792 as the direct extraction requires significantly more disk space (70GB vs. 500MB for ASCADr).
+After setting up and downloading datasets using below code you can run the jupyter notebook command to run the jupyter server (or use your preffered editor for notebooks). The install script should register the kernel under ``you-have-to-be-realistic''. please make sure to select the right kernel.
 
 It is also possible to retrain models, the code for this is also in the notebooks. In this case we advise changing the model name to not overwrite the original checkpoints. 
 
@@ -10,7 +10,7 @@ Results for each of the considered models are produced in the appropriate notebo
 
 
 # Setup
-We advise creating a virtualenvironment using conda with the appropriate python version (3.9). The install_environments.sh script contains an installation script. You can also manually install the dependencies in the requirements.txt file. 
+We advise creating a virtualenvironment using conda with the appropriate python version (3.9). The install_environments.sh script contains an installation script. You can also manually install the dependencies in the requirements.txt file. We also provide powershell script for windows users although these are untested and we recommend using WSL for these.
 
 ## Download Model Checkpoints and Extracted datasets:
 Model checkpoints are available at anonymized link at https://zenodo.org/records/15410792 . The script in download_files.sh will download and extract files to the appropriate locations. These should be extracted to a folder called model_checkpoints in the root of this directory. Model retraining is also possible, but can impact the resulting structures in PCs and patching experiments will likely need manual adaption (e.g., different rotation)
