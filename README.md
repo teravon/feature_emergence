@@ -10,10 +10,21 @@ Results for each of the considered models are produced in the appropriate notebo
 
 
 # Setup
-We advise creating a virtualenvironment using conda (see https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) with the appropriate python version (3.9). The install_environments.sh script contains an installation script. You can also manually install the dependencies in the requirements.txt file. We also provide powershell script for windows users although these are untested and we recommend using WSL for these.
 
 ## Download Model Checkpoints and Extracted datasets:
-Model checkpoints are available at anonymized link at https://zenodo.org/records/15410792 . The script in download_files.sh will download and extract files to the appropriate locations. These should be extracted to a folder called model_checkpoints in the root of this directory. Model retraining is also possible, but can impact the resulting structures in PCs and patching experiments will likely need manual adaption (e.g., different rotation)
+Model checkpoints are available at anonymized link at https://zenodo.org/records/15410792 . The script in download_files.sh (ps1) will download and extract files to the appropriate locations. These should be extracted to a folder called model_checkpoints in the root of this directory. Model retraining is also possible, but can impact the resulting structures in PCs and patching experiments will likely need manual adaption (e.g., different rotation)
+
+
+## Docker
+The most error proof method is to use the provided docker file given you have a docker installation. First download the model checkpoints and datasets using the download_files.sh/ps1 scripts for bash/powershell. Then build and run the docker container using:: 
+```
+docker build -t realistic-env . 
+docker run -it --rm -p 8888:8888 realistic-env
+```
+Then going to localhost:8888 in your chosen browser where the notebooks will be available.
+
+## Conda 
+If you dont want to use docker we advise creating a virtualenvironment using conda (see https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) with the appropriate python version (3.9). The install_environments.sh script contains an installation script. You can also manually install the dependencies in the requirements.txt file. We also provide powershell script for windows users although these are untested and we recommend using WSL for these.
 
 ## Manually Creating/Downloading Extracted Datasets:
 Note that generating the datasets from raw traces to work with will take some time and storage space (ASCADr raw trace file is ~80GB, CHES_CTF is 24 GB in total). The final used datasets are significantly smaller (ches 1.1 GB ASCADr 500MB, ESHARD 550MB). 
