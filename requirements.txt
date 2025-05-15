@@ -1,9 +1,8 @@
-experiments==0.1.0
 h5py
 matplotlib
 numpy
 scikit_learn
 scipy
-tensorflow
+tensorflow==2.15.0.post1
 tqdm==4.63.0
 
