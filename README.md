@@ -27,7 +27,7 @@ Then going to localhost:8888 in your chosen browser where the notebooks will be 
 If you dont want to use docker we advise creating a virtualenvironment using conda (see https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) with the appropriate python version (3.9). The install_environments.sh script contains an installation script. You can also manually install the dependencies in the requirements.txt file.
 
 ## Manually Creating/Downloading Extracted Datasets:
-Note that generating the datasets from raw traces to work with will take some time and storage space (ASCADr raw trace file is ~80GB, CHES_CTF is 24 GB in total). The final used datasets are significantly smaller (ches 1.1 GB ASCADr 500MB, ESHARD 550MB). 
+Note that generating the datasets from raw traces to work with will take some time and storage space (ASCADr raw trace file is ~80GB, CHES_CTF is 24 GB in total). The final used datasets are significantly smaller (ches 1.1 GB ASCADr 500MB, ESHARD 550MB). Also it will require the additional installation of estraces and trsfile packages for eshard and ches_ctf
 
 For each of the datasets a shell script is provided that makes downloads raw traces and extracts new trace sets to appropriate locations. 
 
