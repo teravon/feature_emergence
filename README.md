@@ -10,7 +10,7 @@ Results for each of the considered models are produced in the appropriate notebo
 
 
 # Setup
-We advise creating a virtualenvironment using conda with the appropriate python version (3.9). The install_environments.sh script contains an installation script. You can also manually install the dependencies in the requirements.txt file. We also provide powershell script for windows users although these are untested and we recommend using WSL for these.
+We advise creating a virtualenvironment using conda (see https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) with the appropriate python version (3.9). The install_environments.sh script contains an installation script. You can also manually install the dependencies in the requirements.txt file. We also provide powershell script for windows users although these are untested and we recommend using WSL for these.
 
 ## Download Model Checkpoints and Extracted datasets:
 Model checkpoints are available at anonymized link at https://zenodo.org/records/15410792 . The script in download_files.sh will download and extract files to the appropriate locations. These should be extracted to a folder called model_checkpoints in the root of this directory. Model retraining is also possible, but can impact the resulting structures in PCs and patching experiments will likely need manual adaption (e.g., different rotation)
