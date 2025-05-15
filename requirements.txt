@@ -1,10 +1,9 @@
 experiments==0.1.0
 h5py
 matplotlib
-numpy
+numpy==2.2.5
 scikit_learn
 scipy
-tensorflow==2.15.0.post1
+tensorflow==2.15.0
 tqdm==4.63.0
-trsfile==0.3.2
-estraces
+
