@@ -10,20 +10,13 @@ Results for each of the considered models are produced in the appropriate notebo
 
 
 # Setup
-We advise creating a virtualenvironment and installing the dependencies in the requirements.txt file. 
+We advise creating a virtualenvironment using conda with the appropriate python version (3.9). The install_environments.sh script contains an installation script. You can also manually install the dependencies in the requirements.txt file. 
 
-Our python version is 3.9.12, requirements file was generated using pipreqs
+## Download Model Checkpoints and Extracted datasets:
+Model checkpoints are available at anonymized link at https://zenodo.org/records/15410792 . The script in download_files.sh will download and extract files to the appropriate locations. These should be extracted to a folder called model_checkpoints in the root of this directory. Model retraining is also possible, but can impact the resulting structures in PCs and patching experiments will likely need manual adaption (e.g., different rotation)
 
-Note that the python/package versions in the requirements file are not tight. A preexisting tensorflow installation (with missing packages installed) **should** work
-
-Some functions in the repo assume the existence of several folders: model_checkpoints, datasets which can be downloaded from https://zenodo.org/records/15410792 as described below.
-
-
-## Download Model Checkpoints:
-Model checkpoints are available at anonymized link at https://zenodo.org/records/15410792 . These should be extracted to a folder called model_checkpoints in the root of this directory. Model retraining is also possible, but can impact the resulting structures in PCs and patching experiments will likely need manual adaption (e.g., different rotation)
-
-## Creating/Downloading Extracted Datasets:
-Note that generating the datasets from raw traces to work with will take some time and storage space (ASCADr raw trace file is ~80GB, CHES_CTF is 24 GB in total). The final used datasets are significantly smaller (ches 1.1 GB ASCADr 500MB, ESHARD 550MB). We also provide pre-extracted datasets at https://zenodo.org/records/15410792. Using these is recommended if resources are an issue (note also that trsfile and estraces can be removed from required packages as these are only used for raw dataset extraction). If paths do not match please check the src/datasets/paths.py file and update accordingly. 
+## Manually Creating/Downloading Extracted Datasets:
+Note that generating the datasets from raw traces to work with will take some time and storage space (ASCADr raw trace file is ~80GB, CHES_CTF is 24 GB in total). The final used datasets are significantly smaller (ches 1.1 GB ASCADr 500MB, ESHARD 550MB). 
 
 For each of the datasets a shell script is provided that makes downloads raw traces and extracts new trace sets to appropriate locations. 
 
