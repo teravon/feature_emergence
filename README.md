@@ -8,7 +8,6 @@ It is also possible to retrain models, the code for this is also in the notebook
 
 Results for each of the considered models are produced in the appropriate notebooks. ASCADr results from the main paper are in ascadr_clean_mlp.ipynb. The CNN results from the appendix are in ascadr_clean_cnn.ipynb. ESHARD and CHES_CTF results are in eshard_clean.ipynb and ches_ctf_clean.ipynb respectively.ts.
 
-
 # Setup
 
 ## Download Model Checkpoints and Extracted datasets:
@@ -32,5 +31,4 @@ Note that generating the datasets from raw traces to work with will take some ti
 For each of the datasets a shell script is provided that makes downloads raw traces and extracts new trace sets to appropriate locations. 
 
 Otherwise raw traces can be downloaded and put in datasets folder manually from the included urls.
-
 
