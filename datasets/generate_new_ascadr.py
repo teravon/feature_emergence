@@ -1,8 +1,7 @@
 import numpy as np
 import h5py
-from src.datasets.paths import *
 from tqdm import tqdm
-from numba import njit
+
 import sys
 
 sys.path.append('/project_root_folder')
@@ -27,14 +26,14 @@ AES_Sbox = np.array([
 ])
 
 
-@njit
+# Optimized version to resample using a moving window
 def winres(trace, window=20, overlap=0.5):
-    trace_winres = []
     step = int(window * overlap)
-    max = len(trace)
-    for i in range(0, max, step):
-        trace_winres.append(np.mean(trace[i:i + window]))
-    return np.array(trace_winres)
+    kernel = np.ones(window) / window  # Create a moving average kernel
+    convolved = np.convolve(trace, kernel, mode='same')  # Apply the kernel
+    # Downsample the convolved result to match the step size
+    trace_winres = convolved[::step]
+    return trace_winres
 
 
 
@@ -124,6 +123,6 @@ def generate_nopoi(window):
 
 
 if __name__ == "__main__":
-    #Update Path here
-    ascadr_raw_traces = "/path/to/ascadr_raw_trace/folder"
+    #UPDATE THIS PATH
+    ascadr_raw_traces = "."
     generate_nopoi(window=20)

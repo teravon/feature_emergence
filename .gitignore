@@ -3,3 +3,6 @@ __pycache__/
 data/
 model_checkpoints/
 epoch_pcas/
+*.h5
+*.trs
+*.ets

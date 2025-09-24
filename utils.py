@@ -5,6 +5,9 @@ from src.datasets.paths import *
 from src.datasets.load_ascadr import *
 from src.datasets.load_eshard import *
 from src.datasets.load_chesctf import *
+from sklearn.decomposition import PCA
+import sys
+from matplotlib import pyplot as plt
 from os.path import exists
 
 from sklearn.preprocessing import MinMaxScaler
@@ -22,6 +25,32 @@ def snr_fast(x, y):
     return np.var(means, axis=0) / np.mean(variances, axis=0)
 
 
+def get_classes_bits(data, bits=[0, 1]):
+    new_data = np.zeros(data.shape)
+    power= 0
+    for bit in bits:
+          new_data += ((data >>bit) &0x1) * 2**power
+          power += 1
+    return new_data
+
+
+def plot_pcs_with_class_divs(activations, labels, n_pcs=2, activations_attack=None, pcs_to_plot=[0,1]):
+    pca = PCA(n_components=n_pcs)
+    if len(activations.shape) > 2:
+         print(len(activations.shape))
+         activations = activations.reshape((activations.shape[0], -1))
+    to_plot = pca.fit_transform(activations)
+    if not activations_attack is None:
+         to_plot = pca.transform(activations_attack)
+
+    for i in np.unique(labels):
+        ind = np.where(labels == i)[0]
+        plt.scatter(to_plot[ind, pcs_to_plot[0]], to_plot[ind, pcs_to_plot[1]], label=f"{i}")
+    
+    plt.legend()
+    plt.xlabel(f"pc{pcs_to_plot[0]}")
+    plt.ylabel(f"pc{pcs_to_plot[1]}")
+    plt.show()
 
 def load_dataset(identifier: str, path: str, target_byte: int, traces_dim: int, leakage_model="ID", n_prof=None):
     
@@ -43,7 +72,7 @@ def load_dataset(identifier: str, path: str, target_byte: int, traces_dim: int, 
 
 def desynch_scale(prof_set, attack_set):
         scaler = MinMaxScaler(feature_range=(0,1))
-        scaler = StandardScaler()
+        #scaler = StandardScaler()
         if prof_set.shape[0] > 20000:
             scaler.fit(prof_set.T)
             prof_new = scaler.transform(prof_set.T).T
