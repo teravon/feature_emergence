@@ -16,7 +16,8 @@ nbserver-*.log
 *.h5
 *.trs
 *.ets
-data/
+data/*
+!data/README.md
 models/
 outputs/
 epoch_pcas/
