@@ -10,9 +10,11 @@ $DATASETS_ARCHIVE_NAME = "extracted_datasets.tar"
 $CHECKPOINTS_ARCHIVE_NAME = "model_checkpoints.tar"
 
 # 1. Create necessary directories
-Write-Host "Creating 'model_checkpoints' and 'datasets' directories..."
-New-Item -ItemType Directory -Force -Path "model_checkpoints" | Out-Null
-New-Item -ItemType Directory -Force -Path "datasets" | Out-Null
+$DATA_DIR = "data"
+$MODELS_DIR = "models"
+Write-Host "Creating '$MODELS_DIR' and '$DATA_DIR' directories..."
+New-Item -ItemType Directory -Force -Path $MODELS_DIR | Out-Null
+New-Item -ItemType Directory -Force -Path $DATA_DIR | Out-Null
 
 # 2. Download the archives
 Write-Host "Downloading datasets archive from '$DATASETS_URL'..."
@@ -30,15 +32,15 @@ if (-not (Test-Path $CHECKPOINTS_ARCHIVE_NAME)) {
 }
 
 # 3. Extract the archives (requires tar available on system — included in Windows 10+)
-Write-Host "Extracting '$DATASETS_ARCHIVE_NAME' to 'datasets/'..."
-tar -xf $DATASETS_ARCHIVE_NAME -C "datasets"
+Write-Host "Extracting '$DATASETS_ARCHIVE_NAME' to '$DATA_DIR/'..."
+tar -xf $DATASETS_ARCHIVE_NAME -C $DATA_DIR
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error extracting datasets archive."
     exit 1
 }
 
-Write-Host "Extracting '$CHECKPOINTS_ARCHIVE_NAME' to current directory..."
-tar -xf $CHECKPOINTS_ARCHIVE_NAME
+Write-Host "Extracting '$CHECKPOINTS_ARCHIVE_NAME' to '$MODELS_DIR/'..."
+tar -xf $CHECKPOINTS_ARCHIVE_NAME -C $MODELS_DIR
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Error extracting model checkpoints archive."
     exit 1
