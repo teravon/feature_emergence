@@ -1,10 +1,11 @@
 import numpy as np
 from datetime import datetime
 import os
-from src.datasets.paths import *
-from src.datasets.load_ascadr import *
-from src.datasets.load_eshard import *
-from src.datasets.load_chesctf import *
+from .datasets.paths import *
+from .datasets.load_ascadr import *
+from .datasets.load_eshard import *
+from .datasets.load_chesctf import *
+from .config import DATA_DIR
 from sklearn.decomposition import PCA
 import sys
 from matplotlib import pyplot as plt
@@ -52,7 +53,7 @@ def plot_pcs_with_class_divs(activations, labels, n_pcs=2, activations_attack=No
     plt.ylabel(f"pc{pcs_to_plot[1]}")
     plt.show()
 
-def load_dataset(identifier: str, path: str, target_byte: int, traces_dim: int, leakage_model="ID", n_prof=None):
+def load_dataset(identifier: str, path: str = None, target_byte: int = 2, traces_dim: int = 1400, leakage_model="ID", n_prof=None):
     
     dataset_file = get_dataset_filepath(path, identifier, traces_dim, leakage_model=leakage_model)
     

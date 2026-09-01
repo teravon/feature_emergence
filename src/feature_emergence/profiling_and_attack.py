@@ -9,7 +9,8 @@ from scipy.stats import entropy
 from tensorflow.keras.regularizers import *
 import tensorflow as tf
 
-from utils import *
+from .config import MODELS_DIR
+from .utils import *
 
 def cnn(classes, number_of_samples):
     input_shape = (number_of_samples, 1)
@@ -248,7 +249,7 @@ def attack(dataset, generator, features_dim: int, attack_model=None, original_tr
 
 
     #Callback for saving model after each epoch
-    pre_fix = save_path if not save_path is None else 'model_checkpoints/cnn_eshard_'
+    pre_fix = save_path if not save_path is None else str(MODELS_DIR / 'cnn_eshard_')
     checkpoint = ModelCheckpoint(pre_fix + '{epoch:02d}.weights.h5', save_weights_only=True, save_best_only=False)
     if attack_model is None:
         #Default model
