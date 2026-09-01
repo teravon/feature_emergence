@@ -1,8 +1,28 @@
-figures/
+# Python
 __pycache__/
-data/
-model_checkpoints/
-epoch_pcas/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+
+# Jupyter
+.ipynb_checkpoints/
+nbconvert/
+nbserver-*.log
+
+# Large data artifacts (not tracked in git)
 *.h5
 *.trs
 *.ets
+data/
+models/
+outputs/
+epoch_pcas/
+figures/
+
+# Testing / tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
