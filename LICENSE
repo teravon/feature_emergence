@@ -1,0 +1,24 @@
+MIT License
+
+Copyright (c) 2025
+Original work Copyright (c) Sengim Karayalcin and co-authors
+
+This repository is a fork of https://github.com/Sengim/feature_emergence, which
+accompanies the paper "You have to be Realistic: On Investigating Feature
+Emergence in Deep Learning-based Side-channel Analysis" by Sengim Karayalcin
+and co-authors.
+
+IMPORTANT: The original repository at https://github.com/Sengim/feature_emergence
+does not ship an explicit license. This means the original code remains under
+the copyright of its original authors. This fork applies the MIT License only
+to the modifications and additions made by the fork author; the original code
+from the upstream repository is included only for academic, non-commercial
+study and is not claimed as the property of this fork's author.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

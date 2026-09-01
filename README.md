@@ -32,3 +32,9 @@ For each of the datasets a shell script is provided that makes downloads raw tra
 
 Otherwise raw traces can be downloaded and put in datasets folder manually from the included urls.
 
+---
+
+## Credits
+
+Original code and research by [Sengim Karayalcin](https://github.com/Sengim) and co-authors. This is a fork of the original repository: https://github.com/Sengim/feature_emergence — original authors retain all rights to their work.
+
