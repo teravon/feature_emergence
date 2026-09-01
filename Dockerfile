@@ -19,6 +19,7 @@ RUN conda create -y -n $ENV_NAME python=$PYTHON_VERSION && \
         jupyter \
         tqdm=4.63.0 && \
     conda run -n $ENV_NAME pip install tensorflow==2.15.0.post1 && \
+    conda run -n $ENV_NAME pip install --no-deps -e . && \
     conda run -n $ENV_NAME python -m ipykernel install --user --name=$ENV_NAME --display-name "Python ($ENV_NAME)" && \
     conda clean -afy
 
@@ -26,4 +27,4 @@ RUN conda create -y -n $ENV_NAME python=$PYTHON_VERSION && \
 EXPOSE 8888
 
 # Default command to run Jupyter Notebook inside the conda env
-CMD ["conda", "run", "-n", "you-have-to-be-realistic", "jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''", "--notebook-dir=/workspace"]
+CMD ["conda", "run", "-n", "you-have-to-be-realistic", "jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.password=''", "--notebook-dir=/workspace/notebooks"]
