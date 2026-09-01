@@ -7,7 +7,7 @@ under the project's ``data/`` directory (see :mod:`feature_emergence.config`).
 
 from pathlib import Path
 
-from .config import DATA_DIR
+from ..config import DATA_DIR
 
 
 def get_dataset_filepath(dataset_root_folder, dataset_name, npoi, leakage_model):
