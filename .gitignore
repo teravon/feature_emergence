@@ -19,9 +19,9 @@ nbserver-*.log
 data/*
 !data/README.md
 models/
-outputs/
+outputs/*
+!outputs/figures/
 epoch_pcas/
-figures/
 
 # Testing / tooling
 .pytest_cache/
