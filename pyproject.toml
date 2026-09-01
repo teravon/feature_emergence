@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "feature-emergence"
+version = "0.1.0"
+description = "Fork of the feature_emergence code: investigating feature emergence in deep learning-based side-channel analysis"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = [
+    "h5py==3.10.0",
+    "matplotlib==3.8.2",
+    "numpy==2.2.5",
+    "scikit-learn==1.4.0",
+    "scipy==1.7.3",
+    "tensorflow==2.15.0.post1",
+    "tqdm==4.63.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7",
+    "nbconvert>=7",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

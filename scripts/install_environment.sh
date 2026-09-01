@@ -23,6 +23,9 @@ conda install -y \
 # Install pip-only packages (tensorflow, experiments, etc.)
 pip install tensorflow==2.15.0.post1
 
+# Install the project package in editable mode (src/ layout)
+pip install -e .
+
 # Register the kernel for Jupyter
 python -m ipykernel install --user --name=$ENV_NAME --display-name "Python ($ENV_NAME)"
 
