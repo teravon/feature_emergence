@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: >-
+  This repository reproduces and extends the study cited below.
+  If you use this code or its documentation, please cite the original work.
+title: >-
+  Interpreting Feature Emergence in Deep Learning-based
+  Side-Channel Analysis — companion repository
+url: https://github.com/teravon/feature_emergence
+preferred-citation:
+  type: article
+  title: >-
+    Interpreting Emergent Features in Deep Learning-based
+    Side-channel Analysis
+  authors:
+    - family-names: Karayalçin
+      given-names: Sengim
+    - family-names: Krček
+      given-names: Marina
+    - family-names: Picek
+      given-names: Stjepan
+  year: 2025
+  journal: arXiv preprint
+  identifiers:
+    - type: doi
+      value: 10.48550/arXiv.2502.00384
+    - type: url
+      value: https://arxiv.org/abs/2502.00384
