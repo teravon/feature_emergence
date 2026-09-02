@@ -20,10 +20,10 @@ data/*
 !data/README.md
 models/
 outputs/*
-!outputs/figures/
 epoch_pcas/
 
 # Testing / tooling
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.cache/
