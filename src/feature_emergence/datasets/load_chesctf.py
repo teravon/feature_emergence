@@ -1,6 +1,6 @@
 import numpy as np
 import h5py
-from tensorflow.keras.utils import *
+from .one_hot import to_categorical
 from sklearn.preprocessing import StandardScaler
 
 aes_sbox = np.array([
