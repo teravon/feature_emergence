@@ -40,10 +40,12 @@ All files share the same **HDF5 layout** (two top-level groups):
 
 ---
 
-## 1. `eshard.h5` — ESHARD (masked hardware AES)
+## 1. `eshard.h5` — ESHARD (masked AES, EM measurements)
 
-**Board/target:** masked AES-128 **hardware** implementation (FPGA) from the
-ESHARD challenge dataset.
+**Board/target:** masked AES-128 software implementation on an **ARM
+Cortex-M4** (32-bit), measured via **electromagnetic emissions**. This is the
+trimmed public version of the ESHARD-AES128 dataset: first-order Boolean
+masking, covering the first encryption round without shuffling.
 
 **Structure:**
 
@@ -112,8 +114,10 @@ Attack_traces/
 
 ## 3. `ches_ctf/ches_ctf_nopoi_window_20.h5` — CHES CTF 2018
 
-**Board/target:** AES-128 **software** present in the CHES 2018 Capture-the-Flag
-side-channel challenge. **No masking.** Traces have been re-windowed
+**Board/target:** AES-128 **software** on an **ARM Cortex-M4** (32-bit) from
+the CHES 2018 Capture-the-Flag side-channel challenge. The implementation is
+protected with first-order Boolean masking, but the mask values are **not
+included** in the metadata. Traces have been re-windowed
 (`nopoi_window_20`) to 15,000 samples around the interesting region.
 
 **Structure:**
@@ -136,8 +140,8 @@ Attack_traces/
 | `key` | `float64`/`uint8[16]` | 16 AES key bytes (fixed key `175cf2997a8583413c77dfac7e6c59d8`) |
 
 **Notes:**
-- No `masks` field: this dataset has **no masking countermeasure**, so the
-  leakage is the un-masked S-box output.
+- No `masks` field: the mask values are not provided, so analyses work without
+  mask information even though the implementation is masked.
 - Note the type inconsistency between groups (profiling metadata is
   `float64`, attack metadata is `uint8`); the loader normalizes this.
 - The loader class is `ReadCHESCTF` in
