@@ -1,0 +1,26 @@
+site_name: Interpreting Feature Emergence in Deep Learning-based SCA
+site_url: https://teravon.github.io/feature_emergence/
+repo_url: https://github.com/teravon/feature_emergence
+
+theme:
+  name: material
+
+docs_dir: docs
+
+nav:
+  - Home: README.md
+  - 1. Introduction: 01_introduction.md
+  - 2. The data: 02_the_data.md
+  - "2.1 Data exploration (notebook)": notebooks/01_the_data.ipynb
+  - "Appendix: Datasets guide": appendix_datasets.md
+
+plugins:
+  - mkdocs-jupyter
+
+markdown_extensions:
+  - tables
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
