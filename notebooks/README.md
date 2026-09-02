@@ -1,5 +1,13 @@
 # Notebooks
 
+This folder holds only the **original** notebooks shipped upstream, kept in
+`original/` as unmodified reference material.
+
+Our own notebook — the hands-on companion of the manual's chapters — lives in
+[`docs/notebooks/`](../docs/notebooks/) so that a single copy renders both on
+GitHub and on the documentation site. It is generated from the scripts in
+`analysis/` via `scripts/sync_notebooks.sh` (Jupytext).
+
 ## `original/`
 
 Byte-for-byte copies of the original notebooks shipped in the upstream
@@ -14,6 +22,3 @@ To execute them as-is:
 2. Patch the dataset path in their second cell:
    `path = "./datasets"` -> `path = "./../data"`
 3. Patch checkpoint paths: `model_checkpoints/...` -> `models/...`
-
-Our own, clean notebooks (using the `feature_emergence` package) live directly
-in this folder.

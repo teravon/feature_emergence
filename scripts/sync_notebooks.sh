@@ -2,17 +2,18 @@
 # Regenerate the committed analysis notebooks from their .py sources.
 #
 # The "canonical" source of truth is the percent-format script in analysis/;
-# the .ipynb files in notebooks/ are generated artifacts kept in sync with
-# jupytext, so they render on GitHub without manual maintenance.
+# the .ipynb files in docs/notebooks/ are generated artifacts kept in sync
+# with jupytext, so they render both on GitHub and on the MkDocs site without
+# manual maintenance. There is exactly one copy of each notebook.
 #
 # Usage:
 #   scripts/sync_notebooks.sh           # sync all
-#   scripts/sync_notebooks.sh analysis/01_plot_traces.py
+#   scripts/sync_notebooks.sh analysis/01_the_data.py
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 SRC_DIR="analysis"
-NB_DIR="notebooks"
+NB_DIR="docs/notebooks"
 
 mkdir -p "$NB_DIR"
 
