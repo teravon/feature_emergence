@@ -157,7 +157,7 @@ print("loaded:", CKPT.name, "(weights after epoch 100)")
 # %% [markdown]
 # The network now behaves exactly like the trained model of epoch 100 — same
 # weights, same predictions. What it *does* with a trace is the subject of
-# the next chapter.
+# [the next chapter](../../docs/04_the_attack.md).
 #
 # ## Takeaways
 #
