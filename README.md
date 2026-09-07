@@ -23,6 +23,7 @@ produces its figures.
 |---|---------|---------|----------------|
 | 1 | **Introduction** — what a side-channel attack is, power traces, leakage models | [docs/01_introduction.md](docs/01_introduction.md) | — |
 | 2 | **The data** — three AES trace datasets, trace shapes, scale and noise, SNR leakage | [docs/02_the_data.md](docs/02_the_data.md) | [docs/notebooks/01_the_data.ipynb](docs/notebooks/01_the_data.ipynb) |
+| 3 | **The models** — neural networks from zero, MLP vs CNN, the published checkpoints | [docs/03_models.md](docs/03_models.md) | [docs/notebooks/02_the_models.ipynb](docs/notebooks/02_the_models.ipynb) |
 
 Start at [docs/README.md](docs/README.md) for the full tour.
 
