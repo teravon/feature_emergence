@@ -29,7 +29,7 @@ Start at [docs/README.md](docs/README.md) for the full tour.
 ## Quick start
 
 ```bash
-scripts/download_files.sh        # datasets + model checkpoints (from Zenodo)
+scripts/download_files.sh        # trace datasets + model checkpoints (from Zenodo)
 docker build -t realistic-env .  # verified environment: Python 3.9, TF 2.15
 docker run -it --rm -p 8888:8888 realistic-env
 ```
