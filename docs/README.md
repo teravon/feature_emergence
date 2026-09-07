@@ -14,6 +14,7 @@ docs/
 ├── 01_introduction.md           ← what a side-channel attack is and why it matters
 ├── 02_the_data.md               ← the datasets, and a first look at traces and leakage
 ├── 03_models.md                 ← neural networks from zero, and the published checkpoints
+├── 04_the_attack.md             ← how a classifier recovers a key byte, and how it is scored
 └── appendix_datasets.md         ← field-by-field reference for the dataset files
 ```
 
@@ -29,7 +30,8 @@ The figures you see in the docs are produced by small, readable scripts in
 | Chapter | Analysis script | Produces |
 |---------|-----------------|----------|
 | 02 | `analysis/01_the_data.py` | trace plots, statistics table, SNR curves |
-| 03 | `analysis/02_the_models.py` | model summaries, checkpoint inventory |
+| 03 | `analysis/02_the_models.py` | model summaries, checkpoint inventory, weight heatmap |
+| 04 | `analysis/03_the_attack.py` | single-trace output, evidence ranking, guessing entropy |
 
 Those same scripts double as interactive Jupyter notebooks (kept in sync with
 Jupytext under `docs/notebooks/`), so you can re-run, tweak and experiment.

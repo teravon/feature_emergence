@@ -14,6 +14,8 @@ nav:
   - "2.1 Data exploration (notebook)": notebooks/01_the_data.ipynb
   - 3. The models: 03_models.md
   - "3.1 The models (notebook)": notebooks/02_the_models.ipynb
+  - 4. The attack: 04_the_attack.md
+  - "4.1 The attack (notebook)": notebooks/03_the_attack.ipynb
   - "Appendix: Datasets guide": appendix_datasets.md
 
 plugins:
