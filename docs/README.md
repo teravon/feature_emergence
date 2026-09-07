@@ -35,8 +35,8 @@ Jupytext under `docs/notebooks/`), so you can re-run, tweak and experiment.
 ## What you need to follow along
 
 - For **reading** the manual: nothing. It is plain Markdown.
-- For **running** the analysis: a Python environment (the `Dockerfile` or
-  `scripts/install_environment.sh` provide one) plus the datasets in `data/`.
+- For **running** the analysis: a Python environment (the `Dockerfile`
+  provides one) plus the datasets in `data/`.
 
 ## Repository layout (one glance)
 
