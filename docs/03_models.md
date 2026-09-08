@@ -230,4 +230,4 @@ One question is left open. The model outputs probabilities over
 probability 0.25". The next chapter closes the gap: how 256 such probability
 statements, accumulated over many traces, single out one key byte.
 
-← Previous: [Chapter 2 — The data](02_the_data.md) · [Index](README.md)
+← Previous: [Chapter 2 — The data](02_the_data.md) · [Index](README.md) · Next: [Chapter 4 — The attack](04_the_attack.md) →

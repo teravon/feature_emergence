@@ -169,4 +169,4 @@ computing the statistics and the SNR — is worked through interactively in the
 **[data exploration notebook](notebooks/01_the_data.ipynb)**. Run it, tweak
 it, break it: that is where the real understanding of the data comes from.
 
-← Previous: [Chapter 1 — Introduction](01_introduction.md) · [Index](README.md)
+← Previous: [Chapter 1 — Introduction](01_introduction.md) · [Index](README.md) · Next: [Chapter 3 — The models](03_models.md) →
