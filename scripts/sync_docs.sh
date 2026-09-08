@@ -17,6 +17,15 @@ cd "$(dirname "$0")/.."
 
 mkdir -p docs/assets/figures
 cp outputs/figures/*.png docs/assets/figures/
+
+# The appendix is a verbatim copy of data/README.md plus a book-navigation
+# footer appended here (the source lives outside the docs and stays clean).
 cp data/README.md docs/appendix_datasets.md
+cat >> docs/appendix_datasets.md <<'EOF'
+
+---
+
+← Previous: [Chapter 4 — The attack](04_the_attack.md) · [Index](README.md)
+EOF
 
 echo "Docs assets synced (figures + datasets guide)"

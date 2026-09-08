@@ -152,4 +152,4 @@ real question is: **when, during those 100 epochs, did this attack become
 possible?** That is the feature-emergence question, and it is where we go
 next.
 
-← Previous: [Chapter 3 — The models](03_models.md) · [Index](README.md)
+← Previous: [Chapter 3 — The models](03_models.md) · [Index](README.md) · Next: [Appendix — Datasets guide](appendix_datasets.md) →
