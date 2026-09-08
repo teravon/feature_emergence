@@ -8,7 +8,7 @@
 # We answer four questions:
 #
 # 1. What is inside a dataset file, and how do we look at it?
-# 2. What do raw power traces look like?
+# 2. What do raw traces look like?
 # 3. How different are the datasets from each other (scale and noise)?
 # 4. At which time samples does the key leak? (the SNR)
 #
@@ -54,7 +54,8 @@ with h5py.File(CHES_FILE, "r") as f:
 # %% [markdown]
 # Two groups — `Profiling_traces` and `Attack_traces` — each with two arrays:
 #
-# - `traces`: one power trace per row (thousands of time samples per row).
+# - `traces`: one measurement trace per row (thousands of time samples per
+#   row).
 # - `metadata`: one record per trace with the cryptographic values that
 #   produced it (plaintext, key, and ciphertext here).
 #
@@ -127,9 +128,12 @@ plt.show()
 # (1,400 to 15,000 samples), and so do the shapes — compare the short traces
 # of ESHARD with the long, spiky traces of CHES_CTF.
 #
-# Within one dataset, traces differ because each was recorded with a different
-# plaintext (and therefore different internal values). That variation is what
-# the attack exploits.
+# The campaigns differ mainly in the physical measurement: ESHARD and ASCADr
+# record the chip's electromagnetic emanations with a probe near its surface,
+# while CHES_CTF records the power drawn from the supply. Within one dataset
+# the setup is fixed, so traces differ only slightly from one recording to
+# the next; most of that variation is measurement noise, and the small
+# data-dependent part is what the attack exploits.
 
 # %%
 N_TRACES = 5  # traces to overlay per dataset
@@ -141,10 +145,10 @@ for ax, (name, ds) in zip(axes, DATASETS):
         ax.plot(ds.x_profiling[i], lw=0.8, label=f"trace {i}")
     ax.set_title(f"{name}  ·  {ds.x_profiling.shape[1]} samples")
     ax.set_xlabel("time sample index")
-    ax.set_ylabel("power (ADC units)")
+    ax.set_ylabel("amplitude (ADC units)")
     ax.legend(fontsize=8)
 
-fig.suptitle("Example profiling power traces (first 5 traces per dataset)", fontsize=14)
+fig.suptitle("Example profiling traces (first 5 traces per dataset)", fontsize=14)
 fig.tight_layout()
 
 fig.savefig(out / "02_traces_overview.png", dpi=150)
@@ -245,8 +249,9 @@ plt.show()
 # %% [markdown]
 # ## Takeaways
 #
-# - An `.h5` dataset is just two paired arrays: power traces, and the
-#   cryptographic values that produced them.
+# - An `.h5` dataset is just two paired arrays: measurement traces (power or
+#   electromagnetic, depending on the campaign), and the cryptographic values
+#   that produced them.
 # - The three datasets differ in trace length, scale, and noise — an
 #   observation that holds for one does not automatically transfer.
 # - The leakage of the target intermediate is concentrated in identifiable

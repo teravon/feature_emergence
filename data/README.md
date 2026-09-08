@@ -1,6 +1,6 @@
 # Datasets Guide
 
-This directory holds the extracted (pre-processed) power-consumption trace
+This directory holds the extracted (pre-processed) side-channel trace
 datasets used in the fork of
 [*"You have to be Realistic: On Investigating Feature Emergence in
 Deep Learning-based Side-channel Analysis"*](https://github.com/Sengim/feature_emergence).
@@ -32,9 +32,10 @@ All files share the same **HDF5 layout** (two top-level groups):
     └── metadata    (N_attack × 1)     structured records
 ```
 
-- **`traces`**: a 2-D array. Each row is one power-consumption trace, i.e. a
-  time series of `n_samples` instantaneous power measurements (1st AES round
-  window). Axis 0 = trace index, axis 1 = time sample.
+- **`traces`**: a 2-D array. Each row is one measurement trace, i.e. a
+  time series of `n_samples` instantaneous measurements (1st AES round
+  window). Axis 0 = trace index, axis 1 = time sample. Depending on the
+  campaign the quantity is power consumption or electromagnetic emanation.
 - **`metadata`**: a structured NumPy array (compound dtype). Each element is a
   record holding the cryptographic values associated with that trace.
 
@@ -105,7 +106,7 @@ Attack_traces/
   - masks `[0..15]` → per-byte masks for round-1 shares
   - masks `[16]`, `[17]` → additional masks for the remaining shared
     intermediates (`shares 5/6`) used in the patching experiments.
-- Traces are stored as signed `int8` (measured power, windowed). During
+- Traces are stored as signed `int8` (measured EM emanation, windowed). During
   profiling the model scales them (e.g. `StandardScaler` / min–max).
 - The loader class is `ReadASCADr` in
   `src/feature_emergence/datasets/load_ascadr.py`.

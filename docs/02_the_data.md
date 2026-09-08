@@ -44,7 +44,7 @@ you open it with a library such as `h5py`:
 flowchart TD
     F["eschard.h5"] --> P["Profiling_traces/"]
     F --> A["Attack_traces/"]
-    P --> PT["traces<br/>90,000 × 1,400 power measurements"]
+    P --> PT["traces<br/>90,000 × 1,400 EM measurements"]
     P --> PM["metadata<br/>plaintext, key, masks per trace"]
     A --> AT["traces<br/>10,000 × 1,400"]
     A --> AM["metadata<br/>plaintext, key, masks per trace"]
@@ -91,11 +91,17 @@ Before training anything, three things are worth seeing. Each figure below is
 generated step by step in the companion notebook; here is the summary.
 
 **Trace shapes.** Traces from the three datasets look nothing alike — compare
-the short traces of ESHARD with the long, spiky traces of CHES_CTF. Within one
-dataset, traces differ because each was recorded with a different plaintext;
-that variation is what the attack exploits.
+the short traces of ESHARD with the long, spiky traces of CHES_CTF. The main
+reason is the physical measurement itself: ESHARD and ASCADr record the
+electromagnetic emanations of the chip with a probe placed near its surface,
+while CHES_CTF records the power the chip draws from its supply. The targets
+also differ — two ARM Cortex-M4 boards and one 8-bit AVR — so clock speed
+and trace length differ too. Within one dataset the setup is fixed, so traces
+differ only slightly from one recording to the next; most of that variation
+is measurement noise, and the small data-dependent part is what the attack
+exploits.
 
-![Example profiling power traces per dataset](assets/figures/02_traces_overview.png)
+![Example profiling traces per dataset](assets/figures/02_traces_overview.png)
 
 **Scale and noise.** The datasets also differ in numeric scale and dtype:
 ASCADr stores raw ADC codes as `int8`, CHES_CTF uses `float16`. This is why
