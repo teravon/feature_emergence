@@ -14,7 +14,8 @@
 #
 # Figures produced (shown in the chapters):
 # `outputs/figures/02_single_trace.png`, `02_traces_overview.png`,
-# `02_stats_table.png`, `02_snr_curves.png`.
+# `02_stats_table.png`, `02_snr_buckets.png`, `02_snr_annotated.png`,
+# `02_snr_curves.png`.
 
 # %%
 # Note: no `matplotlib.use("Agg")` here — plain `python` runs fall back to a
@@ -205,25 +206,145 @@ plt.show()
 # %% [markdown]
 # ## 6. Where does the key leak? — the SNR
 #
-# The standard exploration tool in side-channel analysis is the
-# **Signal-to-Noise Ratio**. For each time sample `t`, we group the profiling
-# traces by their leakage label and compute:
+# A trace has thousands of time samples, but only a few of them carry
+# information about the key. To find them, the standard tool in side-channel
+# analysis is the **Signal-to-Noise Ratio (SNR)**, computed independently for
+# each time sample:
 #
 # ```
 # SNR(t) = variance(means of each group) / mean(variances inside each group)
 # ```
 #
-# A high SNR at sample `t` means the power at that instant varies more
-# *between* different intermediate values than *within* the same value: that
-# sample leaks information about the target.
+# What are the groups? Fix one time sample `t` and take the column of values
+# it takes across all profiling traces. We know the plaintext and key of each
+# trace, so we can compute the target intermediate of each trace — here the
+# Hamming weight of the first S-box output, a label in 0..8 — and split the
+# column into one bucket per label value.
 #
-# How to read the curves:
+# ### The SNR up close: two single time samples
+#
+# Before any curves, look at the raw ingredients. We use ESHARD here, where
+# the effect is clearest. We take two single time samples — one at the
+# highest SNR peak, one far from any peak — and plot the measured value at
+# that instant for a few thousand traces, grouped by leakage label. Each dot
+# is one trace; the red line joins the bucket averages.
+#
+# - **Signal** = how far apart the bucket averages are from each other.
+# - **Noise** = how wide each dot cloud is vertically.
+
+# %%
+rng = np.random.default_rng(0)
+
+name, ds = DATASETS[1]  # ESHARD, Hamming weight labels 0..8
+x = ds.x_profiling.astype(np.float32)
+y = ds.profiling_labels.astype(int)
+snr_esh = snr_fast(x, y)
+
+t_peak = int(np.argmax(snr_esh))
+t_quiet = int(np.argmin(snr_esh[: len(snr_esh) // 3]))  # far from the peak
+
+subset = rng.choice(len(x), size=4000, replace=False)
+ylo, yhi = np.percentile(x[subset][:, [t_quiet, t_peak]], [0.5, 99.5])
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+
+for ax, t, title in zip(
+    axes,
+    [t_quiet, t_peak],
+    [f"sample {t_quiet} — no leakage", f"sample {t_peak} — highest SNR"],
+):
+    means = []
+    for hw in range(9):
+        idx = subset[y[subset] == hw]
+        vals = x[idx, t]
+        means.append(vals.mean())
+        jitter = hw + rng.uniform(-0.25, 0.25, size=len(idx))
+        ax.scatter(jitter, vals, s=2, alpha=0.15, color="steelblue")
+    ax.plot(range(9), means, color="red", lw=1.5, marker=".", ms=10, zorder=5)
+    ax.set_xticks(range(9))
+    ax.set_xlabel("leakage label (Hamming weight of S-box output)")
+    ax.set_title(title)
+    ax.set_ylim(ylo, yhi)
+    ax.grid(alpha=0.3, axis="y")
+
+axes[0].set_ylabel("measured value at that instant")
+fig.suptitle("ESHARD: single time samples, traces grouped by leakage label", fontsize=14)
+fig.tight_layout()
+
+fig.savefig(out / "02_snr_buckets.png", dpi=150)
+print("saved:", out / "02_snr_buckets.png")
+plt.show()
+
+# %% [markdown]
+# On the left, the nine bucket averages coincide: at that instant the
+# measurement is unrelated to the target byte, so knowing the label says
+# nothing — SNR ≈ 0. On the right, the averages rise with the Hamming weight
+# while each cloud keeps its own spread: that separation is the signal.
+#
+# ### Reading the SNR curve
+#
+# Repeating the computation for all 1,400 samples gives the SNR curve. Below,
+# one raw trace and the SNR share the same time axis: the shaded band marks
+# the instants where the S-box output is physically computed and moved;
+# everywhere else the curve sits on the noise floor.
+
+# %%
+fig, axes = plt.subplots(
+    2, 1, figsize=(14, 7), sharex=True, gridspec_kw={"height_ratios": [1, 1.6]}
+)
+
+axes[0].plot(x[0], lw=0.8, color="steelblue")
+axes[0].set_ylabel("EM (ADC units)")
+axes[0].set_title("ESHARD: one trace (top) and the SNR of 20,000 traces (bottom)")
+axes[0].grid(alpha=0.3)
+
+axes[1].plot(snr_esh, lw=0.8, color="darkred")
+axes[1].set_ylabel("SNR")
+axes[1].set_xlabel("time sample index")
+axes[1].grid(alpha=0.3)
+
+# leakage band: contiguous region around the highest peak above 5x the median
+floor = np.median(snr_esh)
+thr = 5 * floor
+lo = t_peak
+while lo > 0 and snr_esh[lo] > thr:
+    lo -= 1
+hi = t_peak
+while hi < len(snr_esh) - 1 and snr_esh[hi] > thr:
+    hi += 1
+print(f"leakage band: samples {lo}..{hi} ({hi - lo + 1} samples)")
+for ax in axes:
+    ax.axvspan(lo, hi, color="orange", alpha=0.3)
+
+axes[1].annotate(
+    f"leakage: the S-box output is\ncomputed in these {hi - lo + 1} samples",
+    xy=(t_peak, snr_esh[t_peak]),
+    xytext=(0.45 * len(snr_esh), 0.9 * snr_esh[t_peak]),
+    arrowprops={"arrowstyle": "->", "color": "black"},
+    fontsize=10,
+)
+axes[1].annotate(
+    "noise floor: activity unrelated\nto the target byte",
+    xy=(t_quiet, snr_esh[t_quiet]),
+    xytext=(0.6 * len(snr_esh), 0.45 * snr_esh[t_peak]),
+    arrowprops={"arrowstyle": "->", "color": "black"},
+    fontsize=10,
+)
+
+fig.tight_layout()
+fig.savefig(out / "02_snr_annotated.png", dpi=150)
+print("saved:", out / "02_snr_annotated.png")
+plt.show()
+
+# %% [markdown]
+# How to read the curves for all three datasets:
 #
 # - **Tall, narrow peaks**: leakage concentrated at a few clock cycles —
 #   typical of software AES, where operations run one byte at a time.
 # - **Low, flat profiles**: leakage spread thin or suppressed — masking pushes
-#   the peaks down, because the intermediate values are randomized by the
-#   masks.
+#   the peaks down, because the device computes on `S-box output XOR mask`
+#   with a fresh random mask per trace, so bucketing by the unmasked label
+#   mixes all masked values together and the bucket averages collapse.
 #
 # The SNR is the baseline against which the feature-emergence analysis later
 # compares what a trained network actually learns on its own.
