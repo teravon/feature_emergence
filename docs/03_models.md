@@ -1,16 +1,16 @@
 # Chapter 3 — The models
 
 [Chapter 2](02_the_data.md) ended with a map of the leakage: the SNR curves
-mark the time samples whose power betrays the key. A human analyst could read
-those curves and design a statistical test by hand. The study instead lets a
-neural network figure it out on its own. This chapter builds up what a neural
-network is, from zero — no prior knowledge of deep learning is assumed. It is
-the foundation the following chapters stand on.
+mark the time samples whose measurements betray the key. A human analyst
+could read those curves and design a statistical test by hand. The study
+instead lets a neural network figure it out on its own. This chapter builds
+up what a neural network is, from zero — no prior knowledge of deep learning
+is assumed. It is the foundation the following chapters stand on.
 
 ## A network is a function with adjustable numbers
 
-The raw material of a neural network is embarrassingly simple: multiply,
-add, and occasionally bend.
+The raw material of a neural network is simple: multiply, add, and
+occasionally bend.
 
 Start with one **neuron**. It takes numbers in, multiplies each by its own
 **weight** (a knob the network can adjust), adds the results plus one more
@@ -75,7 +75,7 @@ output:    100 × 256 + 256                       =  25,856
 
 The MLP multiplies every input sample by its own weight — so the natural
 question is: *where are those weights, physically?* The answer is
-refreshingly concrete. A trained model lives in a checkpoint file, and a
+concrete. A trained model lives in a checkpoint file, and a
 checkpoint is an HDF5 file — the same container format as the datasets of
 [Chapter 2](02_the_data.md), opened with the same tool. Inside, the weights
 are plain numerical arrays:
@@ -99,8 +99,19 @@ Each column is one neuron's 2,000 weights along the trace. Where a column is
 strongly colored, that neuron weights those samples heavily; where it is
 near-white, it ignores them. And the weights are clearly not uniform: some
 time samples are listened to intently, others almost ignored. *Why those and
-not others* is exactly the question this study investigates — we return to it
-when we can watch the weights change during training.
+not others* is exactly the question this study investigates.
+
+That final state was not there from the start. Here is the same matrix read
+from a few checkpoints along the way — one color scale for all panels, fixed
+by the final epoch, so the change is not re-normalized away:
+
+![First-layer weights at epochs 1, 10, 25, 50 and 100](assets/figures/03_weights_epochs.png)
+
+At epoch 1 the matrix is initialization noise; within a few tens of epochs,
+bands condense at specific time samples — the network is learning *where* to
+listen. Measuring exactly when this happens, and whether the loud samples
+coincide with the SNR peaks of [Chapter 2](02_the_data.md), is the
+feature-emergence question of a later chapter.
 
 The **CNN** (convolutional neural network) reads a trace differently. Instead
 of one weight per sample, it learns small **kernels** — a strip of, say, ten
@@ -155,11 +166,11 @@ Confident and right is nearly free; confident and wrong costs ten times
 more. That asymmetry is what pushes the network, epoch after epoch, to
 put probability mass on the values that actually occur.
 
-One **epoch** is one full pass through the profiling set. Every model was
-trained for 100 epochs — for ASCADr, 100 sweeps over 100,000 labelled traces
-in batches of 400 — which takes hours on a GPU. We have none. Before
-accepting the result of all that training, though, we should ask what
-"learning" is supposed to mean here.
+One **epoch** is one full pass through the profiling set. Models were trained
+for 100 epochs — sweeps over the profiling set in batches of 400 — and the
+published CHES_CTF run extends to 200. Before accepting the result of all
+that training, though, we should ask what "learning" is supposed to mean
+here.
 
 ## Generalization: the split from Chapter 2, revisited
 
@@ -167,8 +178,8 @@ accepting the result of all that training, though, we should ask what
 (everything known) and an attack set (key hidden). The division guards
 against a specific failure mode: **overfitting**. A network with 276,456
 free parameters is perfectly capable of *memorizing* its training traces —
-the way one memorizes a answered exam rather than the subject. A memorizer
-scores beautifully on the profiling set and useless on anything else.
+the way one memorizes an answered exam rather than the subject. A memorizer
+scores beautifully on the profiling set and is useless on anything else.
 
 So the network is never judged on the data it trained on. All evaluation in
 this book — the attack of the next chapter, the training-time analysis after
@@ -200,8 +211,12 @@ attack data itself is never used to fit anything.
 Training these networks takes hours on a GPU — this project has none. What
 makes the whole study reproducible on a laptop are the **checkpoints**
 published with the paper: the weight file shown above, saved *after each
-training epoch*, `..._01.weights.h5` through `..._100.weights.h5` — 602
-files in total.
+training epoch* — `..._01.weights.h5` through `..._100.weights.h5` for most
+families, and up to `..._200` for the longer CHES_CTF run. The checkpoints
+live on [Zenodo](https://zenodo.org/records/15410792), in the same record as
+the datasets, and the same script — `scripts/download_files.sh` — fetches
+both archives. Like the datasets, they are large binaries excluded from git;
+the full inventory is in the [appendix](appendix_datasets.md).
 
 ```text
 models/
@@ -223,7 +238,7 @@ Everything above — the layer-by-layer summaries, the weight inventory and
 heatmap read straight out of the checkpoint, and the epoch-100 load — is
 worked through in the **[model notebook](notebooks/02_the_models.ipynb)**.
 It needs TensorFlow, so run it in the Docker environment described in the
-[datasets guide appendix](appendix_datasets.md).
+[index](README.md).
 
 One question is left open. The model outputs probabilities over
 *intermediate values* — it never says "key byte 0x2b", it says "value 145,

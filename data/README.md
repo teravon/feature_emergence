@@ -192,3 +192,26 @@ masks       = prof_meta["masks"]
 | eshard | `077BDA0FAB1E5501EAD0150AB1E020FE` | 2 |
 | ASCADr | `00112233445566778899AABBCCDDEEFF` | 2 |
 | CHES_CTF | `175cf2997a8583413c77dfac7e6c59d8` | 2 |
+
+---
+
+## Model checkpoints
+
+The same Zenodo record also holds `model_checkpoints.tar`: the trained
+network weights, one file per training epoch. `scripts/download_files.sh`
+extracts them flat into `models/`, which is excluded from git just like
+`data/`. Loading checkpoint `k` revives the model exactly as it stood after
+epoch `k` — no retraining needed (worked through in `analysis/02_the_models.py`).
+
+| Family | Architecture | Dataset | Epoch checkpoints |
+|--------|--------------|---------|-------------------|
+| `mlp_ascadr_*.weights.h5` | MLP | ASCADr | 100 |
+| `cnn_ascadr_*.weights.h5` | CNN | ASCADr | 100 |
+| `mlp_eshard__*.weights.h5` | MLP | ESHARD | 100 |
+| `cnn_eshard_*.weights.h5` | CNN | ESHARD | 100 |
+| `mlp_ches_ctf_*.weights.h5` | MLP | CHES_CTF | 200 |
+
+Two naming quirks in the published archive: the ESHARD MLP files carry a
+double underscore (`mlp_eshard__01.weights.h5`), and one duplicate of its
+epoch-100 checkpoint exists under a single-underscore name. 601 files in
+total.

@@ -13,7 +13,7 @@
 # 4. How do the checkpoints let us revive a trained model without a GPU?
 #
 # Figures produced (shown in the chapters):
-# `outputs/figures/03_weights.png`.
+# `outputs/figures/03_weights.png`, `03_weights_epochs.png`.
 
 # %%
 # Note: no `matplotlib.use("Agg")` here — plain `python` runs fall back to a
@@ -52,7 +52,10 @@ for name in sorted(prefixes):
 # %% [markdown]
 # Five model families in total. Not every architecture was run on every
 # dataset — for CHES_CTF only the MLP is available, and ESHARD was run with
-# both. Each family has 100 checkpoints, one per training epoch.
+# both. Most families have 100 checkpoints, one per training epoch; the
+# CHES_CTF run extends to 200. (A naming slip in the published files —
+# `mlp_eshard__01` with a double underscore — splits one family across two
+# prefixes in the table above.)
 #
 # ## 2. The two architectures
 #
@@ -135,6 +138,46 @@ print("saved:", out / "03_weights.png")
 plt.show()
 
 # %% [markdown]
+# ### The weights at a few epochs
+#
+# The heatmap above is the *end* of training. Because there is one checkpoint
+# per epoch, we can replay how it got there — the same matrix, read from a
+# few checkpoints along the way. All panels share one color scale, fixed by
+# the final epoch, so the change is visible rather than re-normalized away.
+
+# %%
+EPOCHS = [1, 10, 25, 50, 100]
+
+mats = []
+for e in EPOCHS:
+    with h5py.File(MODELS_DIR / f"mlp_ascadr_{e:02d}.weights.h5", "r") as f:
+        mats.append(f["layers/dense/vars/0"][:])
+
+v = float(np.percentile(np.abs(mats[-1]), 99))  # one color scale for all panels
+
+fig, axes = plt.subplots(1, len(EPOCHS), figsize=(20, 4), sharey=True)
+for ax, e, W in zip(axes, EPOCHS, mats):
+    im = ax.imshow(W.T, aspect="auto", cmap="RdBu_r", vmin=-v, vmax=v)
+    ax.set_title(f"epoch {e}")
+    ax.set_xlabel("time sample")
+axes[0].set_ylabel("neuron (first layer)")
+fig.colorbar(im, ax=axes, label="weight value", shrink=0.8)
+fig.suptitle("mlp_ascadr: first-layer weights during training", fontsize=14)
+fig.tight_layout()
+
+fig.savefig(out / "03_weights_epochs.png", dpi=150)
+print("saved:", out / "03_weights_epochs.png")
+plt.show()
+
+# %% [markdown]
+# At epoch 1 the matrix is initialization noise — no sample stands out. As
+# training progresses, structure condenses: bands of color appear at specific
+# time samples, meaning many neurons have learned to listen there. Measuring
+# *when* this happens, and whether the loud samples coincide with the SNR
+# peaks of [Chapter 2](../../docs/02_the_data.md), is the feature-emergence
+# question of a later chapter.
+
+# %% [markdown]
 # Each column of the image is one neuron's 2,000 weights along the trace.
 # Where a column is strongly colored, that neuron weights those samples
 # heavily; where it is white, it ignores them. At this point we only note the
@@ -162,7 +205,8 @@ print("loaded:", CKPT.name, "(weights after epoch 100)")
 # ## Takeaways
 #
 # - Five model families were trained (MLP/CNN × three datasets), each saved as
-#   100 per-epoch checkpoints — no GPU is needed to use them.
+#   per-epoch checkpoints (100 per family, 200 for CHES_CTF) — no GPU is
+#   needed to use them.
 # - The MLP reads individual samples; the CNN reads local shapes. Both output
 #   a probability per leakage class.
 # - A checkpoint is an HDF5 file whose arrays are the trained weights; the
