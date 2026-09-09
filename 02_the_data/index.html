@@ -1,0 +1,844 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://teravon.github.io/feature_emergence/02_the_data/">
+      
+      
+        <link rel="prev" href="../01_introduction/">
+      
+      
+        <link rel="next" href="../notebooks/01_the_data/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2. The data - Interpreting Feature Emergence in Deep Learning-based SCA</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-2-the-data" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-header__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interpreting Feature Emergence in Deep Learning-based SCA
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2. The data
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-nav__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interpreting Feature Emergence in Deep Learning-based SCA
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. The data
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. The data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-do-the-datasets-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where do the datasets come from?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-inside-each-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is inside each file?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profiling-vs-attack-a-critical-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profiling vs attack: a critical split
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-first-look" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A first look
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-exploration-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The exploration notebook
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/01_the_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploring the data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. The models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/02_the_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/03_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix_datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Datasets guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-do-the-datasets-come-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where do the datasets come from?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-inside-each-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is inside each file?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profiling-vs-attack-a-critical-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profiling vs attack: a critical split
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-first-look" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A first look
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-exploration-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The exploration notebook
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="chapter-2-the-data">Chapter 2 — The data</h1>
+<p>We work with three public datasets, each a collection of side-channel
+measurements of AES-128. All three come from implementations protected with
+<strong>Boolean masking</strong> (a countermeasure that randomizes the intermediate values
+with random <em>masks</em>), and in all three the attack targets the first
+encryption round. What changes is the device, the measured quantity, and the
+trace length:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Device</th>
+<th>Measured</th>
+<th>Traces (profiling / attack)</th>
+<th>Samples per trace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ASCADr</strong></td>
+<td>8-bit AVR microcontroller (ATMega8515)</td>
+<td>electromagnetic emissions</td>
+<td>200,000 / 10,000</td>
+<td>2,000</td>
+</tr>
+<tr>
+<td><strong>ESHARD</strong></td>
+<td>32-bit ARM Cortex-M4</td>
+<td>electromagnetic emissions</td>
+<td>90,000 / 10,000</td>
+<td>1,400</td>
+</tr>
+<tr>
+<td><strong>CHES_CTF</strong></td>
+<td>32-bit ARM Cortex-M4</td>
+<td>power consumption</td>
+<td>30,000 / 10,000</td>
+<td>15,000</td>
+</tr>
+</tbody>
+</table>
+<h2 id="where-do-the-datasets-come-from">Where do the datasets come from?</h2>
+<p>All three are public benchmarks from the side-channel research community:</p>
+<ul>
+<li><strong>ASCADr</strong> — the variable-key variant of <strong>ASCAD</strong> (<em>ANSSI SCA Database</em>),
+  released by ANSSI, the French cybersecurity agency, as a benchmark for
+  deep-learning side-channel research
+  (<a href="https://github.com/ANSSI-FR/ASCAD">github.com/ANSSI-FR/ASCAD</a>).</li>
+<li><strong>ESHARD</strong> — the trimmed public version of the <strong>ESHARD-AES128</strong> dataset:
+  electromagnetic measurements of a masked, shuffled AES-128; the trim keeps
+  the first round without shuffling.</li>
+<li><strong>CHES_CTF</strong> — traces released for the <strong>Capture-the-Flag competition of the
+  CHES 2018 conference</strong> (Cryptographic Hardware and Embedded Systems), the
+  main academic venue of the field.</li>
+</ul>
+<p>The raw measurements are far too large to work with directly (hundreds of
+thousands of samples per trace), so the paper uses trimmed and resampled
+windows around the first AES round — that is what our files contain. Full
+details, including download links: <a href="../appendix_datasets/">docs/appendix_datasets.md</a>.</p>
+<h2 id="what-is-inside-each-file">What is inside each file?</h2>
+<p>Each dataset is a single <strong><code>.h5</code> file</strong> — an <em>HDF5</em> file. HDF5 is a container
+format for large numerical arrays, organized like a filesystem: <em>groups</em>
+(folders) holding <em>datasets</em> (arrays). You cannot read it in a text editor;
+you open it with a library such as <code>h5py</code>:</p>
+<pre class="mermaid"><code>flowchart TD
+    F["eschard.h5"] --&gt; P["Profiling_traces/"]
+    F --&gt; A["Attack_traces/"]
+    P --&gt; PT["traces&lt;br/&gt;90,000 × 1,400 EM measurements"]
+    P --&gt; PM["metadata&lt;br/&gt;plaintext, key, masks per trace"]
+    A --&gt; AT["traces&lt;br/&gt;10,000 × 1,400"]
+    A --&gt; AM["metadata&lt;br/&gt;plaintext, key, masks per trace"]</code></pre>
+<p>The <code>metadata</code> array is our ground truth. Each record holds the cryptographic
+values that produced the trace in the same row. With <code>plaintext</code> and <code>key</code> we
+can compute the leakage label of every trace (see the leakage models of
+<a href="../01_introduction/">Chapter 1</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="n">label</span> <span class="o">=</span> <span class="n">sbox</span><span class="p">[</span><span class="n">plaintext</span><span class="p">[</span><span class="n">byte</span><span class="p">]</span> <span class="o">^</span> <span class="n">key</span><span class="p">[</span><span class="n">byte</span><span class="p">]]</span>              <span class="c1"># identity model</span>
+<span class="n">hw</span>    <span class="o">=</span> <span class="n">popcount</span><span class="p">(</span><span class="n">sbox</span><span class="p">[</span><span class="n">plaintext</span><span class="p">[</span><span class="n">byte</span><span class="p">]</span> <span class="o">^</span> <span class="n">key</span><span class="p">[</span><span class="n">byte</span><span class="p">]])</span>    <span class="c1"># Hamming weight model</span>
+</code></pre></div>
+<h2 id="profiling-vs-attack-a-critical-split">Profiling vs attack: a critical split</h2>
+<p>Every dataset is divided into two disjoint sets:</p>
+<ul>
+<li><strong>Profiling set</strong>: traces where <em>everything</em> is known (plaintext, key,
+  masks). Used to <strong>train</strong> the model — the deep learning equivalent of
+  "profiling the device".</li>
+<li><strong>Attack set</strong>: traces where the key is <em>known to the evaluator</em> but treated
+  as <em>unknown to the attacker</em>. Used to <strong>test</strong> whether the trained model can
+  actually recover the key from fresh measurements.</li>
+</ul>
+<pre class="mermaid"><code>flowchart LR
+    subgraph train["Training (we own this device)"]
+        P["profiling set&lt;br/&gt;everything known"] --&gt; M["model learns:&lt;br/&gt;trace → label"]
+    end
+    subgraph eval["Evaluation (the target device)"]
+        A["attack set&lt;br/&gt;key hidden from the model"] --&gt; R["model ranks&lt;br/&gt;the 256 key candidates"]
+    end
+    M --&gt; R</code></pre>
+<p>This mirrors real life: an attacker first trains a model on a device they own,
+then uses that same model against a target device of the same type.</p>
+<h2 id="a-first-look">A first look</h2>
+<p>Before training anything, three things are worth seeing. Each figure below is
+generated step by step in the companion notebook; here is the summary.</p>
+<p><strong>Trace shapes.</strong> Traces from the three datasets look nothing alike — compare
+the short traces of ESHARD with the long, spiky traces of CHES_CTF. The main
+reason is the physical measurement itself: ESHARD and ASCADr record the
+electromagnetic emanations of the chip with a probe placed near its surface,
+while CHES_CTF records the power the chip draws from its supply. The targets
+also differ — two ARM Cortex-M4 boards and one 8-bit AVR — so clock speed
+and trace length differ too. Within one dataset the setup is fixed, so traces
+differ only slightly from one recording to the next; most of that variation
+is measurement noise, and the small data-dependent part is what the attack
+exploits.</p>
+<p><img alt="Example profiling traces per dataset" src="../assets/figures/02_traces_overview.png" /></p>
+<p><strong>Scale and noise.</strong> The datasets also differ in numeric scale and dtype:
+ASCADr stores raw ADC codes as <code>int8</code>, CHES_CTF uses <code>float16</code>. This is why
+models scale their inputs before training.</p>
+<p><img alt="Profiling trace statistics per dataset" src="../assets/figures/02_stats_table.png" /></p>
+<p><strong>Where the key leaks.</strong> A trace has thousands of time samples, but only a
+few of them carry information about the key. To find them, we score every
+sample independently with the <em>Signal-to-Noise Ratio</em> (SNR). Fix one time
+sample <code>t</code> and look at the column of values it takes across all profiling
+traces. We know the plaintext and the key of each trace, so we can compute
+the target intermediate of each trace — here the Hamming weight of the first
+S-box output, a label between 0 and 8 — and split the column into one bucket
+per label value:</p>
+<pre class="mermaid"><code>flowchart LR
+    A["one time sample t:&lt;br/&gt;one number per trace"] --&gt; B["split traces by&lt;br/&gt;leakage label (0–8)"]
+    B --&gt; C["bucket averages&lt;br/&gt;how far apart? = signal"]
+    B --&gt; D["spread inside buckets&lt;br/&gt;how wide? = noise"]
+    C --&gt; E["SNR(t) = signal ÷ noise"]
+    D --&gt; E
+    E --&gt; F["repeat for every t&lt;br/&gt;→ SNR curve"]</code></pre>
+<p>Inside a bucket the intermediate value is fixed, so the remaining spread is
+noise — other operations, temperature, measurement error. The bucket averages
+move apart only if the measurement at instant <code>t</code> genuinely depends on the
+intermediate. The figure below shows both cases for two single instants of
+ESHARD, where the effect is clearest. On the left, an instant far from the
+encryption work: the bucket averages (joined by the red line) coincide, so
+knowing the label says nothing. On the right, the instant of highest SNR:
+the averages rise with the Hamming weight, while each dot cloud keeps its own
+spread. The ups and downs of the red line are the signal; the vertical width
+of the clouds is the noise.</p>
+<p><img alt="SNR ingredients: two time samples grouped by leakage label" src="../assets/figures/02_snr_buckets.png" /></p>
+<p>Repeating this computation for all 1,400 samples gives the SNR curve. Tall,
+narrow peaks mean the leakage is concentrated in a few clock cycles — the
+instants where the S-box output is physically computed and moved. Everything
+else is the noise floor: activity unrelated to the target byte.</p>
+<p><img alt="One trace and its SNR curve on the same time axis" src="../assets/figures/02_snr_annotated.png" /></p>
+<p>Masking pushes the peaks down. A masked device never computes on the S-box
+output directly but on <code>S-box output XOR mask</code>, with a fresh random mask per
+trace. Bucketing traces by the unmasked label then mixes every possible
+masked value into each bucket, the bucket averages collapse onto each other,
+and the signal term shrinks. The leakage is not gone — it hides in <em>joint</em>
+statistics of several samples — which is why deep networks, able to combine
+distant samples, can still break masked implementations.</p>
+<p><img alt="SNR per dataset" src="../assets/figures/02_snr_curves.png" /></p>
+<p>These SNR curves are the reference for the rest of the book: they mark <em>where</em>
+an analyst would look for the key, so that later we can check whether a
+trained network looks in the same place.</p>
+<h2 id="the-exploration-notebook">The exploration notebook</h2>
+<p>Everything above — opening an <code>.h5</code> file by hand, reading one metadata record,
+computing the statistics and the SNR — is worked through interactively in the
+<strong><a href="../notebooks/01_the_data/">data exploration notebook</a></strong>. Run it, tweak
+it, break it: that is where the real understanding of the data comes from.</p>
+<p>← Previous: <a href="../01_introduction/">Chapter 1 — Introduction</a> · <a href="../">Index</a> · Next: <a href="../03_models/">Chapter 3 — The models</a> →</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

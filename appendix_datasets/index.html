@@ -1,0 +1,1041 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://teravon.github.io/feature_emergence/appendix_datasets/">
+      
+      
+        <link rel="prev" href="../notebooks/03_the_attack/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Appendix: Datasets guide - Interpreting Feature Emergence in Deep Learning-based SCA</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#datasets-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-header__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interpreting Feature Emergence in Deep Learning-based SCA
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Appendix: Datasets guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-nav__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interpreting Feature Emergence in Deep Learning-based SCA
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_the_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. The data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/01_the_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploring the data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. The models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/02_the_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/03_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Datasets guide
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Datasets guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#file-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File inventory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-eshardh5-eshard-masked-aes-em-measurements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. eshard.h5 — ESHARD (masked AES, EM measurements)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-ascadrascad-variable_70k-90k_20h5-ascad-variable-key-software-aes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. ASCADr/ascad-variable_70k-90k_20.h5 — ASCAD variable key (software AES)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ches_ctfches_ctf_nopoi_window_20h5-ches-ctf-2018" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. ches_ctf/ches_ctf_nopoi_window_20.h5 — CHES CTF 2018
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-in-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loading in code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-bytes-used-for-labeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key bytes used for labeling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model checkpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#file-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File inventory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-eshardh5-eshard-masked-aes-em-measurements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. eshard.h5 — ESHARD (masked AES, EM measurements)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-ascadrascad-variable_70k-90k_20h5-ascad-variable-key-software-aes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. ASCADr/ascad-variable_70k-90k_20.h5 — ASCAD variable key (software AES)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ches_ctfches_ctf_nopoi_window_20h5-ches-ctf-2018" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. ches_ctf/ches_ctf_nopoi_window_20.h5 — CHES CTF 2018
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-in-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loading in code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-bytes-used-for-labeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key bytes used for labeling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model checkpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="datasets-guide">Datasets Guide</h1>
+<p>This directory holds the extracted (pre-processed) side-channel trace
+datasets used in the fork of
+<a href="https://github.com/Sengim/feature_emergence"><em>"You have to be Realistic: On Investigating Feature Emergence in
+Deep Learning-based Side-channel Analysis"</em></a>.</p>
+<blockquote>
+<p>All files here are <strong>large binary artifacts and are excluded from git</strong>.
+They are downloaded/extracted with <code>scripts/download_files.sh</code> (or
+<code>download_files.ps1</code>) from the Zenodo record
+<a href="https://zenodo.org/records/15410792">https://zenodo.org/records/15410792</a>. Only this README is tracked.</p>
+</blockquote>
+<hr />
+<h2 id="file-inventory">File inventory</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Size</th>
+<th>Traces (profiling / attack)</th>
+<th>Samples per trace</th>
+<th>Trace dtype</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eshard.h5</code></td>
+<td>538 MB</td>
+<td>90,000 / 10,000</td>
+<td>1,400</td>
+<td><code>float32</code></td>
+</tr>
+<tr>
+<td><code>ASCADr/ascad-variable_70k-90k_20.h5</code></td>
+<td>481 MB</td>
+<td>200,000 / 10,000</td>
+<td>2,000</td>
+<td><code>int8</code></td>
+</tr>
+<tr>
+<td><code>ches_ctf/ches_ctf_nopoi_window_20.h5</code></td>
+<td>1.2 GB</td>
+<td>30,000 / 10,000</td>
+<td>15,000</td>
+<td><code>float16</code></td>
+</tr>
+</tbody>
+</table>
+<p>All files share the same <strong>HDF5 layout</strong> (two top-level groups):</p>
+<div class="highlight"><pre><span></span><code>&lt;file&gt;.h5
+├── Profiling_traces/
+│   ├── traces      (N_profiling × n_samples)
+│   └── metadata    (N_profiling × 1)  structured records
+└── Attack_traces/
+    ├── traces      (N_attack × n_samples)
+    └── metadata    (N_attack × 1)     structured records
+</code></pre></div>
+<ul>
+<li><strong><code>traces</code></strong>: a 2-D array. Each row is one measurement trace, i.e. a
+  time series of <code>n_samples</code> instantaneous measurements (1st AES round
+  window). Axis 0 = trace index, axis 1 = time sample. Depending on the
+  campaign the quantity is power consumption or electromagnetic emanation.</li>
+<li><strong><code>metadata</code></strong>: a structured NumPy array (compound dtype). Each element is a
+  record holding the cryptographic values associated with that trace.</li>
+</ul>
+<hr />
+<h2 id="1-eshardh5-eshard-masked-aes-em-measurements">1. <code>eshard.h5</code> — ESHARD (masked AES, EM measurements)</h2>
+<p><strong>Board/target:</strong> masked AES-128 software implementation on an <strong>ARM
+Cortex-M4</strong> (32-bit), measured via <strong>electromagnetic emissions</strong>. This is the
+trimmed public version of the ESHARD-AES128 dataset: first-order Boolean
+masking, covering the first encryption round without shuffling.</p>
+<p><strong>Structure:</strong></p>
+<div class="highlight"><pre><span></span><code>Profiling_traces/
+  traces    (90000, 1400)   float32
+  metadata  (90000,)        [('plaintext', 'u1', (16,)), ('key', 'u1', (16,)), ('masks', 'u1', (2,))]
+Attack_traces/
+  traces    (10000, 1400)   float32
+  metadata  (10000,)        [('plaintext', 'u1', (16,)), ('key', 'u1', (16,)), ('masks', 'u1', (2,))]
+</code></pre></div>
+<p><strong>Metadata columns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plaintext</code></td>
+<td><code>uint8[16]</code></td>
+<td>16 AES plaintext bytes fed to the S-box</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td><code>uint8[16]</code></td>
+<td>16 AES key bytes (fixed per dataset)</td>
+</tr>
+<tr>
+<td><code>masks</code></td>
+<td><code>uint8[2]</code></td>
+<td>Random masks used by the masking countermeasure</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong>
+- Labels used in the paper: <code>SBox[plaintext ^ key]</code> for the identity (ID)
+  model — 256 classes — or its Hamming weight (HW) — 9 classes. Rows are
+  labeled with <code>target_byte</code>.
+- The loader class is <code>ReadEshard</code> in
+  <code>src/feature_emergence/datasets/load_eshard.py</code>.</p>
+<hr />
+<h2 id="2-ascadrascad-variable_70k-90k_20h5-ascad-variable-key-software-aes">2. <code>ASCADr/ascad-variable_70k-90k_20.h5</code> — ASCAD variable key (software AES)</h2>
+<p><strong>Board/target:</strong> AES-128 <strong>software</strong> implementation on an ATMega8515
+running with a <strong>variable key</strong> and a Boolean-masking countermeasure
+(the ASCAD "variable key" variant, re-windowed at 2,000 samples).</p>
+<p><strong>Structure:</strong></p>
+<div class="highlight"><pre><span></span><code>Profiling_traces/
+  traces    (200000, 2000)  int8
+  metadata  (200000,)       [('plaintext', '&lt;f8', (16,)), ('key', '&lt;f8', (16,)), ('masks', '&lt;f8', (18,))]
+Attack_traces/
+  traces    (10000, 2000)   int8
+  metadata  (10000,)        [('plaintext', '&lt;f8', (16,)), ('key', '&lt;f8', (16,)), ('masks', '&lt;f8', (18,))]
+</code></pre></div>
+<p><strong>Metadata columns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plaintext</code></td>
+<td><code>float64[16]</code></td>
+<td>16 AES plaintext bytes (stored as floats)</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td><code>float64[16]</code></td>
+<td>16 AES key bytes (stored as floats; fixed key <code>00112233445566778899AABBCCDDEEFF</code>)</td>
+</tr>
+<tr>
+<td><code>masks</code></td>
+<td><code>float64[18]</code></td>
+<td>18 mask bytes of the masking scheme; indices <code>16</code> and <code>17</code> hold the extra masks used to build the higher-order shares</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong>
+- The 18 mask bytes feed the share construction in the loader:
+  - masks <code>[0..15]</code> → per-byte masks for round-1 shares
+  - masks <code>[16]</code>, <code>[17]</code> → additional masks for the remaining shared
+    intermediates (<code>shares 5/6</code>) used in the patching experiments.
+- Traces are stored as signed <code>int8</code> (measured EM emanation, windowed). During
+  profiling the model scales them (e.g. <code>StandardScaler</code> / min–max).
+- The loader class is <code>ReadASCADr</code> in
+  <code>src/feature_emergence/datasets/load_ascadr.py</code>.</p>
+<hr />
+<h2 id="3-ches_ctfches_ctf_nopoi_window_20h5-ches-ctf-2018">3. <code>ches_ctf/ches_ctf_nopoi_window_20.h5</code> — CHES CTF 2018</h2>
+<p><strong>Board/target:</strong> AES-128 <strong>software</strong> on an <strong>ARM Cortex-M4</strong> (32-bit) from
+the CHES 2018 Capture-the-Flag side-channel challenge. The implementation is
+protected with first-order Boolean masking, but the mask values are <strong>not
+included</strong> in the metadata. Traces have been re-windowed
+(<code>nopoi_window_20</code>) to 15,000 samples around the interesting region.</p>
+<p><strong>Structure:</strong></p>
+<div class="highlight"><pre><span></span><code>Profiling_traces/
+  traces    (30000, 15000)  float16
+  metadata  (30000,)        [('plaintext', '&lt;f8', (16,)), ('ciphertext', '&lt;f8', (16,)), ('key', '&lt;f8', (16,))]
+Attack_traces/
+  traces    (10000, 15000)  float16
+  metadata  (10000,)        [('plaintext', 'u1', (16,)), ('ciphertext', 'u1', (16,)), ('key', 'u1', (16,))]
+</code></pre></div>
+<p><strong>Metadata columns:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plaintext</code></td>
+<td><code>float64</code>/<code>uint8[16]</code></td>
+<td>16 AES plaintext bytes</td>
+</tr>
+<tr>
+<td><code>ciphertext</code></td>
+<td><code>float64</code>/<code>uint8[16]</code></td>
+<td>16 resulting AES ciphertext bytes (no mask fields)</td>
+</tr>
+<tr>
+<td><code>key</code></td>
+<td><code>float64</code>/<code>uint8[16]</code></td>
+<td>16 AES key bytes (fixed key <code>175cf2997a8583413c77dfac7e6c59d8</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong>
+- No <code>masks</code> field: the mask values are not provided, so analyses work without
+  mask information even though the implementation is masked.
+- Note the type inconsistency between groups (profiling metadata is
+  <code>float64</code>, attack metadata is <code>uint8</code>); the loader normalizes this.
+- The loader class is <code>ReadCHESCTF</code> in
+  <code>src/feature_emergence/datasets/load_chesctf.py</code>.</p>
+<hr />
+<h2 id="loading-in-code">Loading in code</h2>
+<p>Preferred — via the package (paths resolve to this directory automatically):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">feature_emergence.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+
+<span class="c1"># ESHARD: 1,400 samples, HW leakage model</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"eshard"</span><span class="p">,</span> <span class="n">traces_dim</span><span class="o">=</span><span class="mi">1400</span><span class="p">,</span> <span class="n">leakage_model</span><span class="o">=</span><span class="s2">"HW"</span><span class="p">)</span>
+
+<span class="c1"># ASCADr: 2,000 samples, identity leakage model</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"ascad-variable"</span><span class="p">,</span> <span class="n">traces_dim</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">leakage_model</span><span class="o">=</span><span class="s2">"ID"</span><span class="p">)</span>
+
+<span class="c1"># CHES_CTF: 15,000 samples, HW leakage model</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"ches_ctf"</span><span class="p">,</span> <span class="n">traces_dim</span><span class="o">=</span><span class="mi">15000</span><span class="p">,</span> <span class="n">leakage_model</span><span class="o">=</span><span class="s2">"HW"</span><span class="p">)</span>
+
+<span class="n">ds</span><span class="o">.</span><span class="n">x_profiling</span>      <span class="c1"># profiling traces</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">profiling_labels</span> <span class="c1"># Sbox/leakage labels</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">profiling_keys</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">profiling_plaintexts</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">profiling_masks</span>
+</code></pre></div>
+<p>Raw — direct access with <code>h5py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s2">"data/ASCADr/ascad-variable_70k-90k_20.h5"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>
+<span class="n">prof_traces</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">"Profiling_traces/traces"</span><span class="p">][:]</span>
+<span class="n">prof_meta</span>   <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">"Profiling_traces/metadata"</span><span class="p">][:]</span>
+<span class="n">keys</span>        <span class="o">=</span> <span class="n">prof_meta</span><span class="p">[</span><span class="s2">"key"</span><span class="p">]</span>   <span class="c1">#  (200000, 16)</span>
+<span class="n">plaintexts</span>  <span class="o">=</span> <span class="n">prof_meta</span><span class="p">[</span><span class="s2">"plaintext"</span><span class="p">]</span>
+<span class="n">masks</span>       <span class="o">=</span> <span class="n">prof_meta</span><span class="p">[</span><span class="s2">"masks"</span><span class="p">]</span>
+</code></pre></div>
+<hr />
+<h2 id="key-bytes-used-for-labeling">Key bytes used for labeling</h2>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Fixed key (hex)</th>
+<th>Target byte in paper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>eshard</td>
+<td><code>077BDA0FAB1E5501EAD0150AB1E020FE</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>ASCADr</td>
+<td><code>00112233445566778899AABBCCDDEEFF</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>CHES_CTF</td>
+<td><code>175cf2997a8583413c77dfac7e6c59d8</code></td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="model-checkpoints">Model checkpoints</h2>
+<p>The same Zenodo record also holds <code>model_checkpoints.tar</code>: the trained
+network weights, one file per training epoch. <code>scripts/download_files.sh</code>
+extracts them flat into <code>models/</code>, which is excluded from git just like
+<code>data/</code>. Loading checkpoint <code>k</code> revives the model exactly as it stood after
+epoch <code>k</code> — no retraining needed (worked through in <code>analysis/02_the_models.py</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Architecture</th>
+<th>Dataset</th>
+<th>Epoch checkpoints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mlp_ascadr_*.weights.h5</code></td>
+<td>MLP</td>
+<td>ASCADr</td>
+<td>100</td>
+</tr>
+<tr>
+<td><code>cnn_ascadr_*.weights.h5</code></td>
+<td>CNN</td>
+<td>ASCADr</td>
+<td>100</td>
+</tr>
+<tr>
+<td><code>mlp_eshard__*.weights.h5</code></td>
+<td>MLP</td>
+<td>ESHARD</td>
+<td>100</td>
+</tr>
+<tr>
+<td><code>cnn_eshard_*.weights.h5</code></td>
+<td>CNN</td>
+<td>ESHARD</td>
+<td>100</td>
+</tr>
+<tr>
+<td><code>mlp_ches_ctf_*.weights.h5</code></td>
+<td>MLP</td>
+<td>CHES_CTF</td>
+<td>200</td>
+</tr>
+</tbody>
+</table>
+<p>Two naming quirks in the published archive: the ESHARD MLP files carry a
+double underscore (<code>mlp_eshard__01.weights.h5</code>), and one duplicate of its
+epoch-100 checkpoint exists under a single-underscore name. 601 files in
+total.</p>
+<hr />
+<p>← Previous: <a href="../04_the_attack/">Chapter 4 — The attack</a> · <a href="../">Index</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,957 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://teravon.github.io/feature_emergence/03_models/">
+      
+      
+        <link rel="prev" href="../notebooks/01_the_data/">
+      
+      
+        <link rel="next" href="../notebooks/02_the_models/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>3. The models - Interpreting Feature Emergence in Deep Learning-based SCA</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-3-the-models" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-header__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interpreting Feature Emergence in Deep Learning-based SCA
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3. The models
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-nav__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interpreting Feature Emergence in Deep Learning-based SCA
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_the_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. The data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/01_the_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploring the data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. The models
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. The models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-network-is-a-function-with-adjustable-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A network is a function with adjustable numbers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-a-trace-which-samples-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a trace: which samples matter?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-adjusting-the-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training: adjusting the numbers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generalization-the-split-from-chapter-2-revisited" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generalization: the split from Chapter 2, revisited
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-the-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaling the inputs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checkpoints-the-weights-of-every-epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checkpoints: the weights of every epoch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-exploration-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The exploration notebook
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/02_the_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/03_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix_datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Datasets guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-network-is-a-function-with-adjustable-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A network is a function with adjustable numbers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-a-trace-which-samples-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading a trace: which samples matter?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-adjusting-the-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training: adjusting the numbers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generalization-the-split-from-chapter-2-revisited" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generalization: the split from Chapter 2, revisited
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-the-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaling the inputs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checkpoints-the-weights-of-every-epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checkpoints: the weights of every epoch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-exploration-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The exploration notebook
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="chapter-3-the-models">Chapter 3 — The models</h1>
+<p><a href="../02_the_data/">Chapter 2</a> ended with a map of the leakage: the SNR curves
+mark the time samples whose measurements betray the key. A human analyst
+could read those curves and design a statistical test by hand. The study
+instead lets a neural network figure it out on its own. This chapter builds
+up what a neural network is, from zero — no prior knowledge of deep learning
+is assumed. It is the foundation the following chapters stand on.</p>
+<h2 id="a-network-is-a-function-with-adjustable-numbers">A network is a function with adjustable numbers</h2>
+<p>The raw material of a neural network is simple: multiply, add, and
+occasionally bend.</p>
+<p>Start with one <strong>neuron</strong>. It takes numbers in, multiplies each by its own
+<strong>weight</strong> (a knob the network can adjust), adds the results plus one more
+knob (<strong>bias</strong>), and passes the total through a small nonlinearity. A worked
+example with three inputs:</p>
+<div class="highlight"><pre><span></span><code>three samples of a trace:    x = (4.0, −1.0, 0.5)    (scaled units — see below)
+the neuron's weights:        w = (0.8, 0.2, −0.1)    bias b = 0.05
+
+weighted sum:  0.8·4.0 + 0.2·(−1.0) + (−0.1)·0.5 + 0.05 = 3.00
+</code></pre></div>
+<p>The nonlinearity ("the bend") then maps the sum to the neuron's output. The
+study uses <strong>ELU</strong>, which passes positive values through unchanged and
+softens negative ones (<code>ELU(−2.0) = −0.86</code>). The bend keeps values from
+growing without bound and, crucially, makes the function nonlinear: without
+it, chaining layers would collapse into one big linear formula and depth
+would add nothing.</p>
+<p>A <strong>layer</strong> is a bank of neurons working side by side; a network is layers
+chained together, the outputs of one feeding the inputs of the next. Each
+added layer lets the network express more complicated relationships between
+the inputs.</p>
+<pre class="mermaid"><code>flowchart LR
+    X["trace samples&lt;br/&gt;x1 ... xn"] --&gt; L1["weighted sums&lt;br/&gt;(weights w, biases b)"]
+    L1 --&gt; L2["nonlinear bends"]
+    L2 --&gt; L3["weighted sums"]
+    L3 --&gt; S["softmax:&lt;br/&gt;scores become&lt;br/&gt;probabilities"]
+    S --&gt; P["probability for&lt;br/&gt;each class"]</code></pre>
+<p>The last step is the <strong>softmax</strong>. The final layer outputs one raw score per
+class, and the softmax turns the scores into probabilities — positive,
+between 0 and 1, summing to 1:</p>
+<div class="highlight"><pre><span></span><code>raw scores for three classes:  (2.0, 0.5, −1.0)
+after softmax:                 (0.79, 0.17, 0.04)      (sum = 1.00)
+</code></pre></div>
+<p>A probability of 0.79 for one class means "given this trace, four chances in
+five that this is the intermediate value". The whole network, then, is one
+thing: a function from a trace to a probability distribution over classes.</p>
+<p>How big is such a function? The ASCADr model — six layers of 100 neurons
+each — can be counted by hand:</p>
+<div class="highlight"><pre><span></span><code>layer 1:   2,000 × 100 weights + 100 biases      = 200,100
+hidden:    5 × (100 × 100 + 100)                 =  50,500
+output:    100 × 256 + 256                       =  25,856
+                                          ─────────────────
+                                   total:          276,456
+</code></pre></div>
+<p>276,456 numbers. Training is the process of setting them.</p>
+<h2 id="reading-a-trace-which-samples-matter">Reading a trace: which samples matter?</h2>
+<p>The MLP multiplies every input sample by its own weight — so the natural
+question is: <em>where are those weights, physically?</em> The answer is
+concrete. A trained model lives in a checkpoint file, and a
+checkpoint is an HDF5 file — the same container format as the datasets of
+<a href="../02_the_data/">Chapter 2</a>, opened with the same tool. Inside, the weights
+are plain numerical arrays:</p>
+<div class="highlight"><pre><span></span><code>models/mlp_ascadr_100.weights.h5
+├── layers/dense/vars/0     (2000, 100)   ← first layer: one weight per
+├── layers/dense/vars/1     (100,)          (time sample, neuron) pair
+├── layers/dense_1/vars/0   (100, 100)
+├── ...
+└── layers/dense_6/vars/0   (100, 256)    ← output layer
+</code></pre></div>
+<p>The first layer is a 2,000 × 100 table: each of its 100 neurons holds its own
+list of 2,000 weights — its private "listening profile" over the trace.
+Viewed as an image:</p>
+<p><img alt="First-layer weights of the trained ASCADR MLP" src="../assets/figures/03_weights.png" /></p>
+<p>Each column is one neuron's 2,000 weights along the trace. Where a column is
+strongly colored, that neuron weights those samples heavily; where it is
+near-white, it ignores them. And the weights are clearly not uniform: some
+time samples are listened to intently, others almost ignored. <em>Why those and
+not others</em> is exactly the question this study investigates.</p>
+<p>That final state was not there from the start. Here is the same matrix read
+from a few checkpoints along the way — one color scale for all panels, fixed
+by the final epoch, so the change is not re-normalized away:</p>
+<p><img alt="First-layer weights at epochs 1, 10, 25, 50 and 100" src="../assets/figures/03_weights_epochs.png" /></p>
+<p>At epoch 1 the matrix is initialization noise; within a few tens of epochs,
+bands condense at specific time samples — the network is learning <em>where</em> to
+listen. Measuring exactly when this happens, and whether the loud samples
+coincide with the SNR peaks of <a href="../02_the_data/">Chapter 2</a>, is the
+feature-emergence question of a later chapter.</p>
+<p>The <strong>CNN</strong> (convolutional neural network) reads a trace differently. Instead
+of one weight per sample, it learns small <strong>kernels</strong> — a strip of, say, ten
+weights that slides along the trace. The same strip is applied everywhere,
+so a kernel acts as a reusable detector for a local <em>shape</em>: a spike, a dip.
+Pooling layers then compress the detector outputs, and a couple of dense
+layers map them to the classes. Sharing the kernel weights across the whole
+trace is why the ESHARD CNN holds only 58,133 numbers against the MLP's
+276,456: fewer knobs, but a less direct mapping from "which sample" to
+"which weight".</p>
+<p>Five model families were trained — one or two architectures per dataset:</p>
+<table>
+<thead>
+<tr>
+<th>Model family</th>
+<th>Dataset</th>
+<th>Leakage model</th>
+<th>Input samples</th>
+<th>Output classes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mlp_ascadr</code></td>
+<td>ASCADr</td>
+<td>identity</td>
+<td>2,000</td>
+<td>256</td>
+</tr>
+<tr>
+<td><code>cnn_ascadr</code></td>
+<td>ASCADr</td>
+<td>identity</td>
+<td>2,000</td>
+<td>256</td>
+</tr>
+<tr>
+<td><code>mlp_eshard</code></td>
+<td>ESHARD</td>
+<td>Hamming weight</td>
+<td>1,400</td>
+<td>9</td>
+</tr>
+<tr>
+<td><code>cnn_eshard</code></td>
+<td>ESHARD</td>
+<td>Hamming weight</td>
+<td>1,400</td>
+<td>9</td>
+</tr>
+<tr>
+<td><code>mlp_ches_ctf</code></td>
+<td>CHES_CTF</td>
+<td>Hamming weight</td>
+<td>15,000</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>A model never sees the key: its input is a trace, its target a label computed
+from plaintext and key. Whatever key correlation it achieves, it learned from
+traces alone. The exact layer stacks live in the package
+(<code>src/feature_emergence/profiling_and_attack.py</code>) and are printed layer by
+layer in the <a href="../notebooks/02_the_models/">companion notebook</a>.</p>
+<h2 id="training-adjusting-the-numbers">Training: adjusting the numbers</h2>
+<p>Training is supervised learning, the same way a child learns from answered
+exercises:</p>
+<ol>
+<li>Show the network a profiling trace (the question) together with its
+   leakage label <code>Sbox[plaintext ⊕ key]</code> (the correct answer).</li>
+<li>Compare the network's 256 probabilities against the correct answer. The
+   mismatch is summarized in one number, the <strong>loss</strong>.</li>
+<li>Nudge every one of the 276,456 numbers a little in the direction that
+   reduces the loss (the calculus behind this — <em>gradient descent</em> — is
+   automatic in TensorFlow).</li>
+<li>Repeat with the next trace.</li>
+</ol>
+<p>The loss used here is <strong>categorical cross-entropy</strong>, which in practice is
+just <code>−log(probability of the true class)</code>, averaged over traces:</p>
+<div class="highlight"><pre><span></span><code>true class: 145
+model assigns p(145) = 0.5    →  penalty −log(0.5)  = 0.69
+model assigns p(145) = 0.001  →  penalty −log(0.001) = 6.9
+</code></pre></div>
+<p>Confident and right is nearly free; confident and wrong costs ten times
+more. That asymmetry is what pushes the network, epoch after epoch, to
+put probability mass on the values that actually occur.</p>
+<p>One <strong>epoch</strong> is one full pass through the profiling set. Models were trained
+for 100 epochs — sweeps over the profiling set in batches of 400 — and the
+published CHES_CTF run extends to 200. Before accepting the result of all
+that training, though, we should ask what "learning" is supposed to mean
+here.</p>
+<h2 id="generalization-the-split-from-chapter-2-revisited">Generalization: the split from Chapter 2, revisited</h2>
+<p><a href="../02_the_data/">Chapter 2</a> divided every dataset into a profiling set
+(everything known) and an attack set (key hidden). The division guards
+against a specific failure mode: <strong>overfitting</strong>. A network with 276,456
+free parameters is perfectly capable of <em>memorizing</em> its training traces —
+the way one memorizes an answered exam rather than the subject. A memorizer
+scores beautifully on the profiling set and is useless on anything else.</p>
+<p>So the network is never judged on the data it trained on. All evaluation in
+this book — the attack of the next chapter, the training-time analysis after
+it — happens on the attack set: traces the model has never seen, recorded
+under different plaintexts and fresh random masks. If the model ranks the
+correct key first <em>there</em>, it learned something real about the device, not
+the answer sheet.</p>
+<h2 id="scaling-the-inputs">Scaling the inputs</h2>
+<p>One practical step remains from <a href="../02_the_data/">Chapter 2</a>: the numbers fed
+to the network. The datasets arrive in wildly different units — ASCADr as
+raw <code>int8</code> ADC codes, CHES_CTF as <code>float16</code> — and neural networks train
+poorly when inputs have arbitrary offsets and scales. Before training, every
+sample of every trace is therefore <strong>standardized</strong>: for each time sample,
+subtract the mean and divide by the standard deviation, both measured on the
+profiling set:</p>
+<div class="highlight"><pre><span></span><code>scaled sample = (raw sample − mean) / std        →  mostly within −3 … +3
+</code></pre></div>
+<p>After scaling, every dataset speaks the same language: mean 0, standard
+deviation 1. The attack set is scaled with the <em>profiling</em> statistics — the
+attack data itself is never used to fit anything.</p>
+<h2 id="checkpoints-the-weights-of-every-epoch">Checkpoints: the weights of every epoch</h2>
+<p>Training these networks takes hours on a GPU — this project has none. What
+makes the whole study reproducible on a laptop are the <strong>checkpoints</strong>
+published with the paper: the weight file shown above, saved <em>after each
+training epoch</em> — <code>..._01.weights.h5</code> through <code>..._100.weights.h5</code> for most
+families, and up to <code>..._200</code> for the longer CHES_CTF run. The checkpoints
+live on <a href="https://zenodo.org/records/15410792">Zenodo</a>, in the same record as
+the datasets, and the same script — <code>scripts/download_files.sh</code> — fetches
+both archives. Like the datasets, they are large binaries excluded from git;
+the full inventory is in the <a href="../appendix_datasets/">appendix</a>.</p>
+<div class="highlight"><pre><span></span><code>models/
+├── mlp_ascadr_01.weights.h5
+├── mlp_ascadr_02.weights.h5
+├── ...
+└── mlp_ascadr_100.weights.h5
+</code></pre></div>
+<p>Loading checkpoint <em>k</em> into a freshly built network revives the model exactly
+as it stood after epoch <em>k</em>. Nothing is retrained. This does two things for
+us: the next chapter can use the finished (epoch-100) model as an attack
+tool, and a later chapter can watch the model's knowledge evolve epoch by
+epoch — the feature-emergence question at the heart of the study.</p>
+<h2 id="the-exploration-notebook">The exploration notebook</h2>
+<p>Everything above — the layer-by-layer summaries, the weight inventory and
+heatmap read straight out of the checkpoint, and the epoch-100 load — is
+worked through in the <strong><a href="../notebooks/02_the_models/">model notebook</a></strong>.
+It needs TensorFlow, so run it in the Docker environment described in the
+<a href="../">index</a>.</p>
+<p>One question is left open. The model outputs probabilities over
+<em>intermediate values</em> — it never says "key byte 0x2b", it says "value 145,
+probability 0.25". The next chapter closes the gap: how 256 such probability
+statements, accumulated over many traces, single out one key byte.</p>
+<p>← Previous: <a href="../02_the_data/">Chapter 2 — The data</a> · <a href="../">Index</a> · Next: <a href="../04_the_attack/">Chapter 4 — The attack</a> →</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
