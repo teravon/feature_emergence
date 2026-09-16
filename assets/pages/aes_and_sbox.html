@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AES-128 and the S-box</title>
+  <style>
+    /* Companion-page palette: print / future typesetting, not UI chrome */
+    :root {
+      --ink: #111111;
+      --muted: #4a4a4a;
+      --rule: #222222;
+      --paper: #ffffff;
+      --wash: #f6f6f6;
+      --edge: #cccccc;
+      --accent: #243b55;   /* slate — emphasis, links, focus cell */
+      --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+      --serif: "Source Serif 4", "Iowan Old Style", Palatino, Georgia, serif;
+      --sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #efefef;
+      color: var(--ink);
+      font: 17px/1.55 var(--serif);
+    }
+    .wrap {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+    article {
+      background: var(--paper);
+      border: 1px solid var(--edge);
+      padding: 2.25rem 2rem 2.75rem;
+    }
+    h1 {
+      font: 650 1.75rem/1.2 var(--serif);
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.015em;
+    }
+    .lede {
+      font-size: 1.02rem;
+      color: var(--muted);
+      margin: 0 0 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--edge);
+    }
+    h2 {
+      font: 650 1.15rem/1.3 var(--serif);
+      margin: 1.85rem 0 0.55rem;
+    }
+    h3 {
+      font: 650 1rem/1.3 var(--sans);
+      margin: 1.15rem 0 0.4rem;
+    }
+    p, li { margin: 0.5rem 0; }
+    ul, ol { padding-left: 1.2rem; }
+    a { color: var(--accent); text-decoration-thickness: 1px; }
+    code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+    }
+    pre {
+      background: var(--wash);
+      border: 1px solid var(--edge);
+      padding: 0.85rem 1rem;
+      overflow-x: auto;
+      font: 0.8rem/1.45 var(--mono);
+      margin: 0.75rem 0;
+    }
+    .toc {
+      font: 0.92rem/1.45 var(--sans);
+      color: var(--muted);
+      background: var(--wash);
+      border: 1px solid var(--edge);
+      padding: 0.75rem 1rem;
+      margin: 0 0 1.5rem;
+    }
+    .toc strong {
+      display: block;
+      color: var(--ink);
+      font-weight: 650;
+      margin-bottom: 0.25rem;
+    }
+    .toc ol { margin: 0.25rem 0 0; }
+    .fig {
+      border: 1px solid var(--edge);
+      padding: 1rem;
+      margin: 1rem 0;
+      background: var(--paper);
+    }
+    .fig-cap {
+      font: italic 0.88rem/1.4 var(--serif);
+      color: var(--muted);
+      margin: 0.6rem 0 0;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+    .matrix {
+      display: inline-grid;
+      grid-template-columns: repeat(4, 2.6rem);
+      grid-template-rows: repeat(4, 2.6rem);
+      gap: 2px;
+      border: 1px solid var(--rule);
+      padding: 2px;
+      background: var(--wash);
+    }
+    .cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border: 1px solid var(--edge);
+      font: 600 0.78rem/1 var(--mono);
+      color: var(--muted);
+    }
+    .cell.focus {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .eq {
+      background: var(--wash);
+      border-left: 2px solid var(--rule);
+      padding: 0.65rem 0.85rem;
+      margin: 0.75rem 0;
+      font: 0.86rem/1.55 var(--mono);
+    }
+    .callout {
+      border-top: 1px solid var(--edge);
+      border-bottom: 1px solid var(--edge);
+      padding: 0.75rem 0;
+      margin: 1rem 0;
+      font-size: 0.98rem;
+    }
+    table.frag {
+      border-collapse: collapse;
+      font: 600 0.8rem/1.2 var(--mono);
+      margin: 0.4rem 0;
+    }
+    table.frag th, table.frag td {
+      border: 1px solid #999;
+      padding: 0.35rem 0.55rem;
+      text-align: center;
+    }
+    table.frag th {
+      background: var(--wash);
+      font-weight: 600;
+    }
+    table.frag tr.hit td {
+      background: #e8eef5;
+    }
+    footer {
+      margin-top: 2rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--edge);
+      font: 0.85rem/1.45 var(--sans);
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <article>
+      <h1>AES-128 and the S-box</h1>
+      <p class="lede">
+        How AES processes bytes in the first round, stated as in FIPS&nbsp;197.
+        The point for chapter&nbsp;7 is a single intermediate:
+        <code>y = Sbox[p ⊕ k]</code>. Once that sits in the real cipher, key
+        candidates are just hypotheses about <code>y</code>.
+      </p>
+
+      <nav class="toc" aria-label="Contents">
+        <strong>Contents</strong>
+        <ol>
+          <li><a href="#what">What AES-128 is</a></li>
+          <li><a href="#state">The state</a></li>
+          <li><a href="#structure">Encryption structure</a></li>
+          <li><a href="#ark">AddRoundKey</a></li>
+          <li><a href="#sub">SubBytes and the S-box</a></li>
+          <li><a href="#diffuse">ShiftRows and MixColumns</a></li>
+          <li><a href="#sca">The side-channel target</a></li>
+          <li><a href="#ex">ASCADr numbers</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="what">1. What AES-128 is</h2>
+      <p>
+        AES is a block cipher. For AES-128 the block is 128 bits (16 bytes),
+        the key is 128 bits (16 bytes), and encryption uses 10 rounds after an
+        initial key mixing step. The algorithm is a fixed sequence of public
+        operations on a 16-byte array called the <strong>state</strong>. Round
+        keys are derived from the secret key by a public key schedule. Secrecy
+        is only in the key material, not in the steps.
+      </p>
+
+      <h2 id="state">2. The state</h2>
+      <p>
+        The 16 plaintext bytes fill a 4×4 matrix <strong>column by column</strong>
+        (FIPS&nbsp;197). Cell labels below are byte indices 0…15:
+      </p>
+      <div class="fig">
+        <div class="row">
+          <div class="matrix" aria-label="AES state byte indices">
+            <div class="cell">0</div><div class="cell">4</div><div class="cell">8</div><div class="cell">12</div>
+            <div class="cell">1</div><div class="cell">5</div><div class="cell">9</div><div class="cell">13</div>
+            <div class="cell focus">2</div><div class="cell">6</div><div class="cell">10</div><div class="cell">14</div>
+            <div class="cell">3</div><div class="cell">7</div><div class="cell">11</div><div class="cell">15</div>
+          </div>
+          <div>
+            <p style="margin-top:0">
+              Index <strong>2</strong> (highlighted) is the target byte in the
+              ASCADr runs of this repository. SubBytes acts on each cell alone;
+              ShiftRows and MixColumns mix cells afterward.
+            </p>
+          </div>
+        </div>
+        <p class="fig-cap">Figure 1. AES state, column-major byte indices.</p>
+      </div>
+
+      <h2 id="structure">3. Encryption structure</h2>
+      <p>AES-128 encryption, as specified:</p>
+<pre>state ← plaintext (16 bytes)
+state ← AddRoundKey(state, round_key[0])
+
+for r = 1 … 9:
+    state ← SubBytes(state)
+    state ← ShiftRows(state)
+    state ← MixColumns(state)
+    state ← AddRoundKey(state, round_key[r])
+
+state ← SubBytes(state)
+state ← ShiftRows(state)
+state ← AddRoundKey(state, round_key[10])
+# final round: no MixColumns
+ciphertext ← state</pre>
+
+      <h2 id="ark">4. AddRoundKey</h2>
+      <p>
+        Each state byte is XOR-ed with the matching byte of the current round
+        key. After the initial AddRoundKey, a cell with plaintext byte
+        <code>p</code> and key byte <code>k</code> holds:
+      </p>
+      <div class="eq">x = p ⊕ k</div>
+      <p>That step is linear. Nonlinearity enters at SubBytes.</p>
+
+      <h2 id="sub">5. SubBytes and the S-box</h2>
+      <p>
+        SubBytes replaces every state byte through a fixed 256-entry table: the
+        <strong>S-box</strong>. The table is public and identical for every
+        AES-128 implementation. The attacker does not recover it; they use it.
+      </p>
+      <h3>Lookup</h3>
+      <p>
+        For input <code>x</code>, the high nibble selects the table row and the
+        low nibble the column. Example: <code>x = 0xAC</code> → row A, column C
+        → <code>Sbox[0xAC] = 0x91</code>.
+      </p>
+      <div class="eq">y = Sbox[x]</div>
+      <h3>Construction (FIPS&nbsp;197)</h3>
+      <p>Each S-box entry is defined by:</p>
+      <ol>
+        <li>treat the byte as an element of <code>GF(2⁸)</code> (polynomials
+          modulo the irreducible polynomial fixed in the standard),</li>
+        <li>take the multiplicative inverse in that field (<code>0 ↦ 0</code>),</li>
+        <li>apply a fixed affine transform over <code>GF(2)</code> (an 8×8 bit
+          matrix plus a constant vector).</li>
+      </ol>
+      <p>
+        For side-channel work you rarely recompute that by hand. You do need
+        the consequences: the map is public, nonlinear, and has strong
+        avalanche — one input bit flip typically changes many output bits. Key
+        candidates that differ by one bit therefore imply very different
+        values of <code>y</code>.
+      </p>
+
+      <h2 id="diffuse">6. ShiftRows and MixColumns</h2>
+      <p>
+        ShiftRows rotates each row by a fixed offset (0, 1, 2, 3 bytes).
+        MixColumns multiplies each column by a fixed matrix over
+        <code>GF(2⁸)</code>. Together they diffuse one byte’s influence across
+        the block. Profiling attacks often measure an intermediate that still
+        depends on a single key byte in a simple algebraic way — typically the
+        first-round SubBytes output — before that diffusion dominates.
+      </p>
+
+      <h2 id="sca">7. The side-channel target</h2>
+      <p>
+        On many software AES implementations, the first-round SubBytes output
+        at a chosen byte position is:
+      </p>
+      <div class="eq">y = Sbox[p ⊕ k]</div>
+      <ul>
+        <li><code>p</code> — plaintext byte (known),</li>
+        <li><code>k</code> — key byte (secret),</li>
+        <li><code>Sbox</code> — public,</li>
+        <li><code>y</code> — 8-bit value the device manipulates and that can
+          leak in power or EM.</li>
+      </ul>
+      <div class="callout">
+        The network in this project predicts <code>y</code> (or a function of
+        it, such as Hamming weight) from the trace. It does not output the
+        S-box table or name <code>k</code> directly. The attacker recovers
+        <code>k</code> by testing which of the 256 candidates produces a
+        <code>y</code> that matches the model’s probabilities across many
+        traces. Masking (ASCADr) weakens each single-trace vote, so
+        accumulation is required — that is the rest of chapter&nbsp;7.
+      </div>
+
+      <h2 id="ex">8. ASCADr numbers</h2>
+      <p>
+        First attack-set illustration in the docs: plaintext byte
+        <code>p = 0x8e</code> (142), true key byte <code>k = 0x22</code>
+        (34), at byte index 2.
+      </p>
+      <div class="eq">
+        x = 0x8e ⊕ 0x22 = 0xac = 172<br />
+        y = Sbox[0xac] = 0x91 = 145<br />
+        HW(y) = 3
+      </div>
+      <p>
+        Hamming weight <code>HW(y)</code> is the number of 1-bits in
+        <code>y</code> (here <code>0x91 = 10010001₂</code>). Many leakage
+        models and some networks predict HW rather than the full byte; the
+        table shows how a one-bit change in <code>x</code> moves both the
+        S-box output and its HW.
+      </p>
+      <div class="fig">
+        <table class="frag">
+          <tr>
+            <th>x</th><th>dec</th><th>Sbox[x]</th><th>dec</th><th>HW(y)</th>
+          </tr>
+          <tr><td>0x8E</td><td>142</td><td>0x19</td><td>25</td><td>3</td></tr>
+          <tr><td>0x8F</td><td>143</td><td>0x73</td><td>115</td><td>5</td></tr>
+          <tr class="hit"><td>0xAC</td><td>172</td><td>0x91</td><td>145</td><td>3</td></tr>
+          <tr><td>0xAD</td><td>173</td><td>0x95</td><td>149</td><td>4</td></tr>
+          <tr><td>0x71</td><td>113</td><td>0xA3</td><td>163</td><td>4</td></tr>
+        </table>
+        <p class="fig-cap">
+          Figure 2. Fragment of the AES S-box (same table as the dataset loaders).
+          Neighbours 0x8E and 0x8F differ by one input bit; outputs jump from
+          25 to 115 and HW from 3 to 5.
+        </p>
+      </div>
+      <p>
+        Candidate <code>g = 0x00</code> predicts <code>y = 25</code>
+        (<code>HW = 3</code>); <code>g = 0x01</code> predicts <code>115</code>
+        (<code>HW = 5</code>); <code>g = 0x22</code> predicts <code>145</code>
+        (<code>HW = 3</code>). The model assigns probabilities to those
+        <code>y</code> (or HW) values on each trace; the correct
+        <code>g</code> is the hypothesis that wins in aggregate.
+      </p>
+
+      <footer>
+        Companion page for <code>docs/07_scoring_the_attack.md</code>.
+        Cipher description follows FIPS&nbsp;197; the numerical example matches
+        this repository’s ASCADr attack traces. Path:
+        <code>docs/assets/pages/</code> (not figures).
+      </footer>
+    </article>
+  </div>
+</body>
+</html>

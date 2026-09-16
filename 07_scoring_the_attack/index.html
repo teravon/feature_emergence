@@ -1,0 +1,1391 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://teravon.github.io/feature_emergence/07_scoring_the_attack/">
+      
+      
+        <link rel="prev" href="../notebooks/02_the_models/">
+      
+      
+        <link rel="next" href="../notebooks/03_the_attack/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>7. Scoring the attack - Interpreting Feature Emergence in Deep Learning-based SCA</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-7-how-a-key-byte-is-recovered" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-header__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interpreting Feature Emergence in Deep Learning-based SCA
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              7. Scoring the attack
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-nav__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interpreting Feature Emergence in Deep Learning-based SCA
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_secrets_that_leak/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Secrets that leak
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_intermediate_values/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Intermediate values
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_masking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Masking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_the_datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The datasets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/01_the_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploring the data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_the_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. The network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_training_and_checkpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Training and checkpoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/02_the_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Scoring the attack
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Scoring the attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reading-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-the-attacker-has" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What the attacker has
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-how-y-and-k-are-tied" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. How y and k are tied
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. How y and k are tied">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numbers-for-the-ascadr-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numbers for the ASCADr example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-y-were-known-exactly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If y were known exactly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-trained-network-actually-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the trained network actually outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-attack-trace-three-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One attack trace, three tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-one-trace-is-not-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. One trace is not enough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-accumulating-votes-across-traces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Accumulating votes across traces
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Accumulating votes across traces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-not-average-many-top-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not average many top panels?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-combine-votes-at-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why combine votes at all?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-a-product-not-a-sum-of-the-raw-probabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a product (not a sum of the raw probabilities)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-product-to-sum-of-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From product to sum of logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-that-looks-like-as-traces-are-added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What that looks like as traces are added
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-guessing-entropy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Guessing entropy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Guessing entropy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rank-first-the-number-already-in-the-panel-titles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank first — the number already in the panel titles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-average-and-what-ge-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why average — and what GE is
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-read-the-figure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to read the figure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-notebook-and-next-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Notebook and next question
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/03_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_perceived_information/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Perceived Information
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix_datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Datasets guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reading-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-the-attacker-has" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What the attacker has
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-how-y-and-k-are-tied" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. How y and k are tied
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. How y and k are tied">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numbers-for-the-ascadr-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Numbers for the ASCADr example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-y-were-known-exactly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If y were known exactly
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-trained-network-actually-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the trained network actually outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-attack-trace-three-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One attack trace, three tables
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-one-trace-is-not-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. One trace is not enough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-accumulating-votes-across-traces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Accumulating votes across traces
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Accumulating votes across traces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-not-average-many-top-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not average many top panels?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-combine-votes-at-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why combine votes at all?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-a-product-not-a-sum-of-the-raw-probabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a product (not a sum of the raw probabilities)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#from-product-to-sum-of-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From product to sum of logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-that-looks-like-as-traces-are-added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What that looks like as traces are added
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-guessing-entropy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Guessing entropy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Guessing entropy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rank-first-the-number-already-in-the-panel-titles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank first — the number already in the panel titles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-average-and-what-ge-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why average — and what GE is
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-read-the-figure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to read the figure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-notebook-and-next-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Notebook and next question
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="chapter-7-how-a-key-byte-is-recovered">Chapter 7 — How a key byte is recovered</h1>
+<p><a href="../06_training_and_checkpoints/">Chapter 6</a> left a trained network that maps
+a power trace to a probability distribution over <em>intermediate values</em>. This
+chapter turns those probabilities into a key byte. We use the finished
+ASCADr MLP (epoch-100 checkpoint) and the ASCADr attack set: traces the model
+has never seen.</p>
+<p>This chapter defines <strong>attack success</strong>. It is not the climax of the
+project; it is the operational prerequisite for asking <em>when</em> and <em>how</em> that
+success emerged during training.</p>
+<h3 id="reading-order">Reading order</h3>
+<ol>
+<li>What is known and what is secret.</li>
+<li>How <code>y</code> and <code>k</code> are tied by public algebra (exact <code>y</code> vs uncertain <code>y</code>).</li>
+<li>Black-box softmax over <code>y</code>, then one-trace tables: trace → <code>P(y)</code> → votes
+   on <code>k</code>.</li>
+<li>Why many traces must be combined on the key-guess axis (product of votes,
+   then sum of logs for numerics).</li>
+<li>Guessing entropy: mean rank of the true key (how to read the curve).</li>
+<li>The notebook that computes the figures.</li>
+</ol>
+<h2 id="1-what-the-attacker-has">1. What the attacker has</h2>
+<p>The attack assumes the <strong>plaintext is known</strong>. That is realistic for many
+devices (smart cards, authenticators, tokens): the input was sent in the
+clear, or the attacker chose it. The datasets of
+<a href="../04_the_datasets/">Chapter 4</a> store the plaintext next to every trace. The
+key never leaves the chip.</p>
+<p>So the attacker has: the plaintext, a power recording of the encryption, and
+no direct access to the key. AES-128 has 16 key bytes; this study recovers
+<strong>byte index 2</strong> only (see the <a href="../appendix_datasets/">datasets guide</a>). The
+full key is sixteen independent recoveries of that kind.</p>
+<h2 id="2-how-y-and-k-are-tied">2. How <code>y</code> and <code>k</code> are tied</h2>
+<p>AES-128 is a real block cipher (16-byte state, 10 rounds, public S-box). For
+this chapter, one first-round fact is enough. At the target byte position:</p>
+<div class="highlight"><pre><span></span><code>y = Sbox[p ⊕ k]
+</code></pre></div>
+<ul>
+<li><code>p</code> — plaintext byte (<strong>known</strong>),</li>
+<li><code>k</code> — key byte (<strong>secret</strong>),</li>
+<li><code>Sbox</code> — public 256-entry table,</li>
+<li><code>y</code> — intermediate value the network was trained to predict (identity
+  leakage model).</li>
+</ul>
+<p>Cipher detail (state layout, AddRoundKey, SubBytes, diffusion) and the same
+numbers live on the companion page:</p>
+<p><strong><a href="../assets/pages/aes_and_sbox.html">AES-128 and the S-box</a></strong></p>
+<h3 id="numbers-for-the-ascadr-example">Numbers for the ASCADr example</h3>
+<div class="highlight"><pre><span></span><code>p = 0x8e (142),   k = 0x22 (34)
+x = p ⊕ k = 0xac = 172
+y = Sbox[0xac] = 0x91 = 145
+HW(y) = 3
+</code></pre></div>
+<p><code>HW(y)</code> is the number of 1-bits in <code>y</code> (<code>0x91 = 10010001₂</code>). Some models
+predict HW instead of the full byte; the attack logic below is the same idea.</p>
+<p>The S-box is not a gentle map. Neighbours in the input can land far apart in
+the output (same public table the datasets use):</p>
+<div class="highlight"><pre><span></span><code>input x     dec    Sbox[x] = y     dec    HW(y)
+────────────────────────────────────────────────
+0x8e        142    0x19            25     3
+0x8f        143    0x73            115    5      ← one bit from 0x8e
+0xac        172    0x91            145    3
+0xad        173    0x95            149    4      ← one bit from 0xac
+0x71        113    0xa3            163    4
+</code></pre></div>
+<h3 id="if-y-were-known-exactly">If <code>y</code> were known exactly</h3>
+<p>The S-box is a public bijection (<code>Sbox⁻¹</code> exists). With exact <code>y</code> and known
+<code>p</code>, the key byte is public algebra:</p>
+<div class="highlight"><pre><span></span><code>x = Sbox⁻¹[y]
+k = p ⊕ x
+</code></pre></div>
+<p>Example: <code>Sbox⁻¹[145] = 0xac</code>, then <code>0x8e ⊕ 0xac = 0x22</code>. No network needed.</p>
+<h3 id="what-the-trained-network-actually-outputs">What the trained network actually outputs</h3>
+<p>From a data-science view the epoch-100 MLP is a <strong>black box classifier</strong>.
+It was trained to map a power trace to one of 256 classes: the possible
+values of <code>y</code>. It was <strong>not</strong> trained to output a key byte. The last layer
+is a softmax: 256 non-negative numbers that sum to 1 — a probability for
+each possible <code>y</code>.</p>
+<pre class="mermaid"><code>flowchart LR
+    T["power trace&lt;br/&gt;(2000 samples)"] --&gt; N["trained MLP&lt;br/&gt;(black box)"]
+    N --&gt; S["softmax&lt;br/&gt;P(y=0) … P(y=255)"]</code></pre>
+<p>Hidden layers hold learned features; they are not labelled as <code>y</code>. The only
+place <code>y</code> appears by design is as the <strong>training label</strong> (profiling) and as
+this <strong>output distribution</strong> (attack).</p>
+<h3 id="one-attack-trace-three-tables">One attack trace, three tables</h3>
+<p>The first ASCADr attack trace has plaintext byte <code>p = 0x8e</code>. The true key
+byte on this dataset is <code>k = 0x22</code>, so the true intermediate is <code>y = 145</code>.
+Below: a fragment of the <strong>scaled</strong> trace (same preprocessing as training),
+a sparse view of the 256-class softmax, then the remapping to key guesses.
+Rows marked <code>…</code> are omitted; the full vectors have length 2000 and 256.</p>
+<p><strong>Table A — input (trace fragment)</strong></p>
+<div class="highlight"><pre><span></span><code>sample index     scaled amplitude
+─────────────────────────────────
+0                  0.216
+1                  0.229
+2                 −0.399
+…                    …
+500               −0.993
+1000              −0.065
+1500              −0.237
+…                    …
+1998              −1.842
+1999              −1.644
+</code></pre></div>
+<p><strong>Table B — network output (selected <code>P(y)</code>)</strong></p>
+<div class="highlight"><pre><span></span><code>y      P(y)         note
+──────────────────────────────────────────────
+20     0.194
+25     ~10⁻⁶
+46     0.058
+115    ~10⁻⁷
+145    ~10⁻⁶        ← true y (almost flat)
+154    0.247        ← model's peak class
+160    0.054
+163    ~10⁻¹²
+240    0.089
+…      …
+(all 256 sum to 1)
+</code></pre></div>
+<p>The peak is <code>y = 154</code> with probability ≈ 0.25 — not the true <code>145</code>. Inverting
+that peak with <code>Sbox⁻¹</code> would give the <strong>wrong</strong> key. The attack never does
+that.</p>
+<p><strong>Table C — same probabilities on key guesses</strong> (<code>p = 0x8e</code> fixed)</p>
+<p>For each candidate <code>g</code>, public algebra gives <code>y_g = Sbox[p ⊕ g]</code>. The vote
+for <code>g</code> is simply <code>P(y_g)</code> from Table B:</p>
+<div class="highlight"><pre><span></span><code>guess g     y_g = Sbox[p⊕g]     vote = P(y_g)      note
+────────────────────────────────────────────────────────────
+0x00        25                  ~10⁻⁶
+0x01        115                 ~10⁻⁷
+0x22        145                 ~10⁻⁶              ← true k
+0xb9        154                 0.247              ← best vote this trace
+0xff        163                 ~10⁻¹²
+…           …                   …
+</code></pre></div>
+<p>Table C is Table B with rows reordered by <code>g</code> (for fixed <code>p</code> the map
+<code>g ↔ y_g</code> is a bijection). No second model. On this single trace the true
+key’s vote is tiny (rank 81 of 256); the largest vote belongs to a wrong
+guess. That is why one softmax is not a recovered key.</p>
+<p>In code, the dataset precomputes every <code>y_g</code> for every attack plaintext as a
+matrix of shape 256 × n_attack. It is only a lookup table for Table C’s
+middle column.</p>
+<h2 id="3-one-trace-is-not-enough">3. One trace is not enough</h2>
+<p>The same numbers as a plot — top axis <code>y</code>, bottom axis <code>g</code>:</p>
+<p><img alt="Model output for one attack trace, over y and over key guesses" src="../assets/figures/04_prediction.png" /></p>
+<p>ASCADr is masked (<a href="../03_masking/">Chapter 3</a>): a single trace carries
+<code>Sbox[plaintext ⊕ key] ⊕ mask</code>, randomized per encryption. Without the
+mask, the network cannot name the unmasked <code>y</code> from one recording.</p>
+<p>Over the first 500 attack traces the model’s best guess is right on only 4;
+the true value receives about twice the uniform probability (0.0089 vs
+0.0039). That is above chance, and it is not enough to call the key from one
+shot. The next section combines many Table-C votes for the same secret <code>k</code>.</p>
+<h2 id="4-accumulating-votes-across-traces">4. Accumulating votes across traces</h2>
+<h3 id="why-not-average-many-top-panels">Why not average many top panels?</h3>
+<p>The top panel’s horizontal axis is <code>y</code>. Each encryption uses a different
+plaintext byte <code>p</code>, so the true</p>
+<div class="highlight"><pre><span></span><code>y = Sbox[p ⊕ k]
+</code></pre></div>
+<p>sits on a <strong>different class</strong> on almost every trace. Averaging those softmax
+vectors blurs peaks that were never aligned.</p>
+<p>What stays fixed is the key byte. For every trace the attacker builds a
+Table C (one vote per <code>g</code>) and combines those votes across traces.</p>
+<h3 id="why-combine-votes-at-all">Why combine votes at all?</h3>
+<p>Each Table-C vote is a weak clue: “how compatible is <em>this</em> power recording
+with the story that the key byte is <code>g</code>?” One clue is noisy (masking). The
+secret <code>k</code> does not change between encryptions, so the same <code>g</code> is on trial
+in every trace. The attacker needs a rule that says how well <strong>the whole
+set of recordings</strong> fits each story.</p>
+<h3 id="why-a-product-not-a-sum-of-the-raw-probabilities">Why a product (not a sum of the raw probabilities)</h3>
+<p>Treat two traces as separate measurements. For a fixed guess <code>g</code>, write:</p>
+<ul>
+<li>A = “trace 0 looks compatible with <code>g</code>” (model probability of the implied
+  <code>y_g</code> on that trace),</li>
+<li>B = “trace 1 looks compatible with <code>g</code>”.</li>
+</ul>
+<p>The question for the attack is whether <strong>both</strong> recordings fit the same
+story. For independent events, that joint compatibility is the product:</p>
+<div class="highlight"><pre><span></span><code>P(A and B) = P(A) × P(B)
+</code></pre></div>
+<p>That is the only reason for the ×. Adding the raw probabilities would answer
+a different question (mixing incompatible scales); averaging the top-panel
+softmaxes would still mix different <code>y</code> classes across plaintexts.</p>
+<p>Wrong guesses can look good on one unlucky trace and bad on the next: the
+product shrinks fast when any factor is tiny. The true key tends to avoid
+those near-zeros more often, so its product decays more slowly and pulls
+ahead as <code>n</code> grows. The mathematics is bookkeeping for “many weak clues
+about one fixed secret,” not a new model of the chip.</p>
+<h3 id="from-product-to-sum-of-logs">From product to sum of logs</h3>
+<p>A long product of numbers in (0, 1) underflows to 0 in floating point. The
+logarithm turns multiplication into addition and does not change which <code>g</code>
+wins (larger product ↔ larger sum of logs):</p>
+<div class="highlight"><pre><span></span><code>score(g)     = P₀ × P₁ × … × Pₙ₋₁
+evidence(g)  = log P₀ + log P₁ + … + log Pₙ₋₁
+</code></pre></div>
+<p><code>evidence(g)</code> is what the bar charts plot. Same ranking as the product;
+safer arithmetic.</p>
+<p>Toy comparison over two traces:</p>
+<div class="highlight"><pre><span></span><code>g with probs 0.02 and 0.05:  product = 0.0010,  evidence = log(0.02)+log(0.05) = −6.9
+h with probs 0.01 and 0.20:  product = 0.0020,  evidence = log(0.01)+log(0.20) = −6.2
+</code></pre></div>
+<p><code>h</code> leads after two traces (larger product) even though <code>g</code> won the second
+vote alone. Consistency across traces beats a single lucky bar.</p>
+<h3 id="what-that-looks-like-as-traces-are-added">What that looks like as traces are added</h3>
+<p>Each panel below is evidence for all 256 key candidates after the first <code>n</code>
+attack traces (fixed order). Orange is true key <code>0x22</code>; the title is its
+rank:</p>
+<p><img alt="Key-candidate evidence after 1, 5, 20, and 100 traces" src="../assets/figures/04_evidence_progress.png" /></p>
+<p>After one trace the true byte is lost in the pack (rank 81). After five it
+is at 30; after twenty it is already first. Same ranking after 1,000 traces:</p>
+<p><img alt="Accumulated log-evidence per key candidate" src="../assets/figures/04_key_ranking.png" /></p>
+<p>One orange bar stands out (<code>0x22</code>: evidence −12,065 against −13,694 for the
+best wrong candidate). The network still only named <em>values</em>; the key
+ranking is built from the hypothesis table. Which traces are drawn changes
+when rank 1 appears — hence the averaged metric next.</p>
+<h2 id="5-guessing-entropy">5. Guessing entropy</h2>
+<h3 id="rank-first-the-number-already-in-the-panel-titles">Rank first — the number already in the panel titles</h3>
+<p>In the progress figure, each title stated a <strong>rank</strong>: after one trace the
+true key was 81st among 256 candidates; after twenty it was 1st. Rank 1
+means “highest evidence.” Rank 256 means “worst.” That single number is
+already the attack outcome for one fixed list of traces.</p>
+<h3 id="why-average-and-what-ge-is">Why average — and what GE is</h3>
+<p>Which traces you pick changes that rank (a lucky batch reaches 1 sooner; an
+unlucky batch later). <strong>Guessing entropy</strong> (GE) is the <strong>mean rank of the
+true key</strong>, averaged over many random draws of the attack set:</p>
+<ol>
+<li>Shuffle / draw a random subset of attack traces.</li>
+<li>Accumulate log-evidence; read the true key’s rank (1…256).</li>
+<li>Repeat many times; average those ranks.</li>
+</ol>
+<p>So GE is the same idea as the panel titles, with the “which traces?” noise
+averaged out. GE ≈ 128 is what you expect from a random ordering of 256
+candidates (blind guessing). GE = 1 means that, on average, the true key is
+in first place — the operational definition of a successful key-byte
+recovery here.</p>
+<h3 id="how-to-read-the-figure">How to read the figure</h3>
+<p><img alt="Guessing entropy vs number of attack traces" src="../assets/figures/04_guessing_entropy.png" /></p>
+<ul>
+<li><strong>Horizontal axis:</strong> how many attack traces enter the product / sum of
+  logs (more clues).</li>
+<li><strong>Vertical axis:</strong> mean rank of the true key among the 256 candidates
+  (1 = first place, 256 = last). That average is GE. The scale is
+  logarithmic so the drop from ~100 down to 1 stays visible.</li>
+<li><strong>Grey dotted line (128):</strong> random-guessing baseline.</li>
+<li><strong>Orange dashed line (1):</strong> “key recovered” — true byte ranked first on
+  average.</li>
+<li><strong>Blue curve:</strong> for this epoch-100 MLP on ASCADr, GE starts near the
+  random baseline and falls to 1 within roughly the first hundred traces;
+  from about trace 86 onward it stays at 1 out to 4,000.</li>
+</ul>
+<p>The progress panels showed one fixed run climbing to rank 1 by twenty
+traces. The GE curve answers: <em>on average, after how many measurements is
+the true byte first?</em> About 86 here — that is the usual “how many traces
+do I need?” figure for this model and dataset.</p>
+<h2 id="6-notebook-and-next-question">6. Notebook and next question</h2>
+<p>The same steps are in the
+<strong><a href="../notebooks/03_the_attack/">attack notebook</a></strong> (CPU, minutes; no
+training).</p>
+<p>Everything above used the finished model — weights after epoch 100. The
+checkpoints of <a href="../06_training_and_checkpoints/">Chapter 6</a> also hold every
+earlier epoch. The next question is when, during those 100 epochs, this
+attack became possible.</p>
+<p>← Previous: <a href="../06_training_and_checkpoints/">Chapter 6 — Training and checkpoints</a> · <a href="../">Index</a> · Next: <a href="../08_perceived_information/">Chapter 8 — Perceived Information</a> →</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
