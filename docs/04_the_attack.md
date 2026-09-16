@@ -1,30 +1,32 @@
 # Chapter 4 — The attack
 
-[Chapter 3](03_models.md) left one question open. The trained model outputs
-probabilities over *intermediate values* — it never says "key byte 0x22", it
-says "value 145, probability 0.25". This chapter closes the gap: how 256 such
-probability statements, accumulated over many traces, single out one key
-byte.
+[Chapter 3](03_models.md) ended with a trained network that maps a power
+trace to a probability distribution over *intermediate values*. This chapter
+turns those probabilities into a key byte. We use the finished ASCADr MLP —
+the epoch-100 checkpoint from Chapter 3 — and the ASCADr attack set: traces
+the model has never seen.
 
-## Knowing the plaintext
+## What the attacker knows
 
-The attacker is not empty-handed. The attack rests on one assumption,
-satisfied in most realistic scenarios (smart cards, authenticators, tokens):
-the **plaintext is known**. It was sent to the device in the clear, or the
-attacker chose it — and the datasets of [Chapter 2](02_the_data.md) store it
-right next to every trace. The key, on the other hand, never leaves the chip.
+The attack assumes the **plaintext is known**. That is realistic for many
+devices (smart cards, authenticators, tokens): the input was sent in the
+clear, or the attacker chose it. The datasets of [Chapter 2](02_the_data.md)
+store the plaintext next to every trace. The key never leaves the chip.
 
-So the attacker's seat is: *knows the input, measures the power, wants the
-key*.
+The attacker therefore sits with the input, a power recording of the
+encryption, and no direct access to the key.
 
-## One key byte, 256 hypotheses
+## 256 hypotheses for one key byte
 
-A key byte has 256 possible values. The attacker's move is to **enumerate all
-of them**. Recall from [Chapter 1](01_introduction.md) how the key enters the
-power consumption: in the first round, each plaintext byte is XOR-ed with one
-key byte and passed through the S-box. So for an attack trace with known
-plaintext byte `p`, each candidate `g` predicts exactly one intermediate
-value: `Sbox[p ⊕ g]`.
+A key byte has 256 possible values. The attacker enumerates all of them.
+Recall from [Chapter 1](01_introduction.md) how the key enters the first AES
+round: each plaintext byte is XOR-ed with one key byte and passed through the
+S-box. For an attack trace with known plaintext byte `p`, each candidate `g`
+predicts exactly one intermediate value:
+
+```text
+Sbox[p ⊕ g]
+```
 
 Concretely, for the first ASCADr attack trace (`p = 0x8e`):
 
@@ -34,57 +36,49 @@ candidate g = 0x22  →  Sbox[0x8e ⊕ 0x22] = value 145   ← the key actually 
 candidate g = 0xff  →  Sbox[0x8e ⊕ 0xff] = value 163
 ```
 
-Only one row matches what the device actually computed. Every candidate thus
-writes its own "would-be truth" over the whole attack set — the dataset
-object ships this as a 256 × n_attack matrix, one row per candidate.
+Only one row matches what the device computed. The dataset object ships the
+full table as a matrix of shape 256 × n_attack: row `g` holds the label every
+attack trace would have had *if* `g` were the key byte.
 
 ```mermaid
 flowchart LR
-    P["plaintext byte p<br/>(known)"] --> X1["Sbox[p ⊕ g1]"]
-    P --> X2["Sbox[p ⊕ g2]"]
-    P --> XN["... Sbox[p ⊕ g256]"]
-    M["model<br/>p(value | trace)"] --> R["add up evidence<br/>per candidate"]
-    X1 --> R
-    X2 --> R
-    XN --> R
+    P["plaintext byte p<br/>(known)"] --> G1["candidate g1:<br/>Sbox[p ⊕ g1]"]
+    P --> G2["candidate g2:<br/>Sbox[p ⊕ g2]"]
+    P --> GN["... candidate g256"]
 ```
 
-Two boundaries of the attack, worth fixing now:
+The procedure recovers **one byte at a time**. AES-128 has 16 key bytes;
+here we recover the target byte fixed by the study (byte 2 — see the
+[datasets guide](appendix_datasets.md)). The full key needs the same attack
+repeated for every byte position.
 
-- **One byte at a time.** The AES key has 16 bytes; this procedure recovers
-  *one* — here byte 2, the target byte fixed by the study (see the
-  [datasets guide appendix](appendix_datasets.md)). Recovering the full key
-  means repeating the attack for every byte position.
-- **The model still knows nothing about keys.** It only assigns probabilities
-  to values. The key ranking is manufactured by the enumeration above — the
-  attacker's math, not the network's.
+## One model output is not a key
 
-## One trace is not enough
-
-Feed one attack trace to the epoch-100 model and look at its output:
+Feed one attack trace to the epoch-100 model. The output is a softmax: one
+probability per possible S-box output (256 classes).
 
 ![Model output for one attack trace](assets/figures/04_prediction.png)
 
-The output is *confident* (one class collects a quarter of the probability
-mass) but it is **not** the true value (dashed line). This is the masking
-countermeasure of [Chapter 2](02_the_data.md) doing its job: a single trace
-carries the *masked* value `Sbox[plaintext ⊕ key] ⊕ mask`, and without the
-mask the network can only guess. Over 500 attack traces, the model's best
-guess is right on only 4; the true value receives about twice the uniform
-probability (0.0089 vs 0.0039) — weak, but systematically above chance.
+The network is *confident* — one class collects about a quarter of the
+probability mass — but that class is **not** the true intermediate value
+(dashed line). ASCADr is masked ([Chapter 2](02_the_data.md)): a single trace
+carries `Sbox[plaintext ⊕ key] ⊕ mask`, randomized per encryption. Without
+the mask, the network cannot name the unmasked value from one recording.
 
-That sliver of signal is the crack the attack exploits.
+There is still a weak signal. Over the first 500 attack traces, the model's
+best guess is right on only 4; the true value receives about twice the
+uniform probability (0.0089 vs 0.0039). That is above chance, and it is not
+enough to call the key from one shot. The attack needs many traces.
 
-## Accumulating evidence
+## Accumulating evidence across traces
 
-How do weak per-trace signals add up to a strong one? Through probabilities
-— and through logarithms.
+Each candidate `g` implies a label on every attack trace. The model assigns a
+probability to that label. If traces are independent measurements, the
+combined evidence for `g` is the *product* of those probabilities. Products of
+many small numbers underflow in floating point, so we work with logarithms:
+the product becomes a **sum of log-probabilities**.
 
-If traces are independent measurements, the combined probability of a
-candidate's story is the *product* of the per-trace probabilities. Products
-of many small numbers underflow to zero in floating point, so the standard
-trick is to take logs: the product becomes a **sum of log-probabilities**,
-and sums are well behaved. A two-trace example:
+A two-trace example:
 
 ```text
 candidate g implies values with model probability 0.02 and 0.05:
@@ -93,9 +87,9 @@ candidate h implies values with model probability 0.01 and 0.20:
     evidence(h) = log(0.01) + log(0.20) = −4.6 − 1.6 = −6.2
 ```
 
-Candidate `h` is already ahead after two traces, even though `g` won the
-second one alone. Every trace casts a vote for every candidate; the winner
-is the candidate whose votes are *consistently* least bad.
+Candidate `h` is ahead after two traces, even though `g` won the second one
+alone. Every trace casts a vote for every candidate; the winner is the
+candidate whose votes are consistently least bad.
 
 Applied to the real attack set — for each of the 256 candidates, sum the
 model's log-probability of the value that candidate implies, over 1,000
@@ -103,53 +97,44 @@ traces:
 
 ![Accumulated log-evidence per key candidate](assets/figures/04_key_ranking.png)
 
-One orange bar stands out: the true key byte, `0x22`, with accumulated
-evidence −12,065 against −13,694 for the best wrong candidate (a margin of
-about 1,600 — in combined probability, a factor of e^1600 in favor). The
-model never spoke about keys, yet summing its verdicts over 1,000 traces
-leaves the true candidate far ahead of the 255 runners-up.
+One orange bar stands out: the true key byte, `0x22` (evidence −12,065
+against −13,694 for the best wrong candidate). The network still only named
+*values*; the ranking of key candidates is the attacker's construction from
+the hypothesis table.
 
-How fast does the winner separate? In the
-[notebook's](notebooks/03_the_attack.ipynb) fixed run of traces, the true
-key's rank falls from 81 (one trace) to 30 (five traces) to 1 (twenty
-traces). The exact count depends on which traces are used — which is why the
-standard metric averages over many draws.
+In one fixed run of traces in the notebook, the true key's rank falls from 81
+(one trace) to 30 (five traces) to 1 (twenty traces). The exact count depends
+on which traces are drawn — which is why the standard metric averages over
+many draws.
 
-## Guessing entropy: scoring a key recovery
+## Guessing entropy
 
-The **guessing entropy** (GE) is that averaged metric. The procedure:
+**Guessing entropy** (GE) is that averaged score:
 
 1. Draw a random subset of the attack traces.
 2. Accumulate the log-evidence of every candidate over the subset, and rank
    the 256 candidates.
-3. Average the true key's rank over many draws. That average is the guessing
-   entropy: GE = 1 means the attack points at the correct key; GE ≈ 128
-   means blind guessing.
+3. Average the true key's rank over many draws. GE = 1 means the attack
+   points at the correct key; GE ≈ 128 means blind guessing.
 
 The notebook runs 40 draws of 4,000 traces (seeded, so the figure is
 reproducible):
 
 ![Guessing entropy vs number of attack traces](assets/figures/04_guessing_entropy.png)
 
-The curve collapses from ~128 to 1 within roughly 100 traces, and the
-correct key holds rank 1 from trace 86 on. In practical terms: about 86
-power measurements of the device are enough to identify one key byte
-with certainty — against 256 pure guesses. Each trace contributed only a
-whisper of evidence; combined, the whispers decide.
+The curve falls from ~128 to 1 within roughly 100 traces, and the correct key
+holds rank 1 from trace 86 on. About 86 power measurements identify one key
+byte against 256 pure guesses.
 
 ## The exploration notebook
 
-Everything above — the hypothesis table, the single-trace prediction, the
-500-trace masking statistics, the evidence chart, and the guessing-entropy
-computation — is worked through in the
+The same steps are worked through in the
 **[attack notebook](notebooks/03_the_attack.ipynb)**. It runs on CPU in
-minutes, no training required.
+minutes; no training is required.
 
-One question is still untouched. Everything here used the *finished* model —
-the weights after epoch 100. But the checkpoints of
-[Chapter 3](03_models.md) hold the model after *every* epoch. The study's
-real question is: **when, during those 100 epochs, did this attack become
-possible?** That is the feature-emergence question, and it is where we go
-next.
+Everything above used the *finished* model — the weights after epoch 100.
+The checkpoints of [Chapter 3](03_models.md) also hold the model after every
+earlier epoch. The next question is when, during those 100 epochs, this
+attack became possible.
 
 ← Previous: [Chapter 3 — The models](03_models.md) · [Index](README.md) · Next: [Appendix — Datasets guide](appendix_datasets.md) →
