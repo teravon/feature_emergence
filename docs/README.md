@@ -32,7 +32,7 @@ the story reads on GitHub without running code.
 |----------|-----------------|----------|
 | 1–4 | `analysis/01_the_data.py` | traces, statistics, SNR figures |
 | 5–6 | `analysis/02_the_models.py` | model summaries, weight heatmaps |
-| 7 | `analysis/03_the_attack.py` | prediction, evidence ranking, GE |
+| 7 | `analysis/03_the_attack.py` | prediction, evidence progress, ranking, GE |
 
 Those scripts double as Jupyter notebooks under `docs/notebooks/` (Jupytext).
 
