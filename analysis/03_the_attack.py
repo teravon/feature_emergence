@@ -14,8 +14,8 @@
 # 4. How do we score the result? (guessing entropy)
 #
 # Figures produced (shown in the chapters):
-# `outputs/figures/04_prediction.png`, `04_key_ranking.png`,
-# `04_guessing_entropy.png`.
+# `outputs/figures/04_prediction.png`, `04_evidence_progress.png`,
+# `04_key_ranking.png`, `04_guessing_entropy.png`.
 
 # %%
 # Note: no `matplotlib.use("Agg")` here — plain `python` runs fall back to a
@@ -119,34 +119,58 @@ print(f"probability of the true value: {probs[true_class]:.4f}  (rank {rank_of_t
 print(f"probability of the guess:      {probs[guess_class]:.4f}")
 
 # %%
-fig, ax = plt.subplots(figsize=(14, 4))
+# Same 256 probabilities, two horizontal axes: y (network output) and g
+# (key guess). For fixed p, y_g = Sbox[p ⊕ g] is a bijection, so the bottom
+# panel is only a reordering of the top — not a second model.
+probs_by_key = probs[H[:, TRACE]]
+rank_of_true_key = int((probs_by_key > probs_by_key[true_key]).sum()) + 1
+print(f"same softmax, remapped to key guesses: true key rank {rank_of_true_key} of 256")
 
-ax.bar(np.arange(256), probs, color="#9ecae1")
-ax.axvline(true_class, color="#e6550d", ls="--", lw=1.5,
-           label=f"true value = {true_class} (p ≈ {probs[true_class]:.3f})")
-ax.annotate(f"model's guess: {guess_class}\np = {probs[guess_class]:.2f}",
-            xy=(guess_class, probs[guess_class]),
-            xytext=(guess_class + 18, probs[guess_class] * 0.95),
-            arrowprops=dict(arrowstyle="->", color="0.3"),
-            fontsize=9, color="0.3")
+fig, (ax_y, ax_g) = plt.subplots(2, 1, figsize=(14, 7), sharey=True)
 
-ax.set_title("MLP × ASCADr (epoch 100): output for one attack trace")
-ax.set_xlabel("S-box output value (class)")
-ax.set_ylabel("model probability")
-ax.grid(alpha=0.3, axis="y")
-ax.legend()
+ax_y.bar(np.arange(256), probs, color="#9ecae1", width=1.0)
+ax_y.axvline(true_class, color="#e6550d", ls="--", lw=1.5,
+             label=f"true y = {true_class} (p ≈ {probs[true_class]:.3f})")
+ax_y.annotate(f"model's guess: {guess_class}\np = {probs[guess_class]:.2f}",
+              xy=(guess_class, probs[guess_class]),
+              xytext=(guess_class + 18, probs[guess_class] * 0.95),
+              arrowprops=dict(arrowstyle="->", color="0.3"),
+              fontsize=9, color="0.3")
+ax_y.set_title("Same softmax, two axes — top: S-box output y")
+ax_y.set_xlabel("S-box output value y (class)")
+ax_y.set_ylabel("model probability")
+ax_y.grid(alpha=0.3, axis="y")
+ax_y.legend(loc="upper right")
 
+colors_g = np.full(256, "#9ecae1")
+colors_g[true_key] = "#e6550d"
+ax_g.bar(np.arange(256), probs_by_key, color=colors_g, width=1.0)
+ax_g.set_title(
+    f"bottom: same probabilities indexed by key guess g  "
+    f"(true key 0x{true_key:02x} rank {rank_of_true_key}/256)"
+)
+ax_g.set_xlabel("key candidate g")
+ax_g.set_ylabel("model probability of y_g")
+ax_g.grid(alpha=0.3, axis="y")
+
+fig.suptitle("MLP × ASCADr (epoch 100): one attack trace", y=1.01)
 fig.tight_layout()
-fig.savefig(out / "04_prediction.png", dpi=150)
+fig.savefig(out / "04_prediction.png", dpi=150, bbox_inches="tight")
 print("saved:", out / "04_prediction.png")
 plt.show()
 
 # %% [markdown]
+# The top panel is what the network emits: a distribution over `y`. The
+# bottom panel uses the public map `y_g = Sbox[p ⊕ g]` to place each of
+# those same probabilities on the corresponding key guess. No new inference —
+# only a change of axis. Orange on the bottom is the true key byte; it is
+# still not the tallest bar (masking). Later we will *sum* bottom-style
+# scores across traces; we will not average many top panels.
+#
 # The output is *confident* — one class collects ~25% of the probability mass
-# — but it is not the true value. The orange line marks the truth, buried
-# among the also-rans. This is the mask at work: a single trace carries the
-# masked value `Sbox[plaintext ⊕ key] ⊕ mask`, and without knowing the mask
-# the network can only make an educated guess.
+# — but it is not the true value. This is the mask at work: a single trace
+# carries the masked value `Sbox[plaintext ⊕ key] ⊕ mask`, and without
+# knowing the mask the network can only make an educated guess.
 #
 # Is there any signal per trace at all? Over the first 500 attack traces:
 
@@ -167,14 +191,22 @@ print(f"traces where the best guess is right: {int((probs_n.argmax(axis=1) == da
 #
 # ## 4. Accumulating evidence
 #
-# How do weak per-trace signals add up to a strong one? Through
-# probabilities — and through logarithms.
+# Why not just average many softmax plots like the one above? That figure's
+# horizontal axis is the S-box output `y`. Each encryption uses a different
+# plaintext byte `p`, so the true `y = Sbox[p ⊕ k]` sits on a **different
+# class** almost every time. Averaging those vectors blurs peaks that were
+# never aligned. The axis that stays fixed is the key byte — still unknown —
+# so each softmax is rewritten as one number per key guess `g`:
 #
-# If traces were independent coin flips, the probability of a combined
-# outcome would be the *product* of the individual probabilities. Products of
-# many small numbers underflow to zero in floating point, so the standard
-# trick is to take logs: the product of probabilities becomes a **sum of
-# log-probabilities**, and sums are well behaved.
+# ```text
+# y_g = Sbox[p ⊕ g]          # public
+# take P(y_g | power)        # from that trace's softmax
+# ```
+#
+# If traces are independent, the combined score for `g` is the *product* of
+# those probabilities. Products of many small numbers underflow in floating
+# point, so we take logs: the product becomes a **sum of log-probabilities**.
+# Log does not change which `g` wins.
 #
 # A tiny two-trace example. Under candidate `g`, the model assigns the first
 # trace's implied value a probability of 0.02 and the second trace's implied
@@ -189,12 +221,54 @@ print(f"traces where the best guess is right: {int((probs_n.argmax(axis=1) == da
 # second trace alone. Every trace casts a vote for every candidate; the
 # candidate whose votes are *consistently* least bad wins in the long run.
 #
-# Now for all 256 candidates over the attack set. For candidate `g`, we sum
-# the model's log-probability of the value `g` implies on each trace:
+# Now for all 256 candidates over the attack set:
 
 # %%
 predictions = model.predict(dataset.x_attack, verbose=0)   # (n_attack, 256)
 log_pred = np.log(predictions + 1e-36)
+
+# %% [markdown]
+# The bar charts below are **not** stacked softmaxes. The horizontal axis is
+# now the key candidate `g`. Each panel sums log P(y_g) over the first `n`
+# attack traces (fixed order). Orange = true key byte; the title is its rank:
+
+# %%
+checkpoints = [1, 5, 20, 100]
+fig, axes = plt.subplots(2, 2, figsize=(14, 8), sharex=True)
+
+for ax, n in zip(axes.ravel(), checkpoints):
+    ev = log_pred[np.arange(n), H[:, :n]].sum(axis=1)
+    rank = int((ev > ev[true_key]).sum()) + 1
+    colors = np.full(256, "#9ecae1")
+    colors[true_key] = "#e6550d"
+    ax.bar(np.arange(256), ev, color=colors, width=1.0)
+    ax.set_title(f"after {n} trace{'s' if n > 1 else ''}  ·  true key rank {rank} / 256")
+    ax.set_ylabel("sum of log-probabilities")
+    ax.grid(alpha=0.3, axis="y")
+    lo, hi = ev.min(), ev.max()
+    pad = 0.05 * (hi - lo + 1e-9)
+    ax.set_ylim(lo - pad, hi + pad)
+
+axes[1, 0].set_xlabel("key candidate")
+axes[1, 1].set_xlabel("key candidate")
+fig.suptitle(
+    "MLP × ASCADr (epoch 100): key-candidate evidence as traces accumulate",
+    y=1.01,
+)
+fig.tight_layout()
+fig.savefig(out / "04_evidence_progress.png", dpi=150, bbox_inches="tight")
+print("saved:", out / "04_evidence_progress.png")
+plt.show()
+
+# %%
+for n in checkpoints + [400, 1000]:
+    ev = log_pred[np.arange(n), H[:, :n]].sum(axis=1)
+    rank = int((ev > ev[true_key]).sum()) + 1
+    print(f"after {n:5d} traces: rank of the true key = {rank} of 256")
+
+# %% [markdown]
+# After twenty traces in this fixed order the true byte is already rank 1.
+# The same ranking after 1,000 traces makes the gap unmistakable:
 
 # %%
 N_EVIDENCE = 1000
@@ -231,16 +305,6 @@ plt.show()
 # verdicts over 1,000 traces leaves the true candidate far ahead of the 255
 # runners-up.
 #
-# How fast does the winner separate? The rank of the true key as traces
-# accumulate (in fixed trace order):
-
-# %%
-for n in [1, 5, 20, 100, 400, 1000]:
-    ev = log_pred[np.arange(n), H[:, :n]].sum(axis=1)
-    rank = int((ev > ev[true_key]).sum()) + 1
-    print(f"after {n:5d} traces: rank of the true key = {rank} of 256")
-
-# %% [markdown]
 # ## 5. Guessing entropy: scoring a key recovery
 #
 # The evidence chart shows one battle. But which 1,000 traces we happen to
