@@ -142,16 +142,16 @@ ax_y.set_ylabel("model probability")
 ax_y.grid(alpha=0.3, axis="y")
 ax_y.legend(loc="upper right")
 
-colors_g = np.full(256, "#9ecae1")
-colors_g[true_key] = "#e6550d"
-ax_g.bar(np.arange(256), probs_by_key, color=colors_g, width=1.0)
-ax_g.set_title(
-    f"bottom: same probabilities indexed by key guess g  "
-    f"(true key 0x{true_key:02x} rank {rank_of_true_key}/256)"
+ax_g.bar(np.arange(256), probs_by_key, color="#9ecae1", width=1.0)
+ax_g.axvline(
+    true_key, color="#d62728", ls="-", lw=1.8,
+    label=f"true k = 0x{true_key:02x} (rank {rank_of_true_key}/256)",
 )
+ax_g.set_title("bottom: same probabilities indexed by key guess g")
 ax_g.set_xlabel("key candidate g")
 ax_g.set_ylabel("model probability of y_g")
 ax_g.grid(alpha=0.3, axis="y")
+ax_g.legend(loc="upper right")
 
 fig.suptitle("MLP × ASCADr (epoch 100): one attack trace", y=1.01)
 fig.tight_layout()
