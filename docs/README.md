@@ -17,11 +17,12 @@ docs/
 ├── 05_the_network.md                 ← MLP/CNN as functions on traces
 ├── 06_training_and_checkpoints.md    ← loss, split, scaling, epoch weights
 ├── 07_scoring_the_attack.md          ← hypotheses, evidence, guessing entropy
+├── 08_perceived_information.md       ← PI vs epoch (bridge to Act III)
 └── appendix_datasets.md              ← field-by-field reference
 ```
 
-Acts I–II of this material end here. Act III (phase transitions, logits, PCA,
-patching) is the interpretability heart and is not in the public tree yet.
+Acts I–II of this material run through Chapter 8. Act III (phase transitions,
+logits, PCA, patching) is the interpretability heart and is not filled in yet.
 
 Each chapter is plain Markdown with figures committed in this repository, so
 the story reads on GitHub without running code.
@@ -33,6 +34,7 @@ the story reads on GitHub without running code.
 | 1–4 | `analysis/01_the_data.py` | traces, statistics, SNR figures |
 | 5–6 | `analysis/02_the_models.py` | model summaries, weight heatmaps |
 | 7 | `analysis/03_the_attack.py` | prediction, evidence progress, ranking, GE |
+| 8 | — | — |
 
 Those scripts double as Jupyter notebooks under `docs/notebooks/` (Jupytext).
 
