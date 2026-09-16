@@ -14,8 +14,8 @@ success emerged during training.
 
 1. What is known and what is secret.
 2. How `y` and `k` are tied by public algebra (exact `y` vs uncertain `y`).
-3. What one trace’s softmax looks like — over `y` and, remapped, over key
-   guesses.
+3. Black-box softmax over `y`, then one-trace tables: trace → `P(y)` → votes
+   on `k`.
 4. Why many traces must be combined on the key-guess axis (product of votes,
    then sum of logs for numerics).
 5. Guessing entropy: mean rank of the true key (how to read the curve).
@@ -91,67 +91,110 @@ k = p ⊕ x
 
 Example: `Sbox⁻¹[145] = 0xac`, then `0x8e ⊕ 0xac = 0x22`. No network needed.
 
-### If `y` is only a probability distribution
+### What the trained network actually outputs
 
-The trained network does not output a sure `y`. It outputs 256
-probabilities, one per possible S-box output. There is no single value to
-pass through `Sbox⁻¹`, so the attack does **not** compute
-`k = p ⊕ Sbox⁻¹[ŷ]` from the model’s peak class.
+From a data-science view the epoch-100 MLP is a **black box classifier**.
+It was trained to map a power trace to one of 256 classes: the possible
+values of `y`. It was **not** trained to output a key byte. The last layer
+is a softmax: 256 non-negative numbers that sum to 1 — a probability for
+each possible `y`.
 
-Instead the attacker enumerates every key guess `g ∈ {0,…,255}` and asks
-**forward**, with the known `p` of that trace:
-
-```text
-y_g = Sbox[p ⊕ g]              # public
-vote(g) = P(y_g | power)       # from the softmax
+```mermaid
+flowchart LR
+    T["power trace<br/>(2000 samples)"] --> N["trained MLP<br/>(black box)"]
+    N --> S["softmax<br/>P(y=0) … P(y=255)"]
 ```
 
-Only the true `k` matches what the chip actually computed. Concrete rows for
-the first attack trace (`p = 0x8e`):
+Hidden layers hold learned features; they are not labelled as `y`. The only
+place `y` appears by design is as the **training label** (profiling) and as
+this **output distribution** (attack).
+
+### One attack trace, three tables
+
+The first ASCADr attack trace has plaintext byte `p = 0x8e`. The true key
+byte on this dataset is `k = 0x22`, so the true intermediate is `y = 145`.
+Below: a fragment of the **scaled** trace (same preprocessing as training),
+a sparse view of the 256-class softmax, then the remapping to key guesses.
+Rows marked `…` are omitted; the full vectors have length 2000 and 256.
+
+**Table A — input (trace fragment)**
 
 ```text
-candidate g     p ⊕ g      y_g = Sbox[p ⊕ g]    HW(y_g)
-────────────────────────────────────────────────────────
-0x00            0x8e       25                   3
-0x01            0x8f       115                  5
-0x22            0xac       145                  3      ← true key byte
-0xff            0x71       163                  4
+sample index     scaled amplitude
+─────────────────────────────────
+0                  0.216
+1                  0.229
+2                 −0.399
+…                    …
+500               −0.993
+1000              −0.065
+1500              −0.237
+…                    …
+1998              −1.842
+1999              −1.644
 ```
+
+**Table B — network output (selected `P(y)`)**
 
 ```text
-power → network → P(y=0), …, P(y=255)
-
-g = 0x00  →  take P(y=25)
-g = 0x01  →  take P(y=115)
-g = 0x22  →  take P(y=145)
-g = 0xff  →  take P(y=163)
+y      P(y)         note
+──────────────────────────────────────────────
+20     0.194
+25     ~10⁻⁶
+46     0.058
+115    ~10⁻⁷
+145    ~10⁻⁶        ← true y (almost flat)
+154    0.247        ← model's peak class
+160    0.054
+163    ~10⁻¹²
+240    0.089
+…      …
+(all 256 sum to 1)
 ```
 
-That remapping is a reordering of the same 256 probabilities when `p` is
-fixed — not a second model, and not an inverse S-box on the peak. In code,
-the dataset stores every `y_g` for every attack plaintext as a matrix of
-shape 256 × n_attack (row = guess). It is only a lookup table for the
-algebra step.
+The peak is `y = 154` with probability ≈ 0.25 — not the true `145`. Inverting
+that peak with `Sbox⁻¹` would give the **wrong** key. The attack never does
+that.
+
+**Table C — same probabilities on key guesses** (`p = 0x8e` fixed)
+
+For each candidate `g`, public algebra gives `y_g = Sbox[p ⊕ g]`. The vote
+for `g` is simply `P(y_g)` from Table B:
+
+```text
+guess g     y_g = Sbox[p⊕g]     vote = P(y_g)      note
+────────────────────────────────────────────────────────────
+0x00        25                  ~10⁻⁶
+0x01        115                 ~10⁻⁷
+0x22        145                 ~10⁻⁶              ← true k
+0xb9        154                 0.247              ← best vote this trace
+0xff        163                 ~10⁻¹²
+…           …                   …
+```
+
+Table C is Table B with rows reordered by `g` (for fixed `p` the map
+`g ↔ y_g` is a bijection). No second model. On this single trace the true
+key’s vote is tiny (rank 81 of 256); the largest vote belongs to a wrong
+guess. That is why one softmax is not a recovered key.
+
+In code, the dataset precomputes every `y_g` for every attack plaintext as a
+matrix of shape 256 × n_attack. It is only a lookup table for Table C’s
+middle column.
 
 ## 3. One trace is not enough
 
-Feed one attack trace to the epoch-100 model. The figure shows the **same**
-softmax twice: top axis = S-box output `y`; bottom axis = key guess `g`
-(via `y_g = Sbox[p ⊕ g]`). Orange on the bottom is the true key byte.
+The same numbers as a plot — top axis `y`, bottom axis `g`:
 
 ![Model output for one attack trace, over y and over key guesses](assets/figures/04_prediction.png)
 
-The network can look confident — one class may collect about a quarter of
-the probability mass — while still missing the true `y`, and while the true
-key is not the tallest bar on the bottom. ASCADr is masked
-([Chapter 3](03_masking.md)): a single trace carries
+ASCADr is masked ([Chapter 3](03_masking.md)): a single trace carries
 `Sbox[plaintext ⊕ key] ⊕ mask`, randomized per encryption. Without the
-mask, the network cannot name the unmasked value from one recording.
+mask, the network cannot name the unmasked `y` from one recording.
 
 Over the first 500 attack traces the model’s best guess is right on only 4;
 the true value receives about twice the uniform probability (0.0089 vs
 0.0039). That is above chance, and it is not enough to call the key from one
-shot.
+shot. The next section combines many Table-C votes for the same secret `k`.
 
 ## 4. Accumulating votes across traces
 
@@ -167,17 +210,16 @@ y = Sbox[p ⊕ k]
 sits on a **different class** on almost every trace. Averaging those softmax
 vectors blurs peaks that were never aligned.
 
-What stays fixed is the key byte. For every trace the attacker builds the
-**bottom-style** scores (one probability per `g`) and combines those scores
-across traces.
+What stays fixed is the key byte. For every trace the attacker builds a
+Table C (one vote per `g`) and combines those votes across traces.
 
 ### Why combine votes at all?
 
-Each bottom-style score is a weak clue: “how compatible is *this* power
-recording with the story that the key byte is `g`?” One clue is noisy
-(masking). The secret `k` does not change between encryptions, so the same
-`g` is on trial in every trace. The attacker needs a rule that says how
-well **the whole set of recordings** fits each story.
+Each Table-C vote is a weak clue: “how compatible is *this* power recording
+with the story that the key byte is `g`?” One clue is noisy (masking). The
+secret `k` does not change between encryptions, so the same `g` is on trial
+in every trace. The attacker needs a rule that says how well **the whole
+set of recordings** fits each story.
 
 ### Why a product (not a sum of the raw probabilities)
 
@@ -258,9 +300,8 @@ already the attack outcome for one fixed list of traces.
 ### Why average — and what GE is
 
 Which traces you pick changes that rank (a lucky batch reaches 1 sooner; an
-unlucky batch later). **Guessing entropy** (GE) is not Shannon entropy and
-not a new kind of network output. It is the **mean rank of the true key**,
-averaged over many random draws of the attack set:
+unlucky batch later). **Guessing entropy** (GE) is the **mean rank of the
+true key**, averaged over many random draws of the attack set:
 
 1. Shuffle / draw a random subset of attack traces.
 2. Accumulate log-evidence; read the true key’s rank (1…256).
@@ -278,8 +319,9 @@ recovery here.
 
 - **Horizontal axis:** how many attack traces enter the product / sum of
   logs (more clues).
-- **Vertical axis:** that mean rank (GE). The scale is logarithmic so the
-  drop from ~100 down to 1 stays visible.
+- **Vertical axis:** mean rank of the true key among the 256 candidates
+  (1 = first place, 256 = last). That average is GE. The scale is
+  logarithmic so the drop from ~100 down to 1 stays visible.
 - **Grey dotted line (128):** random-guessing baseline.
 - **Orange dashed line (1):** “key recovered” — true byte ranked first on
   average.
@@ -288,10 +330,9 @@ recovery here.
   from about trace 86 onward it stays at 1 out to 4,000.
 
 The progress panels showed one fixed run climbing to rank 1 by twenty
-traces. The GE curve answers the stabler question: *on average, after how
-many measurements is the true byte first?* About 86 here. That count is
-what this project means when it says the finished model recovers the key
-byte.
+traces. The GE curve answers: *on average, after how many measurements is
+the true byte first?* About 86 here — that is the usual “how many traces
+do I need?” figure for this model and dataset.
 
 ## 6. Notebook and next question
 
