@@ -3,7 +3,7 @@
 This folder holds only the **original** notebooks shipped upstream, kept in
 `original/` as unmodified reference material.
 
-Our own notebook — the hands-on companion of the manual's chapters — lives in
+Our own notebook — the companion of the docs chapters — lives in
 [`docs/notebooks/`](../docs/notebooks/) so that a single copy renders both on
 GitHub and on the documentation site. It is generated from the scripts in
 `analysis/` via `scripts/sync_notebooks.sh` (Jupytext).

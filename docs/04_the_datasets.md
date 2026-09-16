@@ -1,17 +1,20 @@
-# Chapter 2 — The data
+# Chapter 4 — The datasets we will live in
 
 We work with three public datasets, each a collection of side-channel
 measurements of AES-128. All three come from implementations protected with
-**Boolean masking** (a countermeasure that randomizes the intermediate values
-with random *masks*), and in all three the attack targets the first
-encryption round. What changes is the device, the measured quantity, and the
-trace length:
+Boolean masking ([Chapter 3](03_masking.md)), and in all three the attack
+targets the first encryption round. What changes is the device, the measured
+quantity, and the trace length:
 
 | Dataset | Device | Measured | Traces (profiling / attack) | Samples per trace |
 |---------|--------|----------|------------------------------|-------------------|
 | **ASCADr** | 8-bit AVR microcontroller (ATMega8515) | electromagnetic emissions | 200,000 / 10,000 | 2,000 |
 | **ESHARD** | 32-bit ARM Cortex-M4 | electromagnetic emissions | 90,000 / 10,000 | 1,400 |
 | **CHES_CTF** | 32-bit ARM Cortex-M4 | power consumption | 30,000 / 10,000 | 15,000 |
+
+The running example for most of what follows is **ASCADr** (identity leakage,
+MLP). ESHARD and CHES_CTF return later for contrast. Full field-by-field
+detail, including download links: [appendix](appendix_datasets.md).
 
 ## Where do the datasets come from?
 
@@ -30,8 +33,7 @@ All three are public benchmarks from the side-channel research community:
 
 The raw measurements are far too large to work with directly (hundreds of
 thousands of samples per trace), so the paper uses trimmed and resampled
-windows around the first AES round — that is what our files contain. Full
-details, including download links: [docs/appendix_datasets.md](appendix_datasets.md).
+windows around the first AES round — that is what our files contain.
 
 ## What is inside each file?
 
@@ -52,15 +54,15 @@ flowchart TD
 
 The `metadata` array is our ground truth. Each record holds the cryptographic
 values that produced the trace in the same row. With `plaintext` and `key` we
-can compute the leakage label of every trace (see the leakage models of
-[Chapter 1](01_introduction.md)):
+can compute the leakage label of every trace (see
+[Chapter 2](02_intermediate_values.md)):
 
 ```python
 label = sbox[plaintext[byte] ^ key[byte]]              # identity model
 hw    = popcount(sbox[plaintext[byte] ^ key[byte]])    # Hamming weight model
 ```
 
-## Profiling vs attack: a critical split
+## Profiling vs attack
 
 Every dataset is divided into two disjoint sets:
 
@@ -87,8 +89,7 @@ then uses that same model against a target device of the same type.
 
 ## A first look
 
-Before training anything, three things are worth seeing. Each figure below is
-generated step by step in the companion notebook; here is the summary.
+Each figure below is generated in the companion notebook; here is the summary.
 
 **Trace shapes.** Traces from the three datasets look nothing alike — compare
 the short traces of ESHARD with the long, spiky traces of CHES_CTF. The main
@@ -109,64 +110,14 @@ models scale their inputs before training.
 
 ![Profiling trace statistics per dataset](assets/figures/02_stats_table.png)
 
-**Where the key leaks.** A trace has thousands of time samples, but only a
-few of them carry information about the key. To find them, we score every
-sample independently with the *Signal-to-Noise Ratio* (SNR). Fix one time
-sample `t` and look at the column of values it takes across all profiling
-traces. We know the plaintext and the key of each trace, so we can compute
-the target intermediate of each trace — here the Hamming weight of the first
-S-box output, a label between 0 and 8 — and split the column into one bucket
-per label value:
-
-```mermaid
-flowchart LR
-    A["one time sample t:<br/>one number per trace"] --> B["split traces by<br/>leakage label (0–8)"]
-    B --> C["bucket averages<br/>how far apart? = signal"]
-    B --> D["spread inside buckets<br/>how wide? = noise"]
-    C --> E["SNR(t) = signal ÷ noise"]
-    D --> E
-    E --> F["repeat for every t<br/>→ SNR curve"]
-```
-
-Inside a bucket the intermediate value is fixed, so the remaining spread is
-noise — other operations, temperature, measurement error. The bucket averages
-move apart only if the measurement at instant `t` genuinely depends on the
-intermediate. The figure below shows both cases for two single instants of
-ESHARD, where the effect is clearest. On the left, an instant far from the
-encryption work: the bucket averages (joined by the red line) coincide, so
-knowing the label says nothing. On the right, the instant of highest SNR:
-the averages rise with the Hamming weight, while each dot cloud keeps its own
-spread. The ups and downs of the red line are the signal; the vertical width
-of the clouds is the noise.
-
-![SNR ingredients: two time samples grouped by leakage label](assets/figures/02_snr_buckets.png)
-
-Repeating this computation for all 1,400 samples gives the SNR curve. Tall,
-narrow peaks mean the leakage is concentrated in a few clock cycles — the
-instants where the S-box output is physically computed and moved. Everything
-else is the noise floor: activity unrelated to the target byte.
-
-![One trace and its SNR curve on the same time axis](assets/figures/02_snr_annotated.png)
-
-Masking pushes the peaks down. A masked device never computes on the S-box
-output directly but on `S-box output XOR mask`, with a fresh random mask per
-trace. Bucketing traces by the unmasked label then mixes every possible
-masked value into each bucket, the bucket averages collapse onto each other,
-and the signal term shrinks. The leakage is not gone — it hides in *joint*
-statistics of several samples — which is why deep networks, able to combine
-distant samples, can still break masked implementations.
-
-![SNR per dataset](assets/figures/02_snr_curves.png)
-
-These SNR curves are the reference for the rest of the book: they mark *where*
-an analyst would look for the key, so that later we can check whether a
-trained network looks in the same place.
+The SNR map of *where* the key leaks was the subject of
+[Chapter 3](03_masking.md). With the files in hand, the next question is what
+function a neural network computes on these traces.
 
 ## The exploration notebook
 
-Everything above — opening an `.h5` file by hand, reading one metadata record,
-computing the statistics and the SNR — is worked through interactively in the
-**[data exploration notebook](notebooks/01_the_data.ipynb)**. Run it, tweak
-it, break it: that is where the real understanding of the data comes from.
+Opening an `.h5` file by hand, reading one metadata record, and computing the
+statistics and the SNR is worked through in the
+**[data exploration notebook](notebooks/01_the_data.ipynb)**.
 
-← Previous: [Chapter 1 — Introduction](01_introduction.md) · [Index](README.md) · Next: [Chapter 3 — The models](03_models.md) →
+← Previous: [Chapter 3 — Masking](03_masking.md) · [Index](README.md) · Next: [Chapter 5 — The network](05_the_network.md) →

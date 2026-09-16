@@ -1,8 +1,9 @@
 # %% [markdown]
 # # The models
 #
-# This notebook accompanies Chapter 3 of the manual
-# (`docs/03_models.md`). The chapter explains the ideas; here we build the
+# This notebook accompanies Chapters 5–6 of the docs
+# (`docs/05_the_network.md`, `docs/06_training_and_checkpoints.md`). The
+# chapters explain the ideas; here we build the
 # networks, look inside a trained checkpoint, and load it back into a model.
 #
 # We answer four questions:
@@ -31,7 +32,7 @@ out.mkdir(parents=True, exist_ok=True)
 # ## 1. Which models were trained?
 #
 # The study trains one network per (dataset, architecture) combination. Each
-# combination fixes the leakage model of [Chapter 1](../../docs/01_introduction.md):
+# combination fixes the leakage model of [Chapter 2](../../docs/02_intermediate_values.md):
 # ASCADr uses the identity model (256 classes, one per S-box output value),
 # ESHARD and CHES_CTF use the Hamming weight model (9 classes).
 #
@@ -95,7 +96,7 @@ cnn.summary()
 # ## 3. Inside the weights
 #
 # A checkpoint is itself an HDF5 file — the same container format as the
-# datasets of [Chapter 2](../../docs/02_the_data.md), opened with the same
+# datasets of [Chapter 4](../../docs/04_the_datasets.md), opened with the same
 # tool, `h5py`. Inside, the weights are plain numerical arrays. Let's open
 # one and list what it holds:
 
@@ -174,7 +175,7 @@ plt.show()
 # training progresses, structure condenses: bands of color appear at specific
 # time samples, meaning many neurons have learned to listen there. Measuring
 # *when* this happens, and whether the loud samples coincide with the SNR
-# peaks of [Chapter 2](../../docs/02_the_data.md), is the feature-emergence
+# peaks of [Chapter 3](../../docs/03_masking.md), is the feature-emergence
 # question of a later chapter.
 
 # %% [markdown]
@@ -200,7 +201,7 @@ print("loaded:", CKPT.name, "(weights after epoch 100)")
 # %% [markdown]
 # The network now behaves exactly like the trained model of epoch 100 — same
 # weights, same predictions. What it *does* with a trace is the subject of
-# [the next chapter](../../docs/04_the_attack.md).
+# [the next chapter](../../docs/07_scoring_the_attack.md).
 #
 # ## Takeaways
 #
