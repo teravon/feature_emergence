@@ -1,17 +1,22 @@
-# Chapter 4 — The attack
+# Chapter 7 — How a key byte is recovered
 
-[Chapter 3](03_models.md) ended with a trained network that maps a power
-trace to a probability distribution over *intermediate values*. This chapter
-turns those probabilities into a key byte. We use the finished ASCADr MLP —
-the epoch-100 checkpoint from Chapter 3 — and the ASCADr attack set: traces
+[Chapter 6](06_training_and_checkpoints.md) left a trained network that maps
+a power trace to a probability distribution over *intermediate values*. This
+chapter turns those probabilities into a key byte. We use the finished
+ASCADr MLP — the epoch-100 checkpoint — and the ASCADr attack set: traces
 the model has never seen.
+
+This chapter defines **attack success**. It is not the climax of the
+project; it is the operational prerequisite for asking *when* and *how* that
+success emerged during training.
 
 ## What the attacker knows
 
 The attack assumes the **plaintext is known**. That is realistic for many
 devices (smart cards, authenticators, tokens): the input was sent in the
-clear, or the attacker chose it. The datasets of [Chapter 2](02_the_data.md)
-store the plaintext next to every trace. The key never leaves the chip.
+clear, or the attacker chose it. The datasets of
+[Chapter 4](04_the_datasets.md) store the plaintext next to every trace. The
+key never leaves the chip.
 
 The attacker therefore sits with the input, a power recording of the
 encryption, and no direct access to the key.
@@ -19,10 +24,9 @@ encryption, and no direct access to the key.
 ## 256 hypotheses for one key byte
 
 A key byte has 256 possible values. The attacker enumerates all of them.
-Recall from [Chapter 1](01_introduction.md) how the key enters the first AES
-round: each plaintext byte is XOR-ed with one key byte and passed through the
-S-box. For an attack trace with known plaintext byte `p`, each candidate `g`
-predicts exactly one intermediate value:
+Recall from [Chapter 2](02_intermediate_values.md) how the key enters the
+first AES round: for an attack trace with known plaintext byte `p`, each
+candidate `g` predicts exactly one intermediate value:
 
 ```text
 Sbox[p ⊕ g]
@@ -61,7 +65,7 @@ probability per possible S-box output (256 classes).
 
 The network is *confident* — one class collects about a quarter of the
 probability mass — but that class is **not** the true intermediate value
-(dashed line). ASCADr is masked ([Chapter 2](02_the_data.md)): a single trace
+(dashed line). ASCADr is masked ([Chapter 3](03_masking.md)): a single trace
 carries `Sbox[plaintext ⊕ key] ⊕ mask`, randomized per encryption. Without
 the mask, the network cannot name the unmasked value from one recording.
 
@@ -124,7 +128,8 @@ reproducible):
 
 The curve falls from ~128 to 1 within roughly 100 traces, and the correct key
 holds rank 1 from trace 86 on. About 86 power measurements identify one key
-byte against 256 pure guesses.
+byte against 256 pure guesses. That is the definition of success used here
+when we say the attack works.
 
 ## The exploration notebook
 
@@ -133,8 +138,8 @@ The same steps are worked through in the
 minutes; no training is required.
 
 Everything above used the *finished* model — the weights after epoch 100.
-The checkpoints of [Chapter 3](03_models.md) also hold the model after every
-earlier epoch. The next question is when, during those 100 epochs, this
-attack became possible.
+The checkpoints of [Chapter 6](06_training_and_checkpoints.md) also hold the
+model after every earlier epoch. The next question is when, during those 100
+epochs, this attack became possible.
 
-← Previous: [Chapter 3 — The models](03_models.md) · [Index](README.md) · Next: [Appendix — Datasets guide](appendix_datasets.md) →
+← Previous: [Chapter 6 — Training and checkpoints](06_training_and_checkpoints.md) · [Index](README.md) · Next: [Appendix — Datasets guide](appendix_datasets.md) →

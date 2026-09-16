@@ -1,8 +1,9 @@
 # %% [markdown]
 # # Exploring the data
 #
-# This notebook accompanies Chapter 2 of the manual
-# (`docs/02_the_data.md`). The chapter gives the orientation; here we actually
+# This notebook accompanies Chapters 3–4 of the docs
+# (`docs/03_masking.md`, `docs/04_the_datasets.md`). The chapters give the
+# orientation; here we actually
 # open the files and look at the numbers.
 #
 # We answer four questions:

@@ -1,8 +1,8 @@
 # %% [markdown]
 # # The attack
 #
-# This notebook accompanies Chapter 4 of the manual
-# (`docs/04_the_attack.md`). The chapter explains the ideas; here we load a
+# This notebook accompanies Chapter 7 of the docs
+# (`docs/07_scoring_the_attack.md`). The chapter explains the ideas; here we load a
 # trained model and actually recover a key byte.
 #
 # We answer four questions:
@@ -32,7 +32,7 @@ out.mkdir(parents=True, exist_ok=True)
 # %% [markdown]
 # ## 1. Loading a trained model
 #
-# We rebuild the ASCADr MLP of [Chapter 3](03_the_models.ipynb) and load the
+# We rebuild the ASCADr MLP of [Chapter 5](03_the_models.ipynb) and load the
 # epoch-100 checkpoint — the weights as they stood at the end of training.
 #
 # We also load the ASCADr attack set — traces the model has never seen — and
@@ -62,7 +62,7 @@ print(f"correct key byte: 0x{dataset.correct_key_attack:02x}")
 # The attacker is not empty-handed. In this attack — as in most side-channel
 # attacks — the **plaintext is known**: it was sent to the device in the
 # clear, and the datasets store it next to every trace
-# ([Chapter 2](../../docs/02_the_data.md)). The key, on the other hand, never
+# ([Chapter 4](../../docs/04_the_datasets.md)). The key, on the other hand, never
 # leaves the chip.
 #
 # One key byte has 256 possible values, so the attacker can simply enumerate
@@ -100,7 +100,7 @@ for g in [0x00, true_key, 0xFF]:
 # Feed one attack trace to the epoch-100 model. The output is a softmax: a
 # probability for each of the 256 possible S-box output values.
 #
-# Before looking, one reminder from [Chapter 2](../../docs/02_the_data.md):
+# Before looking, one reminder from [Chapter 3](../../docs/03_masking.md):
 # ASCADr is **masked**. At any instant, the value flowing through the S-box is
 # `Sbox[plaintext ⊕ key] ⊕ mask`, randomized by a fresh mask per trace. The
 # unmasked value is only recovered *statistically, over many traces* — so we
