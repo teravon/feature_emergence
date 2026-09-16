@@ -16,8 +16,9 @@ success emerged during training.
 2. How `y` and `k` are tied by public algebra (exact `y` vs uncertain `y`).
 3. What one trace’s softmax looks like — over `y` and, remapped, over key
    guesses.
-4. Why many traces must be combined on the key-guess axis (sum of logs).
-5. Guessing entropy as the averaged success metric.
+4. Why many traces must be combined on the key-guess axis (product of votes,
+   then sum of logs for numerics).
+5. Guessing entropy: mean rank of the true key (how to read the curve).
 6. The notebook that computes the figures.
 
 ## 1. What the attacker has
@@ -170,31 +171,62 @@ What stays fixed is the key byte. For every trace the attacker builds the
 **bottom-style** scores (one probability per `g`) and combines those scores
 across traces.
 
-### Product of probabilities, sum of logs
+### Why combine votes at all?
 
-If traces are treated as independent, the combined score for guess `g` is
-the product of its per-trace votes:
+Each bottom-style score is a weak clue: “how compatible is *this* power
+recording with the story that the key byte is `g`?” One clue is noisy
+(masking). The secret `k` does not change between encryptions, so the same
+`g` is on trial in every trace. The attacker needs a rule that says how
+well **the whole set of recordings** fits each story.
+
+### Why a product (not a sum of the raw probabilities)
+
+Treat two traces as separate measurements. For a fixed guess `g`, write:
+
+- A = “trace 0 looks compatible with `g`” (model probability of the implied
+  `y_g` on that trace),
+- B = “trace 1 looks compatible with `g`”.
+
+The question for the attack is whether **both** recordings fit the same
+story. For independent events, that joint compatibility is the product:
 
 ```text
-score(g) = P(y_g | trace 0) × P(y_g | trace 1) × … × P(y_g | trace n−1)
+P(A and B) = P(A) × P(B)
 ```
 
-A long product of numbers in (0, 1) underflows in floating point. The
-logarithm turns the product into a sum without changing which `g` wins:
+That is the only reason for the ×. Adding the raw probabilities would answer
+a different question (mixing incompatible scales); averaging the top-panel
+softmaxes would still mix different `y` classes across plaintexts.
+
+Wrong guesses can look good on one unlucky trace and bad on the next: the
+product shrinks fast when any factor is tiny. The true key tends to avoid
+those near-zeros more often, so its product decays more slowly and pulls
+ahead as `n` grows. The mathematics is bookkeeping for “many weak clues
+about one fixed secret,” not a new model of the chip.
+
+### From product to sum of logs
+
+A long product of numbers in (0, 1) underflows to 0 in floating point. The
+logarithm turns multiplication into addition and does not change which `g`
+wins (larger product ↔ larger sum of logs):
 
 ```text
-evidence(g) = Σ log P(y_g | trace i)
+score(g)     = P₀ × P₁ × … × Pₙ₋₁
+evidence(g)  = log P₀ + log P₁ + … + log Pₙ₋₁
 ```
+
+`evidence(g)` is what the bar charts plot. Same ranking as the product;
+safer arithmetic.
 
 Toy comparison over two traces:
 
 ```text
-g with probs 0.02 and 0.05:  evidence = log(0.02)+log(0.05) = −6.9
-h with probs 0.01 and 0.20:  evidence = log(0.01)+log(0.20) = −6.2
+g with probs 0.02 and 0.05:  product = 0.0010,  evidence = log(0.02)+log(0.05) = −6.9
+h with probs 0.01 and 0.20:  product = 0.0020,  evidence = log(0.01)+log(0.20) = −6.2
 ```
 
-Candidate `h` leads after two traces even though `g` won the second vote
-alone.
+`h` leads after two traces (larger product) even though `g` won the second
+vote alone. Consistency across traces beats a single lucky bar.
 
 ### What that looks like as traces are added
 
@@ -216,21 +248,50 @@ when rank 1 appears — hence the averaged metric next.
 
 ## 5. Guessing entropy
 
-**Guessing entropy** (GE) averages that battle over many random draws:
+### Rank first — the number already in the panel titles
 
-1. Draw a random subset of the attack traces.
-2. Accumulate log-evidence for every candidate; rank the 256.
-3. Average the true key’s rank over many draws.
+In the progress figure, each title stated a **rank**: after one trace the
+true key was 81st among 256 candidates; after twenty it was 1st. Rank 1
+means “highest evidence.” Rank 256 means “worst.” That single number is
+already the attack outcome for one fixed list of traces.
 
-GE = 1 means the attack points at the correct key; GE ≈ 128 is blind
-guessing. The notebook runs 40 draws of 4,000 traces (seeded):
+### Why average — and what GE is
+
+Which traces you pick changes that rank (a lucky batch reaches 1 sooner; an
+unlucky batch later). **Guessing entropy** (GE) is not Shannon entropy and
+not a new kind of network output. It is the **mean rank of the true key**,
+averaged over many random draws of the attack set:
+
+1. Shuffle / draw a random subset of attack traces.
+2. Accumulate log-evidence; read the true key’s rank (1…256).
+3. Repeat many times; average those ranks.
+
+So GE is the same idea as the panel titles, with the “which traces?” noise
+averaged out. GE ≈ 128 is what you expect from a random ordering of 256
+candidates (blind guessing). GE = 1 means that, on average, the true key is
+in first place — the operational definition of a successful key-byte
+recovery here.
+
+### How to read the figure
 
 ![Guessing entropy vs number of attack traces](assets/figures/04_guessing_entropy.png)
 
-The curve falls from ~128 to 1 within roughly 100 traces; the correct key
-holds rank 1 from trace 86 on. About 86 power measurements identify one key
-byte against 256 pure guesses. That is the definition of success used here
-when we say the attack works.
+- **Horizontal axis:** how many attack traces enter the product / sum of
+  logs (more clues).
+- **Vertical axis:** that mean rank (GE). The scale is logarithmic so the
+  drop from ~100 down to 1 stays visible.
+- **Grey dotted line (128):** random-guessing baseline.
+- **Orange dashed line (1):** “key recovered” — true byte ranked first on
+  average.
+- **Blue curve:** for this epoch-100 MLP on ASCADr, GE starts near the
+  random baseline and falls to 1 within roughly the first hundred traces;
+  from about trace 86 onward it stays at 1 out to 4,000.
+
+The progress panels showed one fixed run climbing to rank 1 by twenty
+traces. The GE curve answers the stabler question: *on average, after how
+many measurements is the true byte first?* About 86 here. That count is
+what this project means when it says the finished model recovers the key
+byte.
 
 ## 6. Notebook and next question
 
