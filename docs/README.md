@@ -17,7 +17,7 @@ docs/
 ├── 05_the_network.md                 ← MLP/CNN as functions on traces
 ├── 06_training_and_checkpoints.md    ← loss, split, scaling, epoch weights
 ├── 07_scoring_the_attack.md          ← hypotheses, evidence, guessing entropy
-├── 08_perceived_information.md       ← PI vs epoch (bridge to Act III)
+├── 08_perceived_information.md       ← PI: why outputs become informative
 └── appendix_datasets.md              ← field-by-field reference
 ```
 
@@ -34,7 +34,7 @@ the story reads on GitHub without running code.
 | 1–4 | `analysis/01_the_data.py` | traces, statistics, SNR figures |
 | 5–6 | `analysis/02_the_models.py` | model summaries, weight heatmaps |
 | 7 | `analysis/03_the_attack.py` | prediction, evidence progress, ranking, GE |
-| 8 | — | — |
+| 8 | `analysis/04_perceived_information.py` | PI vs epoch |
 
 Those scripts double as Jupyter notebooks under `docs/notebooks/` (Jupytext).
 
