@@ -29,6 +29,7 @@ produces its figures.
 | 6 | **Training and checkpoints** — loss, split, epoch weights | [docs/06_training_and_checkpoints.md](docs/06_training_and_checkpoints.md) | (same notebook) |
 | 7 | **Scoring the attack** — hypotheses, evidence, GE | [docs/07_scoring_the_attack.md](docs/07_scoring_the_attack.md) | [docs/notebooks/03_the_attack.ipynb](docs/notebooks/03_the_attack.ipynb) |
 | — | **How many traces** — traces to GE=1 across targets | [docs/how_many_traces.md](docs/how_many_traces.md) | [analysis/05_traces_to_ge1.py](analysis/05_traces_to_ge1.py) |
+| — | **What changes during learning** — outputs across epochs | [docs/what_learning_changes.md](docs/what_learning_changes.md) | [analysis/06_learning_evidence.py](analysis/06_learning_evidence.py) |
 | 8 | **Perceived Information** — why outputs become informative | [docs/08_perceived_information.md](docs/08_perceived_information.md) | [docs/notebooks/04_perceived_information.ipynb](docs/notebooks/04_perceived_information.ipynb) |
 
 Start at [docs/README.md](docs/README.md) for the full tour.

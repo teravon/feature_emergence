@@ -18,6 +18,7 @@ docs/
 ├── 06_training_and_checkpoints.md    ← loss, split, scaling, epoch weights
 ├── 07_scoring_the_attack.md          ← hypotheses, evidence, guessing entropy
 ├── how_many_traces.md                ← traces to GE=1 across targets
+├── what_learning_changes.md          ← outputs across epochs (PI evidence)
 ├── 08_perceived_information.md       ← PI: why outputs become informative
 └── appendix_datasets.md              ← field-by-field reference
 ```
@@ -36,6 +37,7 @@ the story reads on GitHub without running code.
 | 5–6 | `analysis/02_the_models.py` | model summaries, weight heatmaps |
 | 7 | `analysis/03_the_attack.py` | prediction, evidence progress, ranking, GE |
 | — | `analysis/05_traces_to_ge1.py` | traces to GE=1 on ASCADr / ESHARD / CHES_CTF |
+| — | `analysis/06_learning_evidence.py` | PI and P(true y) vs epoch; one-trace early/late |
 | 8 | `analysis/04_perceived_information.py` | PI vs epoch |
 
 Those scripts double as Jupyter notebooks under `docs/notebooks/` (Jupytext).
