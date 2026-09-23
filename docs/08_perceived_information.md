@@ -148,4 +148,4 @@ together?
 
 That is the start of Act III — phase transitions during training.
 
-← Previous: [Chapter 7 — Scoring the attack](07_scoring_the_attack.md) · [Index](README.md) · Next: [Appendix — Datasets guide](appendix_datasets.md) →
+← Previous: [How many traces](how_many_traces.md) · [Index](README.md) · Next: [Appendix — Datasets guide](appendix_datasets.md) →
