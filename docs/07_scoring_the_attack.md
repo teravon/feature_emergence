@@ -345,4 +345,4 @@ checkpoints of [Chapter 6](06_training_and_checkpoints.md) also hold every
 earlier epoch. The next question is when, during those 100 epochs, this
 attack became possible.
 
-← Previous: [Chapter 6 — Training and checkpoints](06_training_and_checkpoints.md) · [Index](README.md) · Next: [Chapter 8 — Perceived Information](08_perceived_information.md) →
+← Previous: [Chapter 6 — Training and checkpoints](06_training_and_checkpoints.md) · [Index](README.md) · Next: [How many traces](how_many_traces.md) →

@@ -19,6 +19,7 @@ nav:
   - "5–6 Models (notebook)": notebooks/02_the_models.ipynb
   - 7. Scoring the attack: 07_scoring_the_attack.md
   - "7.1 The attack (notebook)": notebooks/03_the_attack.ipynb
+  - How many traces: how_many_traces.md
   - 8. Perceived Information: 08_perceived_information.md
   - "8.1 PI curves (notebook)": notebooks/04_perceived_information.ipynb
   - "Appendix: Datasets guide": appendix_datasets.md
