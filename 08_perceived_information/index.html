@@ -1,0 +1,1063 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://teravon.github.io/feature_emergence/08_perceived_information/">
+      
+      
+        <link rel="prev" href="../what_learning_changes/">
+      
+      
+        <link rel="next" href="../notebooks/04_perceived_information/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>8. Perceived Information - Interpreting Feature Emergence in Deep Learning-based SCA</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-8-perceived-information" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-header__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interpreting Feature Emergence in Deep Learning-based SCA
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              8. Perceived Information
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-nav__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interpreting Feature Emergence in Deep Learning-based SCA
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_secrets_that_leak/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Secrets that leak
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_intermediate_values/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Intermediate values
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_masking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Masking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_the_datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The datasets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/01_the_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploring the data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_the_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. The network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_training_and_checkpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Training and checkpoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/02_the_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_scoring_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Scoring the attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/03_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_many_traces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How many traces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_learning_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What changes during learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Perceived Information
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Perceived Information
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reading-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-how-the-attack-works-is-not-why-the-model-can-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why “how the attack works” is not “why the model can attack”
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-not-only-recompute-guessing-entropy-every-epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Why not only recompute guessing entropy every epoch?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-pi-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. What PI is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-why-plot-pi-against-epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Why plot PI against epoch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-why-ascadrs-curve-looks-wrong-at-first-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Why ASCADr’s curve looks “wrong” at first glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/04_perceived_information/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perceived Information vs training epoch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix_datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Datasets guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#reading-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-how-the-attack-works-is-not-why-the-model-can-attack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Why “how the attack works” is not “why the model can attack”
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-why-not-only-recompute-guessing-entropy-every-epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Why not only recompute guessing entropy every epoch?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-what-pi-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. What PI is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-why-plot-pi-against-epoch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Why plot PI against epoch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-why-ascadrs-curve-looks-wrong-at-first-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Why ASCADr’s curve looks “wrong” at first glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="chapter-8-perceived-information">Chapter 8 — Perceived Information</h1>
+<p><a href="../07_scoring_the_attack/">Chapter 7</a> answered <strong>how</strong> a finished model
+recovers a key byte: remap each softmax onto key guesses, multiply votes
+across traces, watch guessing entropy fall to 1. For the epoch-100 ASCADr
+MLP that took on the order of <strong>86 attack traces</strong>.</p>
+<p>That leaves a different question. The weights at epoch 100 are not the
+weights at epoch 1. <strong>Why</strong> does that finished network produce softaxes that
+are worth accumulating at all? Something must change during the 100 training
+epochs. This chapter introduces the scalar used to watch that change:
+<strong>Perceived Information (PI)</strong>.</p>
+<h3 id="reading-order">Reading order</h3>
+<ol>
+<li>Why Chapter 7’s “how” is not enough.</li>
+<li>Why a new metric (PI), not only GE on every checkpoint.</li>
+<li>What PI is, in bits, from the same softmax tables.</li>
+<li>Why plot PI against <strong>epoch</strong>.</li>
+<li>What that means on masked ASCADr — and what it does not mean.</li>
+<li>The open question that starts Act III.</li>
+</ol>
+<h2 id="1-why-how-the-attack-works-is-not-why-the-model-can-attack">1. Why “how the attack works” is not “why the model can attack”</h2>
+<p>Chapter 7 used <strong>one</strong> checkpoint: the end of training. The attack recipe
+(hypotheses, product of votes, GE) would be the same at epoch 10 or epoch
+50; only the softaxes change. If early softaxes put almost no mass on the
+true <code>y</code>, products of votes stay uninformative and GE stays near random.</p>
+<p>So the operational success in Chapter 7 already assumes an answer to a prior
+“why”: <em>because, by epoch 100, the model’s outputs carry usable information
+about the intermediate label.</em> Chapter 8 makes that assumption measurable.</p>
+<p>The first-layer weight maps of <a href="../05_the_network/">Chapter 5</a> suggested
+<em>where in time</em> the network listens. That is intuition about the input side.
+PI asks about the <strong>output</strong> side: how much the probability tables know.</p>
+<h2 id="2-why-not-only-recompute-guessing-entropy-every-epoch">2. Why not only recompute guessing entropy every epoch?</h2>
+<p>One could, in principle, run the full Chapter 7 attack on every checkpoint
+and plot “traces to GE = 1” versus epoch. That remains a valid check. It is
+also heavy (many random draws, many traces, 100 models) and it still answers
+an <strong>attack</strong> question: after enough measurements, is the true key first?</p>
+<p>PI answers a narrower <strong>output</strong> question with one number per checkpoint:</p>
+<blockquote>
+<p>Given the softmaxes and the true labels, how informative are those
+probability tables about the sensitive variable <em>on individual traces</em>?</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Guessing entropy (Ch. 7)</th>
+<th>Perceived Information (this chapter)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Why use it</strong></td>
+<td>Declare attack success</td>
+<td>Watch learning in the outputs</td>
+</tr>
+<tr>
+<td><strong>Object</strong></td>
+<td>Ranking of key guesses <code>g</code></td>
+<td>Softmax over labels <code>y</code></td>
+</tr>
+<tr>
+<td><strong>Combines many traces?</strong></td>
+<td>Yes (product / sum of logs)</td>
+<td>No — aggregates per-trace log-probs of the true class</td>
+</tr>
+<tr>
+<td><strong>Typical x-axis</strong></td>
+<td>Number of attack traces</td>
+<td>Training epoch</td>
+</tr>
+<tr>
+<td><strong>Typical success shape</strong></td>
+<td>Curve → 1</td>
+<td>Curve moves when outputs become informative</td>
+</tr>
+</tbody>
+</table>
+<p>Same network outputs; different “why.” GE asks why the <em>scoreboard</em> of key
+candidates eventually picks a winner. PI asks why those <em>votes</em> were worth
+casting in the first place.</p>
+<h2 id="3-what-pi-is">3. What PI is</h2>
+<p>The package function <code>information</code> in <code>profiling_and_attack.py</code> estimates a
+mutual-information-style quantity in <strong>bits</strong> between the sensitive label
+(here the identity intermediate class) and the model’s predicted
+probabilities.</p>
+<p>Operationally, with 256 classes:</p>
+<ol>
+<li>Estimate the label frequencies (p(k)) on the evaluation set.</li>
+<li>Start from the label entropy (H(K)) in bits.</li>
+<li>For each class (k), average (\log_2 P(y=k)) over traces whose true
+   label is (k), weight by (p(k)), and add.</li>
+</ol>
+<p>If, whenever the true class is (k), the softmax puts substantial mass on
+(k), PI rises. If the true class is buried (as on the single-trace example
+in Chapter 7, where true <code>y = 145</code> had probability ~10⁻⁶), those terms pull
+PI down.</p>
+<p><strong>Limit:</strong> PI is scored against the <strong>labels we choose</strong>. In this thread that
+is the unmasked identity label <code>y = Sbox[p ⊕ k]</code>. PI is not “bits of the AES
+key” in the GE sense, and it is not a proof of what a hidden layer computes.</p>
+<h2 id="4-why-plot-pi-against-epoch">4. Why plot PI against epoch</h2>
+<p><a href="../06_training_and_checkpoints/">Chapter 6</a> saved weights after every epoch.
+No retraining is required:</p>
+<div class="highlight"><pre><span></span><code>for selected epochs e in 1 … 100:
+    load mlp_ascadr checkpoint e
+    predict softmaxes on profiling traces and on attack traces
+    PI_train(e), PI_attack(e) ← information(...)
+</code></pre></div>
+<p>The companion notebook evaluates every fifth epoch (plus the endpoints).
+Plotting those series is the point of the metric: a stretch that barely moves
+means the outputs are stable for this labelling; a clear move means training
+changed what the softmaxes know. Train and attack curves moving together
+means the change generalizes; only the train curve moving suggests
+memorization.</p>
+<p><img alt="PI vs training epoch" src="../assets/figures/08_pi_curves.png" /></p>
+<p>On this ASCADr MLP run, PI against the <strong>unmasked</strong> identity label sits near
+0 at epochs 1–5 (about −0.02 bits on both sets), then falls steadily: by
+epoch 10 already near −0.8 bits on the attack set, and by epoch 100 about
+−9.3 bits (train) and −9.4 bits (attack). The two curves stay close — whatever
+is changing generalizes off the profiling set.</p>
+<p>That plot is a <strong>seismograph</strong> of learning in the outputs. It does not yet
+open the box (no PCA, no patching). It tells <em>when</em> to look. Reading the
+vertical direction needs the masked-data caveat next.</p>
+<h2 id="5-why-ascadrs-curve-looks-wrong-at-first-glance">5. Why ASCADr’s curve looks “wrong” at first glance</h2>
+<p>Lower (more negative) PI here does <strong>not</strong> mean “the attack is getting
+worse.” Chapter 7 already showed GE → 1 for the epoch-100 model. The scalar
+is asking a different question: how well do the softmaxes match the
+<strong>unmasked</strong> label <code>y = Sbox[p ⊕ k]</code>?</p>
+<p>ASCADr is masked (<a href="../03_masking/">Chapter 3</a>). The chip does not expose that
+plain <code>y</code> alone. As training proceeds, the network can organize around
+<em>masked</em> structure while this PI score keeps grading the model against the
+unmasked class. Agreement with that labelling can fall even as multi-trace
+key ranking (Chapter 7) becomes possible — weak, biased votes about <code>y_g</code>
+can still multiply into a winner.</p>
+<p><strong>Limits:</strong></p>
+<ul>
+<li>PI ≠ GE. One is about per-trace label informativeness under a chosen
+  labelling; the other is about ranking key guesses over many traces.</li>
+<li>A decreasing PI curve on ASCADr is expected for this labelling choice; it
+  is not a contradiction of attack success.</li>
+<li>PI still does not prove what a hidden layer computes. It only marks <em>when</em>
+  the outputs’ relationship to the unmasked label changes — preparation for
+  asking <em>what</em> appeared inside the net at those moments.</li>
+</ul>
+<h2 id="6-next">6. Next</h2>
+<p>We can now say <strong>why</strong> a scalar over training is needed after the Chapter 7
+recipe: to see when the softaxes become worth accumulating. The remaining
+question is sharper:</p>
+<p><strong>When</strong> along the 100 epochs does PI move, and do profiling and attack move
+together?</p>
+<p>That is the start of Act III — phase transitions during training.</p>
+<p>← Previous: <a href="../what_learning_changes/">What changes during learning</a> · <a href="../">Index</a> · Next: <a href="../appendix_datasets/">Appendix — Datasets guide</a> →</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
