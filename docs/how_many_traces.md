@@ -108,4 +108,4 @@ The open question shifts to the learning clock: when and why the model’s
 outputs become informative across **epochs** — [Chapter 8 — Perceived
 Information](08_perceived_information.md).
 
-← Previous: [Chapter 7 — Scoring the attack](07_scoring_the_attack.md) · [Index](README.md) · Next: [Chapter 8 — Perceived Information](08_perceived_information.md) →
+← Previous: [Chapter 7 — Scoring the attack](07_scoring_the_attack.md) · [Index](README.md) · Next: [What changes during learning](what_learning_changes.md) →
