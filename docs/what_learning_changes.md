@@ -1,4 +1,4 @@
-# What changes during learning
+# Interlude — What changes during learning
 
 **Q:** From epoch 1 to epoch 100, what is the ASCADr MLP learning in its
 outputs — and why can PI against the unmasked label *fall* while something
