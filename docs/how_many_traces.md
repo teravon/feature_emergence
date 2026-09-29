@@ -1,4 +1,4 @@
-# Chapter — How many traces
+# Interlude — How many traces
 
 [Chapter 7](07_scoring_the_attack.md) showed *how* to multiply votes until
 guessing entropy reaches 1 — about **86** attack traces for the finished

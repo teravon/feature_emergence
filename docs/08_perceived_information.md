@@ -6,8 +6,8 @@ across traces, watch guessing entropy fall to 1. For the epoch-100 ASCADr
 MLP that took on the order of **86 attack traces**.
 
 That leaves a different question. The weights at epoch 100 are not the
-weights at epoch 1. **Why** does that finished network produce softaxes that
-are worth accumulating at all? Something must change during the 100 training
+weights at epoch 1. **Why** does that finished network produce softmax outputs
+that are worth accumulating at all? Something must change during the 100 training
 epochs. This chapter introduces the scalar used to watch that change:
 **Perceived Information (PI)**.
 
@@ -24,8 +24,9 @@ epochs. This chapter introduces the scalar used to watch that change:
 
 Chapter 7 used **one** checkpoint: the end of training. The attack recipe
 (hypotheses, product of votes, GE) would be the same at epoch 10 or epoch
-50; only the softaxes change. If early softaxes put almost no mass on the
-true `y`, products of votes stay uninformative and GE stays near random.
+50; only the softmax outputs change. If early softmax outputs put almost no
+mass on the true `y`, products of votes stay uninformative and GE stays near
+random.
 
 So the operational success in Chapter 7 already assumes an answer to a prior
 “why”: *because, by epoch 100, the model’s outputs carry usable information
@@ -68,13 +69,13 @@ probabilities.
 
 Operationally, with 256 classes:
 
-1. Estimate the label frequencies \(p(k)\) on the evaluation set.
-2. Start from the label entropy \(H(K)\) in bits.
-3. For each class \(k\), average \(\log_2 P(y=k)\) over traces whose true
-   label is \(k\), weight by \(p(k)\), and add.
+1. Estimate the label frequencies `p(k)` on the evaluation set.
+2. Start from the label entropy `H(K)` in bits.
+3. For each class `k`, average `log2 P(y=k)` over traces whose true
+   label is `k`, weight by `p(k)`, and add.
 
-If, whenever the true class is \(k\), the softmax puts substantial mass on
-\(k\), PI rises. If the true class is buried (as on the single-trace example
+If, whenever the true class is `k`, the softmax puts substantial mass on
+`k`, PI rises. If the true class is buried (as on the single-trace example
 in Chapter 7, where true `y = 145` had probability ~10⁻⁶), those terms pull
 PI down.
 
@@ -140,7 +141,7 @@ can still multiply into a winner.
 ## 6. Next
 
 We can now say **why** a scalar over training is needed after the Chapter 7
-recipe: to see when the softaxes become worth accumulating. The remaining
+recipe: to see when the softmax outputs become worth accumulating. The remaining
 question is sharper:
 
 **When** along the 100 epochs does PI move, and do profiling and attack move

@@ -25,7 +25,7 @@ cat >> docs/appendix_datasets.md <<'EOF'
 
 ---
 
-← Previous: [Chapter 7 — Scoring the attack](07_scoring_the_attack.md) · [Index](README.md)
+← Previous: [Chapter 8 — Perceived Information](08_perceived_information.md) · [Index](README.md)
 EOF
 
 echo "Docs assets synced (figures + datasets guide)"
