@@ -13,6 +13,11 @@ The repository is written for a reader with no prior knowledge of
 side-channel analysis or deep learning. Every claim is backed by a figure,
 and every figure can be regenerated from the scripts in this repository.
 
+Read it as a rendered book:
+**[teravon.github.io/feature_emergence](https://teravon.github.io/feature_emergence/)**
+— or read the same chapters directly on GitHub, starting at
+[docs/README.md](docs/README.md).
+
 ## Reading guide
 
 The repository is organized as guided chapters in [`docs/`](docs/README.md).
@@ -28,13 +33,14 @@ produces its figures.
 | 5 | **The network** — MLP/CNN as functions on traces | [docs/05_the_network.md](docs/05_the_network.md) | [docs/notebooks/02_the_models.ipynb](docs/notebooks/02_the_models.ipynb) |
 | 6 | **Training and checkpoints** — loss, split, epoch weights | [docs/06_training_and_checkpoints.md](docs/06_training_and_checkpoints.md) | (same notebook) |
 | 7 | **Scoring the attack** — hypotheses, evidence, GE | [docs/07_scoring_the_attack.md](docs/07_scoring_the_attack.md) | [docs/notebooks/03_the_attack.ipynb](docs/notebooks/03_the_attack.ipynb) |
-| — | **How many traces** — traces to GE=1 across targets | [docs/how_many_traces.md](docs/how_many_traces.md) | [analysis/05_traces_to_ge1.py](analysis/05_traces_to_ge1.py) |
-| — | **What changes during learning** — outputs across epochs | [docs/what_learning_changes.md](docs/what_learning_changes.md) | [analysis/06_learning_evidence.py](analysis/06_learning_evidence.py) |
+| Interlude | **How many traces** — traces to GE=1 across targets | [docs/how_many_traces.md](docs/how_many_traces.md) | [analysis/05_traces_to_ge1.py](analysis/05_traces_to_ge1.py) |
+| Interlude | **What changes during learning** — outputs across epochs | [docs/what_learning_changes.md](docs/what_learning_changes.md) | [analysis/06_learning_evidence.py](analysis/06_learning_evidence.py) |
 | 8 | **Perceived Information** — why outputs become informative | [docs/08_perceived_information.md](docs/08_perceived_information.md) | [docs/notebooks/04_perceived_information.ipynb](docs/notebooks/04_perceived_information.ipynb) |
 
-Start at [docs/README.md](docs/README.md) for the full tour.
+## Running the code
 
-## Quick start
+Reading requires no setup — the chapters are plain Markdown with committed
+figures. To regenerate the figures or explore the notebooks yourself:
 
 ```bash
 scripts/download_files.sh        # trace datasets + model checkpoints (from Zenodo)
@@ -42,8 +48,10 @@ docker build -t realistic-env .  # verified environment: Python 3.9, TF 2.15
 docker run -it --rm -p 8888:8888 realistic-env
 ```
 
-Then open <http://localhost:8888> and run the notebook in `notebooks/`, or run
-the analysis script directly with `python analysis/01_the_data.py`.
+Then open <http://localhost:8888> and run a companion notebook from
+`docs/notebooks/`, or run an analysis script directly, e.g.
+`python analysis/01_the_data.py`. (`notebooks/` at the repository root holds
+the original paper's notebooks, kept unmodified for reference.)
 
 No GPU is required: the published checkpoints in `models/` are used instead
 of re-training.
@@ -51,7 +59,7 @@ of re-training.
 ## Repository layout
 
 ```
-docs/         the guided chapters, incl. the executed notebook (docs/notebooks/)
+docs/         the guided chapters, incl. the executed notebooks (docs/notebooks/)
 analysis/     the scripts behind every figure and notebook in the docs
 notebooks/    the original paper's notebooks (reference, unmodified)
 data/         the three trace datasets (downloaded, not tracked in git)
