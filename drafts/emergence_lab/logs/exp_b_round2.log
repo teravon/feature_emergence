@@ -1,0 +1,3 @@
+B seed0_wd0.3: final acc_te=0.920 pi_te=4.52 t50=28250 grok@0.8=54750
+B seed0_wd0.5: final acc_te=0.922 pi_te=4.48 t50=15250 grok@0.8=21750
+B seed0_wd1: final acc_te=0.859 pi_te=4.34 t50=12500 grok@0.8=21500
