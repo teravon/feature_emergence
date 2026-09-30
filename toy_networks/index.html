@@ -1,0 +1,910 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://teravon.github.io/feature_emergence/toy_networks/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Interlude — Feature emergence in toy networks - Interpreting Feature Emergence in Deep Learning-based SCA</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#interlude-feature-emergence-in-toy-networks" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-header__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interpreting Feature Emergence in Deep Learning-based SCA
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Interlude — Feature emergence in toy networks
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Interpreting Feature Emergence in Deep Learning-based SCA" class="md-nav__button md-logo" aria-label="Interpreting Feature Emergence in Deep Learning-based SCA" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interpreting Feature Emergence in Deep Learning-based SCA
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/teravon/feature_emergence" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_secrets_that_leak/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Secrets that leak
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_intermediate_values/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Intermediate values
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_masking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Masking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_the_datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. The datasets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/01_the_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploring the data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_the_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. The network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_training_and_checkpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Training and checkpoints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/02_the_models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_scoring_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Scoring the attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/03_the_attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The attack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_many_traces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interlude: How many traces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../what_learning_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interlude: What changes during learning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_perceived_information/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Perceived Information
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notebooks/04_perceived_information/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Perceived Information vs training epoch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix_datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix: Datasets guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-learning-a-smooth-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Learning a smooth function
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-learning-a-rule-the-plateau-and-the-jump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Learning a rule: the plateau and the jump
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c-two-emergences-in-one-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Two emergences in one network
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-transfers-to-the-real-chapters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What transfers to the real chapters
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="interlude-feature-emergence-in-toy-networks">Interlude — Feature emergence in toy networks</h1>
+<p>Chapter 6 showed how training sets the weights, epoch by epoch, and why we
+keep a checkpoint of every epoch. What it did not show is what learning
+looks like while it happens. Does a network improve a little every step, or
+can it look stuck for a long time and then change suddenly?</p>
+<p>That question is the heart of this manual. The paper we follow notes that
+learning from masked side-channel data resembles <em>grokking</em>: a model
+memorizes its training data, shows no progress on unseen data for a long
+time, and then generalizes suddenly. The paper's analysis starts by
+locating those sudden jumps in real side-channel models.</p>
+<p>Before doing that on power traces, we reproduce the phenomenon in the
+smallest laboratory that can show it: toy networks learning mathematical
+functions, trained from scratch on a laptop in minutes. Every figure comes
+from a short numpy script. No TensorFlow, no GPU, nothing hidden.</p>
+<p>Three experiments, three lessons:</p>
+<ul>
+<li><strong>A.</strong> Learning a smooth function: gradual, visible progress.</li>
+<li><strong>B.</strong> Learning a rule: a long plateau, then a sudden jump.</li>
+<li><strong>C.</strong> One network, two jumps: coarse structure first, fine structure
+  later.</li>
+</ul>
+<h2 id="a-learning-a-smooth-function">A. Learning a smooth function</h2>
+<p>The first task is the classic one: learn <code>y = sin(2πx)</code> from 400 scattered
+points. To make generalization visible, the network trains on only 70% of
+the points. The other 30% are held out and never shown.</p>
+<p>The network is the smallest one that can do the job: one hidden layer of 16
+neurons (<code>tanh</code>) and one linear output. Same multiply–add–bend machinery as
+Chapter 5, a few hundred adjustable numbers in total.</p>
+<p><img alt="Learning sin(2πx) at four training steps" src="../assets/figures/toy_sine_fit_epochs.png" /></p>
+<p>Read the panels left to right. At step 50 the network is nearly a straight
+line. At step 500 it follows the overall trend. By step 3,000 it hugs the
+curve, and by step 20,000 the fit is exact, including over the orange
+points it never saw. That last fact is generalization, made visible: the
+curve is right even where there was no data to copy.</p>
+<p><img alt="Train and test error falling together" src="../assets/figures/toy_sine_loss.png" /></p>
+<p>This second figure shows the same run as error over time: training and test
+error fall together, smoothly. (The raw curve has occasional single-step
+spikes where Adam takes a step that is too long; the plot shows a 9-point
+moving median, which removes that optimizer noise without touching the
+trend.)</p>
+<p>What happened inside? Each hidden neuron computes <code>tanh(w·x + b)</code>, a soft
+step whose transition sits at position <code>−b/w</code>. At initialization the
+transitions are scattered at random. After training they tile the interval
+at distinct positions, and the output layer adds them with the right signs
+to trace the sine.</p>
+<p><img alt="Hidden activations, early vs late" src="../assets/figures/toy_sine_features.png" /></p>
+<p>This is the first honest meaning of <em>feature emergence</em>: nobody placed
+those steps; gradient descent slid each one to where it reduces the error.
+But nothing was hidden here: progress was visible from the first steps.
+The interesting case is when progress is invisible for a long time.</p>
+<h2 id="b-learning-a-rule-the-plateau-and-the-jump">B. Learning a rule: the plateau and the jump</h2>
+<p>The second task looks even simpler. Given two numbers <code>a</code> and <code>b</code> between 0
+and 31, predict <code>(a + b) mod 32</code>: the remainder after wrapping around, like
+clock arithmetic (27 + 9 = 36, which is 4 on a 32-hour clock).</p>
+<p>There are 1,024 possible pairs. The network sees each pair as two one-hot
+vectors (32 zeros with a single 1 at position <code>a</code>, and the same for <code>b</code>),
+passes them through one hidden layer of 128 neurons, and outputs a softmax
+over 32 classes. We train on half of the pairs and keep the other half
+unseen. We also add <em>weight decay</em>: every weight is shrunk by a tiny factor
+at every step, which makes complicated memorizing solutions expensive.</p>
+<p><img alt="Accuracy and PI over training: the grokking curve" src="../assets/figures/toy_grok_curves.png" /></p>
+<p>The left panel is accuracy; the run shown is seed 2 with weight decay 0.3.
+It has three phases:</p>
+<ol>
+<li><strong>Memorization</strong> (steps 1 to ~2,000). Training accuracy hits 100%. Test
+   accuracy stays at chance, 1/32 ≈ 3%. The network is a lookup table.</li>
+<li><strong>The plateau</strong> (steps ~2,000 to ~10,000). Nothing seems to happen. An
+   observer watching only test performance would say the model is stuck.</li>
+<li><strong>The jump</strong> (steps ~10,000 to ~70,000). Test accuracy climbs to 90%.
+   The network found the general rule, how the two numbers combine
+   circularly, and weight decay made that solution cheaper than the lookup
+   table.</li>
+</ol>
+<p>The right panel tells the same story with a metric we will use on the real
+models: <strong>Perceived Information</strong> (PI). In one sentence, PI measures in
+bits how much the output probabilities know about the true label: 0 is
+chance, and log2(32) = 5 bits is perfect (Chapter 8 defines it properly).
+During memorization, PI on the unseen pairs sinks to −15 bits: confidently
+wrong is worse than chance. During the plateau it stays there. At the jump
+it climbs to 4.4 bits. PI sees the event exactly when the outputs become
+informative, not before.</p>
+<p>Is the answer actually <em>inside</em> the network during the plateau, or does it
+only appear at the jump? To check, we freeze the network at several
+checkpoints and ask a <strong>linear probe</strong>: a one-layer classifier trained to
+decode the remainder from the 128 hidden activations (70% of the unseen
+pairs to train the probe, 30% to score it). Each bar below is that score.
+The dotted line is chance.</p>
+<p><img alt="Linear probe accuracy on the hidden layer per checkpoint" src="../assets/figures/toy_grok_probe.png" /></p>
+<p>At step 2,000 the probe scores 0%: the remainder is not readable from the
+hidden layer at all. After the jump it reaches 47%: a linear readout now
+finds the answer (the probe is only linear and only sees one layer, which
+is why it reads 47% where the full network scores 90%). And one detail
+worth keeping: the probe starts climbing around step 20,000, slightly
+<em>before</em> test accuracy does. The representation reorganizes inside before
+the outputs show it. Watching for that signature in real models is what
+Act III is about.</p>
+<p><strong>What this does not prove.</strong> Grokking in modular arithmetic is documented
+in the literature; here we only confirm it reproduces on a laptop, with our
+metric, in minutes. The toy has no side channel and no secret key, so
+nothing here says anything about power traces yet. The bridge comes after
+the next experiment.</p>
+<h2 id="c-two-emergences-in-one-network">C. Two emergences in one network</h2>
+<p>On CHES_CTF, the paper observes emergence in <em>two</em> jumps: the network first
+separates coarse structure (high vs low Hamming weight) and only later fine
+structure (even vs odd). Can a toy network show two jumps?</p>
+<p>An honest warning: we first tried to force it with modular arithmetic,
+learning <code>(a + b) mod 16</code> and measuring PI against coarse and fine readings
+of the same label. Across 24 configurations the fine label never
+generalized at all. Two jumps are not automatic.</p>
+<p>So instead we use a task where two scales exist naturally: a sum of two
+functions, a slow wave plus a fast ripple,</p>
+<div class="highlight"><pre><span></span><code>y = sin(2πx) + 0.5·sin(16πx)
+</code></pre></div>
+<p>Neural networks exhibit <em>spectral bias</em>: they fit low frequencies before
+high ones. To watch each scale separately, at every logged step we fit the
+network's output as <code>α_slow·(slow wave) + α_fast·(fast ripple)</code> by least
+squares and record the two coefficients. Each α starts near 0 and reaches 1
+when the network has learned that component.</p>
+<p><img alt="Weight on each component over training" src="../assets/figures/toy_twofreq_components.png" /></p>
+<p>Left panel: the weight on the slow wave crosses 0.9 at step 250. The weight
+on the fast ripple stays near zero until about step 1,000, then snaps up
+and crosses 0.9 at step 4,250. Two jumps, one network, nothing staged.
+Right panel: the same run as plain MSE. The error falls, then sits at ≈0.1
+for thousands of steps. That plateau value is not arbitrary: it is the
+variance of the ripple (0.5²/2 = 0.125), the error of a network that has
+learned everything except the ripple. Then the second drop takes the error
+to ≈4×10⁻⁶.</p>
+<p><img alt="The fit at the observed stages" src="../assets/figures/toy_twofreq_fit_stages.png" /></p>
+<p>The middle panel is the photograph of the plateau: the network matches the
+slow wave exactly, and everything it still gets wrong is the ripple it has
+not yet learned.</p>
+<p><strong>What this does not prove.</strong> Spectral bias explains <em>why</em> the coarse
+scale comes first here; it does not explain the paper's two jumps, where
+the scales are Hamming-weight features of secret shares. The toy shows
+that one network can acquire two features at two very different times. It
+does not say the real model's two jumps have the same cause.</p>
+<h2 id="what-transfers-to-the-real-chapters">What transfers to the real chapters</h2>
+<p>Three lessons carry over:</p>
+<ul>
+<li><strong>Learning can be invisible for a long time.</strong> A model can look finished
+  (100% training accuracy) and be worthless, or look stuck (chance-level
+  test accuracy) and be on the verge of generalizing. Only a metric
+  watched per epoch can tell which.</li>
+<li><strong>Emergence is the appearance of structure, not gradual improvement.</strong>
+  In the toy we verified the structure directly: the probe reads the label
+  from the hidden layer only after the jump. On real models we will have
+  to hunt for that structure, and that hunt is Act III.</li>
+<li><strong>This is why we saved every epoch.</strong> The checkpoints of Chapter 6 exist
+  so that the jump, if there is one, is caught on camera.</li>
+</ul>
+<p>And one honest limit. The toy has no side channel and no key byte to rank,
+so guessing entropy, the metric of Chapter 7, has no analog here. The
+bridge between the two worlds is PI: it is defined on any classifier's
+outputs, toy or real. The next time PI appears, in Chapter 8, it will be
+measured on the real ASCADr model, and the question will be the one this
+chapter prepared: when, during those 100 epochs, do the outputs become
+informative?</p>
+<p>← <a href="../">Index</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
