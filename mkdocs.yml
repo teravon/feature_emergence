@@ -28,6 +28,11 @@ nav:
 plugins:
   - mkdocs-jupyter
 
+# Pages present in docs/ but deliberately not in the nav (interludes awaiting
+# chapter reorganization). Keeps --strict builds green without nav entries.
+not_in_nav: |
+  toy_networks.md
+
 markdown_extensions:
   - tables
   - pymdownx.superfences:
