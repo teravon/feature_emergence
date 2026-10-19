@@ -109,12 +109,15 @@ The dotted line is chance.
 
 At step 2,000 the probe scores 0%: the remainder is not readable from the
 hidden layer at all. After the jump it reaches 47%: a linear readout now
-finds the answer (the probe is only linear and only sees one layer, which
-is why it reads 47% where the full network scores 90%). And one detail
-worth keeping: the probe starts climbing around step 20,000, slightly
-*before* test accuracy does. The representation reorganizes inside before
-the outputs show it. Watching for that signature in real models is what
-Act III is about.
+finds the answer. That 47% is a lower bound, not a property of the
+representation: the probe trains on only ~360 frozen activation vectors
+(~11 per class) and memorizes them (100% on its own split), while the
+network's own readout was co-adapted with the representation over 120,000
+steps and scores 90% on the same activations. What matters is the
+contrast. And one detail worth keeping: the probe starts climbing around
+step 20,000, slightly *before* test accuracy does. The representation
+reorganizes inside before the outputs show it. Watching for that signature
+in real models is what Act III is about.
 
 **What this does not prove.** Grokking in modular arithmetic is documented
 in the literature; here we only confirm it reproduces on a laptop, with our
