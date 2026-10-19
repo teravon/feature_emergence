@@ -75,5 +75,3 @@ The cost is interpretability. A model that recovers the key confirms that
 exploitable leakage exists, but not *how* the network exploits *what* leakage.
 That is the question these chapters build toward. First we need the
 intermediate value the leakage actually tracks.
-
-← [Index](README.md) · Next: [Chapter 2 — Intermediate values](02_intermediate_values.md) →

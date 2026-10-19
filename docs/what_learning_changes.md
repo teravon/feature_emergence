@@ -79,5 +79,3 @@ worsens,” while a mild average lift above uniform can still exist.
 
 **Not measured here:** which intermediate the peaks actually track, or in
 which layer. That is Act III.
-
-← Previous: [How many traces](how_many_traces.md) · [Index](README.md) · Next: [Chapter 8 — Perceived Information](08_perceived_information.md) →

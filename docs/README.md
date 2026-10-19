@@ -5,23 +5,29 @@ This repository is a readable, self-contained companion to the paper
 Analysis"*. Everything here is written to be followed step by step — no prior
 knowledge of side-channel analysis or deep learning is required.
 
-## How to read this material
+## Reading order
 
-```
-docs/
-├── README.md                         ← you are here
-├── 01_secrets_that_leak.md           ← side channels and power traces
-├── 02_intermediate_values.md         ← S-box labels: ID and HW
-├── 03_masking.md                     ← shares, why one trace fails, SNR
-├── 04_the_datasets.md                ← ASCADr / ESHARD / CHES_CTF files
-├── 05_the_network.md                 ← MLP/CNN as functions on traces
-├── 06_training_and_checkpoints.md    ← loss, split, scaling, epoch weights
-├── 07_scoring_the_attack.md          ← hypotheses, evidence, guessing entropy
-├── how_many_traces.md                ← traces to GE=1 across targets
-├── what_learning_changes.md          ← outputs across epochs (PI evidence)
-├── 08_perceived_information.md       ← PI: why outputs become informative
-└── appendix_datasets.md              ← field-by-field reference
-```
+One line per page, in the order they are meant to be read. Edit this list
+when a chapter is added, removed, or moved — there is no other per-page
+navigation to keep in sync.
+
+1. [Chapter 1 — Secrets that leak](01_secrets_that_leak.md) — side channels and power traces
+2. [Chapter 2 — Intermediate values](02_intermediate_values.md) — S-box labels: ID and HW
+3. [Chapter 3 — Masking](03_masking.md) — shares, why one trace fails, SNR
+4. [Chapter 4 — The datasets](04_the_datasets.md) — ASCADr / ESHARD / CHES_CTF files
+5. [Chapter 5 — The network](05_the_network.md) — MLP/CNN as functions on traces
+6. [Chapter 6 — Training and checkpoints](06_training_and_checkpoints.md) — loss, split, scaling, epoch weights
+7. [Chapter 7 — Scoring the attack](07_scoring_the_attack.md) — hypotheses, evidence, guessing entropy
+8. [Interlude — How many traces](how_many_traces.md) — traces to GE=1 across targets
+9. [Interlude — What changes during learning](what_learning_changes.md) — outputs across epochs (PI evidence)
+10. [Chapter 8 — Perceived Information](08_perceived_information.md) — PI: why outputs become informative
+11. [Appendix — Datasets guide](appendix_datasets.md) — field-by-field reference
+
+Companion notebooks (same numbering as `analysis/*.py`):
+
+- [01_the_data](notebooks/01_the_data.ipynb) · [02_the_models](notebooks/02_the_models.ipynb) · [03_the_attack](notebooks/03_the_attack.ipynb) · [04_perceived_information](notebooks/04_perceived_information.ipynb)
+
+Published but not in the reading order yet: [Feature emergence in toy networks](toy_networks.md) (pending chapter reorganization).
 
 Acts I–II of this material run through Chapter 8. Act III (phase transitions,
 logits, PCA, patching) is the interpretability heart and is not filled in yet.

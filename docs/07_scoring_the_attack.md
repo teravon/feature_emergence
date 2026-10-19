@@ -344,5 +344,3 @@ Everything above used the finished model — weights after epoch 100. The
 checkpoints of [Chapter 6](06_training_and_checkpoints.md) also hold every
 earlier epoch. The next question is when, during those 100 epochs, this
 attack became possible.
-
-← Previous: [Chapter 6 — Training and checkpoints](06_training_and_checkpoints.md) · [Index](README.md) · Next: [How many traces](how_many_traces.md) →

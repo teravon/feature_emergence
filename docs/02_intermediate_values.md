@@ -44,5 +44,3 @@ Attacking therefore means relating the trace to one of these intermediate
 labels — not to the key string itself. On unprotected devices that relation
 can already be strong. On the devices we study it is not, because of
 **masking**.
-
-← Previous: [Chapter 1 — Secrets that leak](01_secrets_that_leak.md) · [Index](README.md) · Next: [Chapter 3 — Masking](03_masking.md) →

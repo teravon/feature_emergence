@@ -148,5 +148,3 @@ question is sharper:
 together?
 
 That is the start of Act III — phase transitions during training.
-
-← Previous: [What changes during learning](what_learning_changes.md) · [Index](README.md) · Next: [Appendix — Datasets guide](appendix_datasets.md) →

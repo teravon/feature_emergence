@@ -102,5 +102,3 @@ run it in the Docker environment described in the [index](README.md).
 The open question: the model outputs probabilities over *intermediate
 values* — it never says "key byte 0x2b". How do those probabilities, over
 many traces, single out one key byte?
-
-← Previous: [Chapter 5 — The network](05_the_network.md) · [Index](README.md) · Next: [Chapter 7 — Scoring the attack](07_scoring_the_attack.md) →
