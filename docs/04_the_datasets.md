@@ -63,11 +63,11 @@ you open it with a library such as `h5py`:
 
 ```mermaid
 flowchart TD
-    F["eschard.h5"] --> P["Profiling_traces/"]
+    F["ascad-variable_70k-90k_20.h5<br/>(ASCADr)"] --> P["Profiling_traces/"]
     F --> A["Attack_traces/"]
-    P --> PT["traces<br/>90,000 × 1,400 EM measurements"]
+    P --> PT["traces<br/>200,000 × 2,000 EM measurements"]
     P --> PM["metadata<br/>plaintext, key, masks per trace"]
-    A --> AT["traces<br/>10,000 × 1,400"]
+    A --> AT["traces<br/>10,000 × 2,000"]
     A --> AM["metadata<br/>plaintext, key, masks per trace"]
 ```
 
@@ -123,7 +123,7 @@ exploits.
 
 ![Example profiling traces per dataset](assets/figures/02_traces_overview.png)
 
-**Scale and noise.** The datasets also differ in numeric scale and dtype:
+**Scale.** The datasets also differ in numeric scale and dtype:
 ASCADr stores raw ADC codes as `int8`, CHES_CTF uses `float16`. This is why
 models scale their inputs before training.
 
@@ -132,6 +132,12 @@ models scale their inputs before training.
 The SNR map of *where* the key leaks was the subject of
 [Chapter 3](03_masking.md). With the files in hand, the next question is what
 function a neural network computes on these traces.
+
+**What this does not grant.** The metadata — keys and masks for every trace —
+are a laboratory privilege. On a real target device the attacker gets traces
+and plaintexts, never keys or masks; they exist in these files so that
+training and evaluation can be scored. Everything the model learns under this
+privilege must still work where the privilege is gone.
 
 ## The exploration notebook
 
