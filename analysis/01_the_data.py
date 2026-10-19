@@ -101,14 +101,15 @@ for name, ds in DATASETS:
 # ## 3. One single trace
 #
 # Before statistics, look at one trace on its own: the power consumption of
-# the CHES_CTF device during exactly one AES encryption.
+# the CHES_CTF device during the first round of one AES encryption (the file
+# stores a window around that round, not the whole encryption).
 
 # %%
 ds = dict(DATASETS)["CHES_CTF"]
 
 fig, ax = plt.subplots(figsize=(14, 4))
 ax.plot(ds.x_profiling[0], lw=0.6)
-ax.set_title("CHES_CTF — one power trace (one AES encryption)")
+ax.set_title("CHES_CTF — one power trace (first-round window)")
 ax.set_xlabel("time sample index")
 ax.set_ylabel("power (ADC units)")
 ax.grid(alpha=0.3)

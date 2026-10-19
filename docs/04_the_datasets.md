@@ -13,8 +13,27 @@ quantity, and the trace length:
 | **CHES_CTF** | 32-bit ARM Cortex-M4 | power consumption | 30,000 / 10,000 | 15,000 |
 
 The running example for most of what follows is **ASCADr** (identity leakage,
-MLP). ESHARD and CHES_CTF return later for contrast. Full field-by-field
-detail, including download links: [appendix](appendix_datasets.md).
+MLP) — and the choice is not arbitrary:
+
+- **It is the community benchmark.** ASCAD has been the standard target for
+  deep-learning side-channel research since 2018, so results on it compare
+  directly with the published literature — including the paper this manual
+  follows, whose mask-recovery experiments run on ASCADr.
+- **Its labels keep the full detail.** ASCADr uses the identity leakage model
+  (256 classes: the whole S-box output), while ESHARD and CHES_CTF use Hamming
+  weight (9 classes). The finer label is what lets later chapters ask *which*
+  values the network confuses, not just *how many bits* it tracks.
+- **Its metadata include the masks.** Every ASCADr record carries the 18 mask
+  bytes of the masking scheme; ESHARD carries 2 and CHES_CTF none. Without
+  ground-truth masks we could still train a model, but we could never check
+  the central claim of this manual — that the network internally recovers
+  secret shares it was never given as labels.
+- **It is the easiest to work with.** The largest profiling set (200,000
+  traces) and the shortest traces (2,000 samples, `int8`).
+
+ESHARD and CHES_CTF return late in the manual for contrast: what is universal
+and what is device-specific. Full field-by-field detail, including download
+links: [appendix](appendix_datasets.md).
 
 ## Where do the datasets come from?
 
