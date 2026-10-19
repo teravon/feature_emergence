@@ -6,17 +6,18 @@
 # orientation; here we actually
 # open the files and look at the numbers.
 #
-# We answer four questions:
+# We answer five questions:
 #
 # 1. What is inside a dataset file, and how do we look at it?
 # 2. What do raw traces look like?
 # 3. How different are the datasets from each other (scale and noise)?
 # 4. At which time samples does the key leak? (the SNR)
+# 5. Where does the leakage hide on a masked device? (the shares)
 #
 # Figures produced (shown in the chapters):
 # `outputs/figures/02_single_trace.png`, `02_traces_overview.png`,
 # `02_stats_table.png`, `02_snr_buckets.png`, `02_snr_annotated.png`,
-# `02_snr_curves.png`.
+# `02_snr_curves.png`, `02_snr_shares.png`.
 
 # %%
 # Note: no `matplotlib.use("Agg")` here — plain `python` runs fall back to a
@@ -370,6 +371,59 @@ print("saved:", out / "02_snr_curves.png")
 plt.show()
 
 # %% [markdown]
+# ## 7. Masking does not remove the leakage — it moves it into the shares
+#
+# ASCADr's metadata include the mask used in every trace, so we can replay the
+# SNR computation three times on the *same* traces: against the unmasked
+# label `HW(Sbox[p ⊕ k])`, against the masked share `HW(Sbox[p ⊕ k] ⊕ m)`,
+# and against the mask `HW(m)` itself.
+
+# %%
+ds = dict(DATASETS)["ASCADr"]
+tb = 2  # target byte used throughout the manual
+
+x = ds.x_profiling.astype(np.float64)
+labels_unmasked = ds.profiling_labels.astype(int)  # Sbox[p ⊕ k]
+mask = ds.share1_profiling[tb].astype(int)         # m
+share2 = ds.share2_profiling[tb].astype(int)       # Sbox[p ⊕ k] ⊕ m
+assert np.array_equal(share2 ^ mask, labels_unmasked)  # share construction check
+
+
+def hw(values):
+    return np.array([bin(int(b)).count("1") for b in values])
+
+
+panels = [
+    (snr_fast(x, hw(labels_unmasked)), "against the unmasked label  HW(Sbox[p ⊕ k])", "tab:blue"),
+    (snr_fast(x, hw(share2)), "against the masked share  HW(Sbox[p ⊕ k] ⊕ m)", "darkred"),
+    (snr_fast(x, hw(mask)), "against the mask alone  HW(m)", "darkgreen"),
+]
+
+fig, axes = plt.subplots(3, 1, figsize=(14, 8), sharex=True)
+for ax, (snr, title, color) in zip(axes, panels):
+    ax.plot(snr, lw=0.8, color=color)
+    t_peak = int(np.argmax(snr))
+    ax.annotate(
+        f"max {snr.max():.2f} at sample {t_peak}",
+        xy=(t_peak, snr.max()),
+        xytext=(0.55 * len(snr), 0.85 * snr.max()),
+        arrowprops={"arrowstyle": "->", "color": "black"},
+        fontsize=10,
+    )
+    ax.set_ylabel("SNR")
+    ax.set_title(title)
+    ax.grid(alpha=0.3)
+axes[-1].set_xlabel("time sample index")
+fig.suptitle("ASCADr, 20,000 profiling traces: masking moves the SNR into the shares", fontsize=14)
+fig.tight_layout()
+
+fig.savefig(out / "02_snr_shares.png", dpi=150)
+print("saved:", out / "02_snr_shares.png")
+for name, (snr, _, _) in zip(["unmasked", "share", "mask"], panels):
+    print(f"  {name:9s} max SNR = {snr.max():.4f} at sample {snr.argmax()}")
+plt.show()
+
+# %% [markdown]
 # ## Takeaways
 #
 # - An `.h5` dataset is just two paired arrays: measurement traces (power or
@@ -378,7 +432,10 @@ plt.show()
 # - The three datasets differ in trace length, scale, and noise — an
 #   observation that holds for one does not automatically transfer.
 # - The leakage of the target intermediate is concentrated in identifiable
-#   time samples, and masking visibly flattens it.
+#   time samples.
+# - Masking flattens the SNR against the unmasked label, but the leakage moves
+#   into the shares: on ASCADr the masked share peaks at SNR ≈ 14.5 while the
+#   unmasked label stays at the noise floor (≈ 0.01).
 # - These SNR curves mark *where* an analyst would look for the key — the
 #   reference for checking whether a network looks in the same place.
 

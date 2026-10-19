@@ -18,7 +18,9 @@ enough to name the secret.
 A trace has thousands of time samples, but only a few of them carry
 information about the key. To find them, we score every sample independently
 with the *Signal-to-Noise Ratio* (SNR). Fix one time sample `t` and look at
-the column of values it takes across all profiling traces. We know the
+the column of values it takes across all **profiling traces** — the set where
+we know the key of each recording ([Chapter 4](04_the_datasets.md) defines
+this split properly). We know the
 plaintext and the key of each trace, so we can compute the target intermediate
 of each trace — here the Hamming weight of the first S-box output, a label
 between 0 and 8 — and split the column into one bucket per label value:
@@ -53,12 +55,27 @@ else is the noise floor: activity unrelated to the target byte.
 
 ![One trace and its SNR curve on the same time axis](assets/figures/02_snr_annotated.png)
 
-Masking pushes the peaks down. A masked device never computes on the S-box
-output directly but on `S-box output XOR mask`, with a fresh random mask per
-trace. Bucketing traces by the unmasked label then mixes every possible
-masked value into each bucket, the bucket averages collapse onto each other,
-and the signal term shrinks. The leakage is not gone — it hides in *joint*
-statistics of several samples.
+Masking pushes the peaks down — and ASCADr lets us watch it happen, because
+its metadata include the mask used in every trace. A masked device never
+computes on the S-box output directly but on `S-box output XOR mask`, with a
+fresh random mask `m` per trace. So take the same 20,000 ASCADr profiling
+traces and compute the SNR three times: against the unmasked label, against
+the masked share `Sbox[p ⊕ k] ⊕ m`, and against the mask `m` alone.
+
+![SNR against unmasked label, masked share, and mask on ASCADr](assets/figures/02_snr_shares.png)
+
+The top panel is the collapse made visible: bucketed by the unmasked label,
+the curve never leaves the noise floor — its maximum is ≈ 0.01. But the same
+traces, bucketed by the masked share, peak at ≈ 14.5 near sample 1,526
+(middle panel): over a thousand times stronger. And the mask alone leaks too
+(bottom panel), at a *different* instant — ≈ 6.4 near sample 970. The leakage
+is not gone; it moved into the shares, and the two shares leak at different
+times. Naming the unmasked secret means combining both, which no single
+sample — and no single trace — can do.
+
+(Drawing this figure required the true masks — the laboratory privilege of
+[Chapter 4](04_the_datasets.md). Its point is what an attack must achieve
+without them.)
 
 ![SNR per dataset](assets/figures/02_snr_curves.png)
 

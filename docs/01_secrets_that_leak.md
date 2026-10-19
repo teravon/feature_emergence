@@ -75,5 +75,13 @@ network figures out which time samples are informative.
 
 The cost is interpretability. A model that recovers the key confirms that
 exploitable leakage exists, but not *how* the network exploits *what* leakage.
+
+**What this does not prove.** Nothing so far says a single trace reveals
+anything: leakage is a statistical claim over many traces, and the next
+chapters build that claim piece by piece. Nor is deep learning required for
+side-channel attacks — classical statistical attacks work well when the
+leaking instants are already known. What the network buys is not needing to
+know them in advance.
+
 That is the question these chapters build toward. First we need the
 intermediate value the leakage actually tracks.
