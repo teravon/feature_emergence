@@ -194,5 +194,3 @@ outputs, toy or real. The next time PI appears, in Chapter 8, it will be
 measured on the real ASCADr model, and the question will be the one this
 chapter prepared: when, during those 100 epochs, do the outputs become
 informative?
-
-← [Index](README.md)

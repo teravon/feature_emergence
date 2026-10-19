@@ -140,5 +140,3 @@ layer in the [companion notebook](notebooks/02_the_models.ipynb).
 
 How those 276,456 numbers get set — and why we keep a copy after every
 epoch — is the next chapter.
-
-← Previous: [Chapter 4 — The datasets](04_the_datasets.md) · [Index](README.md) · Next: [Chapter 6 — Training and checkpoints](06_training_and_checkpoints.md) →

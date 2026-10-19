@@ -119,5 +119,3 @@ function a neural network computes on these traces.
 Opening an `.h5` file by hand, reading one metadata record, and computing the
 statistics and the SNR is worked through in the
 **[data exploration notebook](notebooks/01_the_data.ipynb)**.
-
-← Previous: [Chapter 3 — Masking](03_masking.md) · [Index](README.md) · Next: [Chapter 5 — The network](05_the_network.md) →

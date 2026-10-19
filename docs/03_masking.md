@@ -66,5 +66,3 @@ These SNR curves are the physical reference for what follows: they mark
 *where* an analyst would look for the key, so that later we can check whether
 a trained network looks in the same place. First we need the files that hold
 the traces.
-
-← Previous: [Chapter 2 — Intermediate values](02_intermediate_values.md) · [Index](README.md) · Next: [Chapter 4 — The datasets](04_the_datasets.md) →
