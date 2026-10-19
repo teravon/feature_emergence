@@ -215,4 +215,3 @@ Two naming quirks in the published archive: the ESHARD MLP files carry a
 double underscore (`mlp_eshard__01.weights.h5`), and one duplicate of its
 epoch-100 checkpoint exists under a single-underscore name. 601 files in
 total.
-

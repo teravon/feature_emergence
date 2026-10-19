@@ -48,8 +48,10 @@ flowchart LR
     T --> LOG
 ```
 
-Here is a real trace from one of our datasets — one full AES encryption,
-recorded as 15,000 power measurements:
+Here is a real trace from one of our datasets — the power consumption of the
+CHES_CTF chip, recorded as 15,000 consecutive measurements covering the first
+round of one AES encryption (the files we use are windows around that round,
+not whole encryptions; see [Chapter 4](04_the_datasets.md)):
 
 ![One power trace: a single AES encryption](assets/figures/02_single_trace.png)
 
