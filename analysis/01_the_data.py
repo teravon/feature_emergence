@@ -27,10 +27,29 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from feature_emergence.config import DATA_DIR, OUTPUTS_DIR
-from feature_emergence.utils import load_dataset, snr_fast
+from feature_emergence.utils import load_dataset
 
 out = OUTPUTS_DIR / "figures"
 out.mkdir(parents=True, exist_ok=True)
+
+
+def snr(x, y):
+    """SNR of every time sample, each label group weighted by its number of traces.
+
+    The paper's `snr_fast` weights every group equally. With full-byte labels
+    (256 equally likely groups) the two agree; with Hamming-weight labels, where
+    groups 0 and 8 hold 1/256 of the traces each, `snr_fast` comes out several
+    times larger.
+    """
+    x = np.asarray(x, dtype=np.float64)
+    mean_all = x.mean(axis=0)
+    signal = np.zeros(x.shape[1])
+    noise = np.zeros(x.shape[1])
+    for g in np.unique(y):
+        xg = x[y == g]
+        signal += len(xg) * (xg.mean(axis=0) - mean_all) ** 2
+        noise += len(xg) * xg.var(axis=0)
+    return signal / noise
 
 # %% [markdown]
 # ## 1. What is inside a dataset file?
@@ -215,8 +234,11 @@ plt.show()
 # each time sample:
 #
 # ```
-# SNR(t) = variance(means of each group) / mean(variances inside each group)
+# SNR(t) = variance of the group means / average variance inside the groups
 # ```
+#
+# Both averages run over traces, so a group counts as often as it has traces
+# (the definition in the guide's chapter 6).
 #
 # What are the groups? Fix one time sample `t` and take the column of values
 # it takes across all profiling traces. We know the plaintext and key of each
@@ -241,7 +263,7 @@ rng = np.random.default_rng(0)
 name, ds = DATASETS[1]  # ESHARD, Hamming weight labels 0..8
 x = ds.x_profiling.astype(np.float32)
 y = ds.profiling_labels.astype(int)
-snr_esh = snr_fast(x, y)
+snr_esh = snr(x, y)
 
 t_peak = int(np.argmax(snr_esh))
 t_quiet = int(np.argmin(snr_esh[: len(snr_esh) // 3]))  # far from the peak
@@ -356,8 +378,8 @@ plt.show()
 fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
 for ax, (name, ds) in zip(axes, DATASETS):
-    snr = snr_fast(ds.x_profiling, ds.profiling_labels)
-    ax.plot(snr, lw=0.8)
+    curve = snr(ds.x_profiling, ds.profiling_labels)
+    ax.plot(curve, lw=0.8)
     ax.set_title(f"{name}")
     ax.set_xlabel("time sample index")
     ax.set_ylabel("SNR")
@@ -394,19 +416,19 @@ def hw(values):
 
 
 panels = [
-    (snr_fast(x, hw(labels_unmasked)), "against the unmasked label  HW(Sbox[p ⊕ k])", "tab:blue"),
-    (snr_fast(x, hw(share2)), "against the masked share  HW(Sbox[p ⊕ k] ⊕ m)", "darkred"),
-    (snr_fast(x, hw(mask)), "against the mask alone  HW(m)", "darkgreen"),
+    (snr(x, hw(labels_unmasked)), "against the unmasked label  HW(Sbox[p ⊕ k])", "tab:blue"),
+    (snr(x, hw(share2)), "against the masked share  HW(Sbox[p ⊕ k] ⊕ m)", "darkred"),
+    (snr(x, hw(mask)), "against the mask alone  HW(m)", "darkgreen"),
 ]
 
 fig, axes = plt.subplots(3, 1, figsize=(14, 8), sharex=True)
-for ax, (snr, title, color) in zip(axes, panels):
-    ax.plot(snr, lw=0.8, color=color)
-    t_peak = int(np.argmax(snr))
+for ax, (curve, title, color) in zip(axes, panels):
+    ax.plot(curve, lw=0.8, color=color)
+    t_peak = int(np.argmax(curve))
     ax.annotate(
-        f"max {snr.max():.2f} at sample {t_peak}",
-        xy=(t_peak, snr.max()),
-        xytext=(0.55 * len(snr), 0.85 * snr.max()),
+        f"max {curve.max():.2f} at sample {t_peak}",
+        xy=(t_peak, curve.max()),
+        xytext=(0.55 * len(curve), 0.85 * curve.max()),
         arrowprops={"arrowstyle": "->", "color": "black"},
         fontsize=10,
     )
@@ -419,8 +441,8 @@ fig.tight_layout()
 
 fig.savefig(out / "02_snr_shares.png", dpi=150)
 print("saved:", out / "02_snr_shares.png")
-for name, (snr, _, _) in zip(["unmasked", "share", "mask"], panels):
-    print(f"  {name:9s} max SNR = {snr.max():.4f} at sample {snr.argmax()}")
+for name, (curve, _, _) in zip(["unmasked", "share", "mask"], panels):
+    print(f"  {name:9s} max SNR = {curve.max():.4f} at sample {curve.argmax()}")
 plt.show()
 
 # %% [markdown]
@@ -434,8 +456,8 @@ plt.show()
 # - The leakage of the target intermediate is concentrated in identifiable
 #   time samples.
 # - Masking flattens the SNR against the unmasked label, but the leakage moves
-#   into the shares: on ASCADr the masked share peaks at SNR ≈ 14.5 while the
-#   unmasked label stays at the noise floor (≈ 0.01).
+#   into the shares: on ASCADr the masked share peaks at SNR ≈ 3.8 while the
+#   unmasked label stays at the noise floor (≈ 0.001).
 # - These SNR curves mark *where* an analyst would look for the key — the
 #   reference for checking whether a network looks in the same place.
 
