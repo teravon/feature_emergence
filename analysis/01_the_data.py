@@ -1,8 +1,8 @@
 # %% [markdown]
 # # Exploring the data
 #
-# This notebook accompanies Chapters 3–4 of the docs
-# (`docs/03_masking.md`, `docs/04_the_datasets.md`). The chapters give the
+# This notebook accompanies two chapters of the guide
+# ([the datasets](https://qwertylab.dev/guides/feature-emergence/05-the-datasets/), [the SNR](https://qwertylab.dev/guides/feature-emergence/06-where-the-key-leaks/)). The chapters give the
 # orientation; here we actually
 # open the files and look at the numbers.
 #

@@ -1,8 +1,8 @@
 # %% [markdown]
 # # The attack
 #
-# This notebook accompanies Chapter 7 of the docs
-# (`docs/07_scoring_the_attack.md`). The chapter explains the ideas; here we load a
+# This notebook accompanies the guide chapter
+# [How a key byte is recovered](https://qwertylab.dev/guides/feature-emergence/09-scoring-the-attack/). The chapter explains the ideas; here we load a
 # trained model and actually recover a key byte.
 #
 # We answer four questions:
@@ -62,7 +62,7 @@ print(f"correct key byte: 0x{dataset.correct_key_attack:02x}")
 # The attacker is not empty-handed. In this attack — as in most side-channel
 # attacks — the **plaintext is known**: it was sent to the device in the
 # clear, and the datasets store it next to every trace
-# ([Chapter 4](../../docs/04_the_datasets.md)). The key, on the other hand, never
+# ([the datasets chapter](https://qwertylab.dev/guides/feature-emergence/05-the-datasets/)). The key, on the other hand, never
 # leaves the chip.
 #
 # One key byte has 256 possible values, so the attacker can simply enumerate
@@ -92,7 +92,7 @@ for g in [0x00, true_key, 0xFF]:
 #
 # Note what this means for the full AES key: it has 16 bytes, and this
 # procedure recovers **one byte at a time** — here, the target byte fixed by
-# the study (byte 2, see the [datasets guide appendix](../../docs/appendix_datasets.md)).
+# the study (byte 2, see the [datasets guide](../data/README.md)).
 # Recovering the whole key means repeating the attack per byte position.
 #
 # ## 3. What does the model do with one trace?
@@ -100,7 +100,7 @@ for g in [0x00, true_key, 0xFF]:
 # Feed one attack trace to the epoch-100 model. The output is a softmax: a
 # probability for each of the 256 possible S-box output values.
 #
-# Before looking, one reminder from [Chapter 3](../../docs/03_masking.md):
+# Before looking, one reminder from [the masking chapter](https://qwertylab.dev/guides/feature-emergence/04-masking/):
 # ASCADr is **masked**. At any instant, the value flowing through the S-box is
 # `Sbox[plaintext ⊕ key] ⊕ mask`, randomized by a fresh mask per trace. The
 # unmasked value is only recovered *statistically, over many traces* — so we

@@ -1,8 +1,8 @@
 # %% [markdown]
 # # The models
 #
-# This notebook accompanies Chapters 5–6 of the docs
-# (`docs/05_the_network.md`, `docs/06_training_and_checkpoints.md`). The
+# This notebook accompanies two chapters of the guide
+# ([the network](https://qwertylab.dev/guides/feature-emergence/07-the-network/), [training](https://qwertylab.dev/guides/feature-emergence/08-training-and-checkpoints/)). The
 # chapters explain the ideas; here we build the
 # networks, look inside a trained checkpoint, and load it back into a model.
 #
@@ -32,7 +32,7 @@ out.mkdir(parents=True, exist_ok=True)
 # ## 1. Which models were trained?
 #
 # The study trains one network per (dataset, architecture) combination. Each
-# combination fixes the leakage model of [Chapter 2](../../docs/02_intermediate_values.md):
+# combination fixes the leakage model of [Attacking one key byte](https://qwertylab.dev/guides/feature-emergence/03-attacking-one-byte/):
 # ASCADr uses the identity model (256 classes, one per S-box output value),
 # ESHARD and CHES_CTF use the Hamming weight model (9 classes).
 #
@@ -96,7 +96,7 @@ cnn.summary()
 # ## 3. Inside the weights
 #
 # A checkpoint is itself an HDF5 file — the same container format as the
-# datasets of [Chapter 4](../../docs/04_the_datasets.md), opened with the same
+# datasets of [the datasets chapter](https://qwertylab.dev/guides/feature-emergence/05-the-datasets/), opened with the same
 # tool, `h5py`. Inside, the weights are plain numerical arrays. Let's open
 # one and list what it holds:
 
@@ -175,7 +175,7 @@ plt.show()
 # training progresses, structure condenses: bands of color appear at specific
 # time samples, meaning many neurons have learned to listen there. Measuring
 # *when* this happens, and whether the loud samples coincide with the SNR
-# peaks of [Chapter 3](../../docs/03_masking.md), is the feature-emergence
+# peaks of [the SNR chapter](https://qwertylab.dev/guides/feature-emergence/06-where-the-key-leaks/), is the feature-emergence
 # question of a later chapter.
 
 # %% [markdown]
@@ -201,7 +201,7 @@ print("loaded:", CKPT.name, "(weights after epoch 100)")
 # %% [markdown]
 # The network now behaves exactly like the trained model of epoch 100 — same
 # weights, same predictions. What it *does* with a trace is the subject of
-# [the next chapter](../../docs/07_scoring_the_attack.md).
+# [How a key byte is recovered](https://qwertylab.dev/guides/feature-emergence/09-scoring-the-attack/).
 #
 # ## Takeaways
 #

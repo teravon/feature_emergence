@@ -1,7 +1,7 @@
 # %% [markdown]
 # # Perceived Information vs training epoch
 #
-# Companion to Chapter 8 (`docs/08_perceived_information.md`). For each
+# Companion to the guide chapter [Perceived Information](https://qwertylab.dev/guides/feature-emergence/10-perceived-information/). For each
 # checkpoint of the ASCADr MLP, measure Perceived Information (bits) on a
 # profiling subset and on the attack set. No retraining.
 #

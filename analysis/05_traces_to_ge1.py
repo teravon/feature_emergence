@@ -15,7 +15,7 @@ from feature_emergence.utils import load_dataset, scale_dataset
 OUT_DIR = OUTPUTS_DIR / "figures"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Finished checkpoints as published (see docs/appendix_datasets.md).
+# Finished checkpoints as published (see data/README.md).
 CONFIGS = [
     {
         "name": "ASCADr",
